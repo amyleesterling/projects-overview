@@ -253,7 +253,7 @@ export default function Home() {
         <div className="featuredGrid">
           {featured.map((repo, index) => <article className={`featureCard feature${index + 1}`} key={repo.n}>
             <div className="featureTop"><span className="index">0{index + 1}</span><span className={`language ${langClass[repo.l]}`}>{repo.l}</span></div>
-            <div className="featuredShot"><img src={featuredImages[repo.n].src} alt={featuredImages[repo.n].alt}/><span>Actual project</span></div>
+            <div className="featuredShot"><img src={featuredImages[repo.n].src} alt={featuredImages[repo.n].alt}/></div>
             <div className="featureCopy"><span className="categoryTag">{categoryFor(repo).short}</span><h3>{repo.n.replaceAll("_", " ").replaceAll("-", " ")}</h3><p>{repo.d}</p></div>
             <a href={repo.h || repo.u} target="_blank" rel="noreferrer" aria-label={`Open ${repo.n}`}>Open project <span>↗</span></a>
           </article>)}
