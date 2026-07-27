@@ -38,6 +38,7 @@ h1 em { font-family:Georgia,serif; font-weight:400; color:var(--coral); }
 .barItem { height:100%; flex:1; text-align:center; color:#9b9ca8; font:11px var(--font-mono); }
 .barTrack { height:88px; display:flex; align-items:end; border-bottom:1px solid #555665; }
 .barFill { width:100%; background:linear-gradient(180deg,var(--blue),var(--teal)); min-height:14px; position:relative; transition:.3s; }
+.barFill.emptyBar { min-height:0; }
 .barFill span { position:absolute; top:-18px; left:0; right:0; color:white; font-size:10px; }
 .barItem small { display:block; margin-top:7px; }
 .languageSummary { display:grid; grid-template-columns:1fr 1fr; gap:14px; font:11px var(--font-mono); }

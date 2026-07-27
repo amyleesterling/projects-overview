@@ -66,7 +66,7 @@ const featuredImages: Record<string, { src: string; alt: string }> = {
   "flywire-neuron-gallery": { src:"/featured/flywire-neuron-gallery.webp", alt:"A full Drosophila brain reconstructed from thousands of color-coded neurons" },
   "neuron-game": { src:"/featured/neuron-game.png", alt:"Neuron Snake game title screen on a dark scientific grid" },
 };
-const monthCounts = [{m:"Feb",n:4},{m:"Mar",n:11},{m:"Apr",n:6},{m:"May",n:6},{m:"Jun",n:3},{m:"Jul",n:22}];
+const monthCounts = [{m:"Jan",n:0},{m:"Feb",n:4},{m:"Mar",n:11},{m:"Apr",n:6},{m:"May",n:6},{m:"Jun",n:3},{m:"Jul",n:22}];
 const langClass: Record<string,string> = {HTML:"html",TypeScript:"ts",JavaScript:"js",Python:"py",Other:"other"};
 
 type CategoryId = "brains" | "kids" | "earth" | "ai" | "tools" | "toys" | "ridiculous";
@@ -242,10 +242,10 @@ export default function Home() {
         <NeuronParticleBanner />
       </header>
 
-      <section className="pulse" aria-label="Project activity by month">
-        <div className="pulseIntro"><span>THE PULSE</span><strong>22 projects touched in July alone.</strong></div>
-        <div className="bars">{monthCounts.map(({m,n}) => <div className="barItem" key={m}><div className="barTrack"><div className="barFill" style={{height:`${Math.max(14, n/23*100)}%`}}><span>{n}</span></div></div><small>{m}</small></div>)}</div>
-        <div className="languageSummary"><span><i className="dot html"/>18 HTML</span><span><i className="dot ts"/>13 TypeScript</span><span><i className="dot js"/>10 JavaScript</span><span><i className="dot py"/>3 Python</span></div>
+      <section className="pulse" aria-label="2026 project activity by month, year to date">
+        <div className="pulseIntro"><span>THE PULSE · JAN–JUL 2026</span><strong>52 projects touched this year so far.</strong></div>
+        <div className="bars">{monthCounts.map(({m,n}) => <div className="barItem" key={m}><div className="barTrack"><div className={`barFill ${n === 0 ? "emptyBar" : ""}`} style={{height:n === 0 ? "0%" : `${Math.max(14, n/23*100)}%`}}><span>{n}</span></div></div><small>{m}</small></div>)}</div>
+        <div className="languageSummary"><span><i className="dot html"/>18 HTML</span><span><i className="dot ts"/>13 TypeScript</span><span><i className="dot js"/>10 JavaScript</span><span><i className="dot py"/>3 Python</span><span><i className="dot other"/>8 Other</span></div>
       </section>
 
       <section className="featured section" id="featured">
