@@ -6,7 +6,6 @@ type Repo = { n: string; d: string; l: string; u: string; h?: string; t: string;
 
 const repos: Repo[] = [
   {n:"philogelos",d:"Funny philosopher.",l:"HTML",u:"https://github.com/amyleesterling/philogelos",t:"2026-07-26"},
-  {n:"findmytown",d:"A real estate dashboard for finding the right place to live.",l:"HTML",u:"https://github.com/amyleesterling/findmytown",t:"2026-07-26"},
   {n:"inner-cosmos",d:"A hub linking every Inner Cosmos experience: main site, kids, museum wall, scales, and citations.",l:"HTML",u:"https://github.com/amyleesterling/inner-cosmos",t:"2026-07-23"},
   {n:"partypost",d:"A free kids’ birthday party RSVP tool.",l:"TypeScript",u:"https://github.com/amyleesterling/partypost",h:"https://partypost.vercel.app",t:"2026-07-20"},
   {n:"kids-who-vibecode",d:"Fun challenges for kids to vibe code this summer.",l:"TypeScript",u:"https://github.com/amyleesterling/kids-who-vibecode",t:"2026-07-15"},
@@ -33,11 +32,11 @@ const repos: Repo[] = [
   {n:"thefartsite",d:"Sophia and Cora’s silly site.",l:"HTML",u:"https://github.com/amyleesterling/thefartsite",t:"2026-06-04"},
   {n:"moontoast",d:"Animated kids’ stories.",l:"TypeScript",u:"https://github.com/amyleesterling/moontoast",t:"2026-05-24"},
   {n:"drosophila_datause_2026",d:"Which papers actually used Drosophila connectomics data—not just cited it?",l:"Other",u:"https://github.com/amyleesterling/drosophila_datause_2026",t:"2026-05-21"},
-  {n:"flywire-neuron-gallery",d:"A gallery for FlyWire neuron renders.",l:"TypeScript",u:"https://github.com/amyleesterling/flywire-neuron-gallery",t:"2026-05-07"},
+  {n:"flywire-neuron-gallery",d:"A gallery of real Drosophila brain reconstructions, mapped synapse by synapse and rendered as an explorable visual atlas.",l:"TypeScript",u:"https://github.com/amyleesterling/flywire-neuron-gallery",h:"https://amyleesterling.github.io/flywire-neuron-gallery/",t:"2026-05-07"},
   {n:"explore-the-universe",d:"Explore the universe at different scales, including relative forces.",l:"Other",u:"https://github.com/amyleesterling/explore-the-universe",t:"2026-05-06"},
   {n:"neuronal-surprise-surfing",d:"An experimental experience for codex.flywire.ai.",l:"Python",u:"https://github.com/amyleesterling/neuronal-surprise-surfing",t:"2026-05-05"},
   {n:"explore-the-verse-2-",d:"A different version of the scales of the universe.",l:"TypeScript",u:"https://github.com/amyleesterling/explore-the-verse-2-",t:"2026-05-04"},
-  {n:"eyewire-ii",d:"EyeWire II community neuroglancer proofreading extension.",l:"HTML",u:"https://github.com/amyleesterling/eyewire-ii",t:"2026-04-30"},
+  {n:"eyewire-ii",d:"A new community layer for Neuroglancer: collaborative proofreading, identity, progress, and rewards for citizen neuroscientists.",l:"HTML",u:"https://github.com/amyleesterling/eyewire-ii",h:"https://amyleesterling.github.io/eyewire-ii/",t:"2026-04-30"},
   {n:"AnnotationEngine",d:"A Flask REST interface for annotating a cloud-volume segmentation.",l:"Other",u:"https://github.com/amyleesterling/AnnotationEngine",t:"2026-04-27",f:true},
   {n:"eyewire-ii-avatar",d:"EyeWire II avatar preview: Connectome Coin economy and customization.",l:"Other",u:"https://github.com/amyleesterling/eyewire-ii-avatar",t:"2026-04-27"},
   {n:"vibeshift",d:"A reward system for AIs.",l:"JavaScript",u:"https://github.com/amyleesterling/vibeshift",t:"2026-04-08",f:true},
@@ -49,7 +48,7 @@ const repos: Repo[] = [
   {n:"theLastWebsite",d:"The only one.",l:"HTML",u:"https://github.com/amyleesterling/theLastWebsite",t:"2026-03-26"},
   {n:"ridiculous",d:"Be more ridiculous.",l:"Other",u:"https://github.com/amyleesterling/ridiculous",t:"2026-03-25"},
   {n:"shield",d:"A small JavaScript experiment.",l:"JavaScript",u:"https://github.com/amyleesterling/shield",t:"2026-03-24"},
-  {n:"neuron-game",d:"Snake, but with a neuron.",l:"HTML",u:"https://github.com/amyleesterling/neuron-game",t:"2026-03-22"},
+  {n:"neuron-game",d:"The classic snake loop reimagined as a growing neuron—collect signals, extend dendrites, and avoid your own circuitry.",l:"HTML",u:"https://github.com/amyleesterling/neuron-game",h:"https://amyleesterling.github.io/neuron-game/",t:"2026-03-22"},
   {n:"badges",d:"A game-badge iteration tool.",l:"HTML",u:"https://github.com/amyleesterling/badges",t:"2026-03-20"},
   {n:"eyewire-ii-tutorial",d:"Connectomics training for neuroglancer.",l:"JavaScript",u:"https://github.com/amyleesterling/eyewire-ii-tutorial",t:"2026-03-13"},
   {n:"eyewire-ii-tags",d:"Segment tagging for neuroglancer.",l:"HTML",u:"https://github.com/amyleesterling/eyewire-ii-tags",t:"2026-03-06"},
@@ -60,8 +59,13 @@ const repos: Repo[] = [
   {n:"coras-mermaid",d:"A site created by Cora, age four.",l:"JavaScript",u:"https://github.com/amyleesterling/coras-mermaid",t:"2026-02-06"},
 ];
 
-const featuredNames = ["inner-cosmos", "hurricane", "partypost", "kids-who-vibecode", "findmytown", "Department_of_Ridiculous"];
-const monthCounts = [{m:"Feb",n:4},{m:"Mar",n:11},{m:"Apr",n:6},{m:"May",n:6},{m:"Jun",n:3},{m:"Jul",n:23}];
+const featuredNames = ["eyewire-ii", "flywire-neuron-gallery", "neuron-game"];
+const featuredImages: Record<string, { src: string; alt: string }> = {
+  "eyewire-ii": { src:"/featured/eyewire-ii.png", alt:"EyeWire II neural access and identity verification screen" },
+  "flywire-neuron-gallery": { src:"/featured/flywire-neuron-gallery.webp", alt:"A full Drosophila brain reconstructed from thousands of color-coded neurons" },
+  "neuron-game": { src:"/featured/neuron-game.png", alt:"Neuron Snake game title screen on a dark scientific grid" },
+};
+const monthCounts = [{m:"Feb",n:4},{m:"Mar",n:11},{m:"Apr",n:6},{m:"May",n:6},{m:"Jun",n:3},{m:"Jul",n:22}];
 const langClass: Record<string,string> = {HTML:"html",TypeScript:"ts",JavaScript:"js",Python:"py",Other:"other"};
 
 type CategoryId = "brains" | "kids" | "earth" | "ai" | "tools" | "toys" | "ridiculous";
@@ -82,7 +86,7 @@ const categoryNames: Record<CategoryId, string[]> = {
   kids:["kids-who-vibecode","sophie-shark-game","cocos-mythic-meadow","heat-wave","MagicBoard","thefartsite","moontoast","animateKidStories","coras-mermaid"],
   earth:["hurricane","youth-sports-moneymachine","ma-car-lease-analysis-","wood-coal-pizza","explore-the-universe","explore-the-verse-2-","build-a-planet","realFeel_climateCompare"],
   ai:["atlas-of-the-unseen","extremely-strange","fableous","kindling","vibeshift","what-i-am","cribbles"],
-  tools:["findmytown","partypost","amysterling","stretch-ai"],
+  tools:["partypost","amysterling","stretch-ai"],
   ridiculous:["philogelos","fabled-jokes","Department_of_Ridiculous","ridiculous","theLastWebsite"],
   toys:[],
 };
@@ -131,22 +135,22 @@ export default function Home() {
 
       <header className="hero" id="top">
         <div className="heroCopy">
-          <p className="eyebrow"><span className="liveDot" /> 2026 activity report · updated July 26</p>
+          <p className="eyebrow"><span className="liveDot" /> Projects touched this year · updated July 26</p>
           <h1>Building at the speed of <em>curiosity.</em></h1>
           <p className="dek">Games made with kids. Brains rendered for museums. Tools for parties, hurricanes, pizza, and the gloriously unnecessary. This is one year of following every good question.</p>
-          <div className="heroActions"><a className="primaryAction" href="#archive">Explore all 53 projects <span>↓</span></a><a className="textAction" href="https://github.com/amyleesterling" target="_blank" rel="noreferrer">@amyleesterling ↗</a></div>
+          <div className="heroActions"><a className="primaryAction" href="#archive">Explore all 52 projects <span>↓</span></a><a className="textAction" href="https://github.com/amyleesterling" target="_blank" rel="noreferrer">@amyleesterling ↗</a></div>
         </div>
-        <div className="heroStat" aria-label="53 active repositories">
-          <span className="bigNumber">53</span>
-          <span className="statLabel">public repos<br/>active in 2026</span>
+        <div className="heroStat" aria-label="52 projects touched this year">
+          <span className="bigNumber">52</span>
+          <span className="statLabel">projects touched<br/>this year</span>
           <span className="scribble">yes, really.</span>
         </div>
       </header>
 
       <section className="pulse" aria-label="Project activity by month">
-        <div className="pulseIntro"><span>THE PULSE</span><strong>23 projects touched in July alone.</strong></div>
+        <div className="pulseIntro"><span>THE PULSE</span><strong>22 projects touched in July alone.</strong></div>
         <div className="bars">{monthCounts.map(({m,n}) => <div className="barItem" key={m}><div className="barTrack"><div className="barFill" style={{height:`${Math.max(14, n/23*100)}%`}}><span>{n}</span></div></div><small>{m}</small></div>)}</div>
-        <div className="languageSummary"><span><i className="dot html"/>19 HTML</span><span><i className="dot ts"/>13 TypeScript</span><span><i className="dot js"/>10 JavaScript</span><span><i className="dot py"/>3 Python</span></div>
+        <div className="languageSummary"><span><i className="dot html"/>18 HTML</span><span><i className="dot ts"/>13 TypeScript</span><span><i className="dot js"/>10 JavaScript</span><span><i className="dot py"/>3 Python</span></div>
       </section>
 
       <section className="featured section" id="featured">
@@ -154,7 +158,7 @@ export default function Home() {
         <div className="featuredGrid">
           {featured.map((repo, index) => <article className={`featureCard feature${index + 1}`} key={repo.n}>
             <div className="featureTop"><span className="index">0{index + 1}</span><span className={`language ${langClass[repo.l]}`}>{repo.l}</span></div>
-            <ProjectVisual repo={repo} compact />
+            <div className="featuredShot"><img src={featuredImages[repo.n].src} alt={featuredImages[repo.n].alt}/><span>Actual project</span></div>
             <div className="featureCopy"><span className="categoryTag">{categoryFor(repo).short}</span><h3>{repo.n.replaceAll("_", " ").replaceAll("-", " ")}</h3><p>{repo.d}</p></div>
             <a href={repo.h || repo.u} target="_blank" rel="noreferrer" aria-label={`Open ${repo.n}`}>Open project <span>↗</span></a>
           </article>)}
@@ -162,10 +166,10 @@ export default function Home() {
       </section>
 
       <section className="archive section" id="archive">
-        <div className="sectionHeading archiveHeading"><div><p className="kicker">SEVEN ROOMS · 53 EXPERIMENTS</p><h2>The project exhibition</h2></div><p>Not a wall of repos: a tour through the recurring questions, collaborators, obsessions, and useful detours of 2026.</p></div>
+        <div className="sectionHeading archiveHeading"><div><p className="kicker">SEVEN ROOMS · 52 EXPERIMENTS</p><h2>The project exhibition</h2></div><p>Not a wall of repos: a tour through the recurring questions, collaborators, obsessions, and useful detours touched this year.</p></div>
         <div className="controls">
           <label className="search"><span>⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search the experiments…" aria-label="Search projects" /></label>
-          <div className="filters categoryFilters" aria-label="Filter by category"><button className={activeCategory === "all" ? "active" : ""} onClick={() => setActiveCategory("all")}>All <sup>53</sup></button>{categories.map((category) => <button className={activeCategory === category.id ? "active" : ""} onClick={() => setActiveCategory(category.id)} key={category.id}>{category.short} <sup>{repos.filter((repo) => categoryFor(repo).id === category.id).length}</sup></button>)}</div>
+          <div className="filters categoryFilters" aria-label="Filter by category"><button className={activeCategory === "all" ? "active" : ""} onClick={() => setActiveCategory("all")}>All <sup>52</sup></button>{categories.map((category) => <button className={activeCategory === category.id ? "active" : ""} onClick={() => setActiveCategory(category.id)} key={category.id}>{category.short} <sup>{repos.filter((repo) => categoryFor(repo).id === category.id).length}</sup></button>)}</div>
         </div>
         <div className="resultsLine"><span>{shown.length} {shown.length === 1 ? "project" : "projects"} on view</span><span>Each room is sorted by recent activity</span></div>
         <div className="categoryRooms">{grouped.map(({category, repos: categoryRepos}, roomIndex) => <section className={`categoryRoom room-${category.id}`} key={category.id}>
