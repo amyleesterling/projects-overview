@@ -1,0 +1,140 @@
+"use client";
+
+import { useMemo, useState } from "react";
+
+type Repo = { n: string; d: string; l: string; u: string; h?: string; t: string; f?: boolean };
+
+const repos: Repo[] = [
+  {n:"philogelos",d:"Funny philosopher.",l:"HTML",u:"https://github.com/amyleesterling/philogelos",t:"2026-07-26"},
+  {n:"findmytown",d:"A real estate dashboard for finding the right place to live.",l:"HTML",u:"https://github.com/amyleesterling/findmytown",t:"2026-07-26"},
+  {n:"inner-cosmos",d:"A hub linking every Inner Cosmos experience: main site, kids, museum wall, scales, and citations.",l:"HTML",u:"https://github.com/amyleesterling/inner-cosmos",t:"2026-07-23"},
+  {n:"partypost",d:"A free kids’ birthday party RSVP tool.",l:"TypeScript",u:"https://github.com/amyleesterling/partypost",h:"https://partypost.vercel.app",t:"2026-07-20"},
+  {n:"kids-who-vibecode",d:"Fun challenges for kids to vibe code this summer.",l:"TypeScript",u:"https://github.com/amyleesterling/kids-who-vibecode",t:"2026-07-15"},
+  {n:"sophie-shark-game",d:"A shark game designed by Sophie, age six.",l:"JavaScript",u:"https://github.com/amyleesterling/sophie-shark-game",t:"2026-07-14"},
+  {n:"hurricane",d:"Visualize every hurricane ever satellite imaged.",l:"TypeScript",u:"https://github.com/amyleesterling/hurricane",t:"2026-07-13"},
+  {n:"atlas-of-the-unseen",d:"Undirected collaboration between Fable and Sol.",l:"HTML",u:"https://github.com/amyleesterling/atlas-of-the-unseen",t:"2026-07-13"},
+  {n:"seunglabdata",d:"Datasets for the Seung Lab demo page.",l:"HTML",u:"https://github.com/amyleesterling/seunglabdata",t:"2026-07-10"},
+  {n:"cocos-mythic-meadow",d:"A unicorn–pegasus–wolf game created by Cora, age four.",l:"JavaScript",u:"https://github.com/amyleesterling/cocos-mythic-meadow",t:"2026-07-10"},
+  {n:"youth-sports-moneymachine",d:"Historical trends in the cost of club sports.",l:"JavaScript",u:"https://github.com/amyleesterling/youth-sports-moneymachine",t:"2026-07-10"},
+  {n:"the650",d:"There are 650 muscles in your body. How many can you feel?",l:"TypeScript",u:"https://github.com/amyleesterling/the650",t:"2026-07-09"},
+  {n:"fabled-jokes",d:"Git yer jokes.",l:"HTML",u:"https://github.com/amyleesterling/fabled-jokes",t:"2026-07-08"},
+  {n:"whatisabrain",d:"Sometimes I wonder about mine.",l:"TypeScript",u:"https://github.com/amyleesterling/whatisabrain",t:"2026-07-08"},
+  {n:"science-experiment",d:"A wall-scale visualization built for a 3628 × 1600 display.",l:"TypeScript",u:"https://github.com/amyleesterling/science-experiment",t:"2026-07-07"},
+  {n:"inner_cosmos",d:"A neuron experience for the general public.",l:"TypeScript",u:"https://github.com/amyleesterling/inner_cosmos",t:"2026-07-07"},
+  {n:"inner-cosmos-wall",d:"A non-interactive museum attract loop for a 3628 × 1600 wall.",l:"TypeScript",u:"https://github.com/amyleesterling/inner-cosmos-wall",t:"2026-07-06"},
+  {n:"heat-wave",d:"A mobile game to beat the heat.",l:"HTML",u:"https://github.com/amyleesterling/heat-wave",t:"2026-07-04"},
+  {n:"extremely-strange",d:"An experiment filed under: extremely strange.",l:"Python",u:"https://github.com/amyleesterling/extremely-strange",t:"2026-07-03"},
+  {n:"fableous",d:"A Fable experiment.",l:"HTML",u:"https://github.com/amyleesterling/fableous",t:"2026-07-03"},
+  {n:"kindling",d:"The only thing Claude Fable ever made before it got banned.",l:"HTML",u:"https://github.com/amyleesterling/kindling",t:"2026-07-03"},
+  {n:"ma-car-lease-analysis-",d:"Massachusetts car lease analysis.",l:"Other",u:"https://github.com/amyleesterling/ma-car-lease-analysis-",t:"2026-07-03"},
+  {n:"amysterling",d:"A web presence and side-project hub for amysterling.org.",l:"HTML",u:"https://github.com/amyleesterling/amysterling",t:"2026-07-01"},
+  {n:"wood-coal-pizza",d:"Wood- and coal-fired pizza stats. Muy importante.",l:"Python",u:"https://github.com/amyleesterling/wood-coal-pizza",t:"2026-06-07"},
+  {n:"MagicBoard",d:"A little bit of web magic.",l:"HTML",u:"https://github.com/amyleesterling/MagicBoard",t:"2026-06-04"},
+  {n:"thefartsite",d:"Sophia and Cora’s silly site.",l:"HTML",u:"https://github.com/amyleesterling/thefartsite",t:"2026-06-04"},
+  {n:"moontoast",d:"Animated kids’ stories.",l:"TypeScript",u:"https://github.com/amyleesterling/moontoast",t:"2026-05-24"},
+  {n:"drosophila_datause_2026",d:"Which papers actually used Drosophila connectomics data—not just cited it?",l:"Other",u:"https://github.com/amyleesterling/drosophila_datause_2026",t:"2026-05-21"},
+  {n:"flywire-neuron-gallery",d:"A gallery for FlyWire neuron renders.",l:"TypeScript",u:"https://github.com/amyleesterling/flywire-neuron-gallery",t:"2026-05-07"},
+  {n:"explore-the-universe",d:"Explore the universe at different scales, including relative forces.",l:"Other",u:"https://github.com/amyleesterling/explore-the-universe",t:"2026-05-06"},
+  {n:"neuronal-surprise-surfing",d:"An experimental experience for codex.flywire.ai.",l:"Python",u:"https://github.com/amyleesterling/neuronal-surprise-surfing",t:"2026-05-05"},
+  {n:"explore-the-verse-2-",d:"A different version of the scales of the universe.",l:"TypeScript",u:"https://github.com/amyleesterling/explore-the-verse-2-",t:"2026-05-04"},
+  {n:"eyewire-ii",d:"EyeWire II community neuroglancer proofreading extension.",l:"HTML",u:"https://github.com/amyleesterling/eyewire-ii",t:"2026-04-30"},
+  {n:"AnnotationEngine",d:"A Flask REST interface for annotating a cloud-volume segmentation.",l:"Other",u:"https://github.com/amyleesterling/AnnotationEngine",t:"2026-04-27",f:true},
+  {n:"eyewire-ii-avatar",d:"EyeWire II avatar preview: Connectome Coin economy and customization.",l:"Other",u:"https://github.com/amyleesterling/eyewire-ii-avatar",t:"2026-04-27"},
+  {n:"vibeshift",d:"A reward system for AIs.",l:"JavaScript",u:"https://github.com/amyleesterling/vibeshift",t:"2026-04-08",f:true},
+  {n:"build-a-planet",d:"Build Earth.",l:"HTML",u:"https://github.com/amyleesterling/build-a-planet",t:"2026-04-07"},
+  {n:"Department_of_Ridiculous",d:"Officially ridiculous.",l:"JavaScript",u:"https://github.com/amyleesterling/Department_of_Ridiculous",t:"2026-04-01"},
+  {n:"synapticConnection",d:"Neurons that wire up as you scroll through a text block.",l:"Other",u:"https://github.com/amyleesterling/synapticConnection",t:"2026-03-31"},
+  {n:"animateKidStories",d:"Turn a series of prompts into short videos with consistent characters.",l:"Other",u:"https://github.com/amyleesterling/animateKidStories",t:"2026-03-31"},
+  {n:"realFeel_climateCompare",d:"Compare how two places really feel: wind, temperature, sun, and more.",l:"JavaScript",u:"https://github.com/amyleesterling/realFeel_climateCompare",t:"2026-03-29"},
+  {n:"theLastWebsite",d:"The only one.",l:"HTML",u:"https://github.com/amyleesterling/theLastWebsite",t:"2026-03-26"},
+  {n:"ridiculous",d:"Be more ridiculous.",l:"Other",u:"https://github.com/amyleesterling/ridiculous",t:"2026-03-25"},
+  {n:"shield",d:"A small JavaScript experiment.",l:"JavaScript",u:"https://github.com/amyleesterling/shield",t:"2026-03-24"},
+  {n:"neuron-game",d:"Snake, but with a neuron.",l:"HTML",u:"https://github.com/amyleesterling/neuron-game",t:"2026-03-22"},
+  {n:"badges",d:"A game-badge iteration tool.",l:"HTML",u:"https://github.com/amyleesterling/badges",t:"2026-03-20"},
+  {n:"eyewire-ii-tutorial",d:"Connectomics training for neuroglancer.",l:"JavaScript",u:"https://github.com/amyleesterling/eyewire-ii-tutorial",t:"2026-03-13"},
+  {n:"eyewire-ii-tags",d:"Segment tagging for neuroglancer.",l:"HTML",u:"https://github.com/amyleesterling/eyewire-ii-tags",t:"2026-03-06"},
+  {n:"stretch-ai",d:"Real-time yoga pose alignment with MediaPipe and React Native.",l:"TypeScript",u:"https://github.com/amyleesterling/stretch-ai",t:"2026-03-04"},
+  {n:"cribbles",d:"AI-powered good vibes.",l:"TypeScript",u:"https://github.com/amyleesterling/cribbles",h:"https://cribbles.vercel.app",t:"2026-02-27"},
+  {n:"bouncebar",d:"A particle-bounce-bar easter egg for the bottom of your site.",l:"JavaScript",u:"https://github.com/amyleesterling/bouncebar",t:"2026-02-25"},
+  {n:"what-i-am",d:"A genuine reflection by Claude on what it is to be a language model.",l:"HTML",u:"https://github.com/amyleesterling/what-i-am",t:"2026-02-25"},
+  {n:"coras-mermaid",d:"A site created by Cora, age four.",l:"JavaScript",u:"https://github.com/amyleesterling/coras-mermaid",t:"2026-02-06"},
+];
+
+const featuredNames = ["inner-cosmos", "hurricane", "partypost", "kids-who-vibecode", "findmytown", "Department_of_Ridiculous"];
+const monthCounts = [{m:"Feb",n:4},{m:"Mar",n:11},{m:"Apr",n:6},{m:"May",n:6},{m:"Jun",n:3},{m:"Jul",n:23}];
+const languages = ["All", "HTML", "TypeScript", "JavaScript", "Python", "Other"];
+const langClass: Record<string,string> = {HTML:"html",TypeScript:"ts",JavaScript:"js",Python:"py",Other:"other"};
+
+function prettyDate(date: string) {
+  return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(new Date(`${date}T12:00:00`));
+}
+
+export default function Home() {
+  const [query, setQuery] = useState("");
+  const [language, setLanguage] = useState("All");
+  const shown = useMemo(() => repos.filter((repo) => {
+    const matchesLanguage = language === "All" || repo.l === language;
+    const haystack = `${repo.n} ${repo.d} ${repo.l}`.toLowerCase();
+    return matchesLanguage && haystack.includes(query.toLowerCase());
+  }), [query, language]);
+  const featured = featuredNames.map((name) => repos.find((repo) => repo.n === name)!).filter(Boolean);
+
+  return (
+    <main>
+      <nav className="topbar" aria-label="Primary navigation">
+        <a className="wordmark" href="#top"><span>AS</span> Amy Sterling / Lab Notes</a>
+        <div className="navlinks"><a href="#featured">Selected</a><a href="#archive">All projects</a><a className="navButton" href="https://github.com/amyleesterling" target="_blank" rel="noreferrer">GitHub ↗</a></div>
+      </nav>
+
+      <header className="hero" id="top">
+        <div className="heroCopy">
+          <p className="eyebrow"><span className="liveDot" /> 2026 activity report · updated July 26</p>
+          <h1>Building at the speed of <em>curiosity.</em></h1>
+          <p className="dek">Games made with kids. Brains rendered for museums. Tools for parties, hurricanes, pizza, and the gloriously unnecessary. This is one year of following every good question.</p>
+          <div className="heroActions"><a className="primaryAction" href="#archive">Explore all 53 projects <span>↓</span></a><a className="textAction" href="https://github.com/amyleesterling" target="_blank" rel="noreferrer">@amyleesterling ↗</a></div>
+        </div>
+        <div className="heroStat" aria-label="53 active repositories">
+          <span className="bigNumber">53</span>
+          <span className="statLabel">public repos<br/>active in 2026</span>
+          <span className="scribble">yes, really.</span>
+        </div>
+      </header>
+
+      <section className="pulse" aria-label="Project activity by month">
+        <div className="pulseIntro"><span>THE PULSE</span><strong>23 projects touched in July alone.</strong></div>
+        <div className="bars">{monthCounts.map(({m,n}) => <div className="barItem" key={m}><div className="barTrack"><div className="barFill" style={{height:`${Math.max(14, n/23*100)}%`}}><span>{n}</span></div></div><small>{m}</small></div>)}</div>
+        <div className="languageSummary"><span><i className="dot html"/>19 HTML</span><span><i className="dot ts"/>13 TypeScript</span><span><i className="dot js"/>10 JavaScript</span><span><i className="dot py"/>3 Python</span></div>
+      </section>
+
+      <section className="featured section" id="featured">
+        <div className="sectionHeading"><div><p className="kicker">A FEW FAVORITES</p><h2>Selected experiments</h2></div><p>No master plan—just a strong bias toward making the idea real.</p></div>
+        <div className="featuredGrid">
+          {featured.map((repo, index) => <article className={`featureCard feature${index + 1}`} key={repo.n}>
+            <div className="featureTop"><span className="index">0{index + 1}</span><span className={`language ${langClass[repo.l]}`}>{repo.l}</span></div>
+            <div><h3>{repo.n.replaceAll("_", " ").replaceAll("-", " ")}</h3><p>{repo.d}</p></div>
+            <a href={repo.h || repo.u} target="_blank" rel="noreferrer" aria-label={`Open ${repo.n}`}>Open project <span>↗</span></a>
+          </article>)}
+        </div>
+      </section>
+
+      <section className="archive section" id="archive">
+        <div className="sectionHeading archiveHeading"><div><p className="kicker">THE FULL INDEX</p><h2>All active projects</h2></div><p>“Active” means the repository was updated on GitHub in 2026. Forks are included and labeled.</p></div>
+        <div className="controls">
+          <label className="search"><span>⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search the experiments…" aria-label="Search projects" /></label>
+          <div className="filters" aria-label="Filter by language">{languages.map((item) => <button className={language === item ? "active" : ""} onClick={() => setLanguage(item)} key={item}>{item}</button>)}</div>
+        </div>
+        <div className="resultsLine"><span>{shown.length} {shown.length === 1 ? "project" : "projects"}</span><span>Newest activity first</span></div>
+        <div className="repoGrid">
+          {shown.map((repo) => <article className="repoCard" key={repo.n}>
+            <div className="repoMeta"><span className={`language ${langClass[repo.l]}`}><i className={`dot ${langClass[repo.l]}`}/>{repo.l}</span><time dateTime={repo.t}>{prettyDate(repo.t)}</time></div>
+            <h3>{repo.n}</h3><p>{repo.d}</p>
+            <div className="repoLinks">{repo.f && <span className="fork">Fork</span>}{repo.h && <a href={repo.h} target="_blank" rel="noreferrer">Live ↗</a>}<a href={repo.u} target="_blank" rel="noreferrer">Code ↗</a></div>
+          </article>)}
+        </div>
+        {shown.length === 0 && <div className="empty">No matching rabbit holes. Try another search.</div>}
+      </section>
+
+      <footer><div><span className="footerMark">AS</span><p>Made from public GitHub data.<br/>Last checked July 26, 2026.</p></div><p className="footerQuote">Stay curious.<br/><em>Ship the weird thing.</em></p><a href="#top">Back to top ↑</a></footer>
+    </main>
+  );
+}
