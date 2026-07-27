@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type CSSProperties } from "react";
 
 type Repo = { n: string; d: string; l: string; u: string; h?: string; t: string; f?: boolean };
 
@@ -62,8 +62,50 @@ const repos: Repo[] = [
 
 const featuredNames = ["inner-cosmos", "hurricane", "partypost", "kids-who-vibecode", "findmytown", "Department_of_Ridiculous"];
 const monthCounts = [{m:"Feb",n:4},{m:"Mar",n:11},{m:"Apr",n:6},{m:"May",n:6},{m:"Jun",n:3},{m:"Jul",n:23}];
-const languages = ["All", "HTML", "TypeScript", "JavaScript", "Python", "Other"];
 const langClass: Record<string,string> = {HTML:"html",TypeScript:"ts",JavaScript:"js",Python:"py",Other:"other"};
+
+type CategoryId = "brains" | "kids" | "earth" | "ai" | "tools" | "toys" | "ridiculous";
+type Category = { id: CategoryId; title: string; short: string; description: string; mark: string };
+
+const categories: Category[] = [
+  { id:"brains", title:"Brains, Bodies & Biology", short:"Brains + Bio", description:"Connectomes, neurons, muscles, and ways to make invisible systems tangible.", mark:"◉" },
+  { id:"kids", title:"Built With Kids", short:"Kids + Games", description:"Games, stories, and tiny worlds co-designed with some very opinionated young creators.", mark:"✦" },
+  { id:"earth", title:"Earth, Space & Evidence", short:"Earth + Data", description:"Weather, planets, money, pizza, and other things best understood by looking closely.", mark:"◎" },
+  { id:"ai", title:"AI & Inner Worlds", short:"AI + Minds", description:"Collaborations, reflections, and small experiments in machine personality.", mark:"⌁" },
+  { id:"tools", title:"Actually Useful Things", short:"Useful Things", description:"Practical tools for people, communities, events, and everyday decisions.", mark:"↗" },
+  { id:"toys", title:"Internet Toys & Prototypes", short:"Web Toys", description:"Interfaces, interactions, visual tests, and ideas that needed to exist in a browser.", mark:"◇" },
+  { id:"ridiculous", title:"Department of Ridiculous", short:"Ridiculous", description:"Jokes, strange artifacts, and work whose unnecessary-ness is the entire point.", mark:"!" },
+];
+
+const categoryNames: Record<CategoryId, string[]> = {
+  brains:["inner-cosmos","seunglabdata","the650","whatisabrain","science-experiment","inner_cosmos","inner-cosmos-wall","drosophila_datause_2026","flywire-neuron-gallery","neuronal-surprise-surfing","eyewire-ii","AnnotationEngine","eyewire-ii-avatar","synapticConnection","neuron-game","eyewire-ii-tutorial","eyewire-ii-tags"],
+  kids:["kids-who-vibecode","sophie-shark-game","cocos-mythic-meadow","heat-wave","MagicBoard","thefartsite","moontoast","animateKidStories","coras-mermaid"],
+  earth:["hurricane","youth-sports-moneymachine","ma-car-lease-analysis-","wood-coal-pizza","explore-the-universe","explore-the-verse-2-","build-a-planet","realFeel_climateCompare"],
+  ai:["atlas-of-the-unseen","extremely-strange","fableous","kindling","vibeshift","what-i-am","cribbles"],
+  tools:["findmytown","partypost","amysterling","stretch-ai"],
+  ridiculous:["philogelos","fabled-jokes","Department_of_Ridiculous","ridiculous","theLastWebsite"],
+  toys:[],
+};
+
+function categoryFor(repo: Repo): Category {
+  const match = categories.find((category) => categoryNames[category.id].includes(repo.n));
+  return match || categories.find((category) => category.id === "toys")!;
+}
+
+function projectHue(name: string) {
+  return [...name].reduce((total, character) => total + character.charCodeAt(0), 0) % 360;
+}
+
+function ProjectVisual({ repo, compact = false }: { repo: Repo; compact?: boolean }) {
+  const category = categoryFor(repo);
+  const hue = projectHue(repo.n);
+  const initials = repo.n.split(/[-_]/).filter(Boolean).slice(0, 2).map((word) => word[0]).join("").toUpperCase();
+  const style = { "--project-hue": hue, "--delay": `${-(hue % 17) / 4}s` } as CSSProperties;
+  return <div className={`projectVisual visual-${category.id} ${compact ? "compact" : ""}`} style={style} aria-hidden="true">
+    <span className="visualGrid"/><span className="orbit orbitOne"/><span className="orbit orbitTwo"/><span className="visualMark">{category.mark}</span>
+    <span className="visualInitials">{initials}</span><span className="scanline"/>
+  </div>;
+}
 
 function prettyDate(date: string) {
   return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(new Date(`${date}T12:00:00`));
@@ -71,12 +113,13 @@ function prettyDate(date: string) {
 
 export default function Home() {
   const [query, setQuery] = useState("");
-  const [language, setLanguage] = useState("All");
+  const [activeCategory, setActiveCategory] = useState<"all" | CategoryId>("all");
   const shown = useMemo(() => repos.filter((repo) => {
-    const matchesLanguage = language === "All" || repo.l === language;
-    const haystack = `${repo.n} ${repo.d} ${repo.l}`.toLowerCase();
-    return matchesLanguage && haystack.includes(query.toLowerCase());
-  }), [query, language]);
+    const matchesCategory = activeCategory === "all" || categoryFor(repo).id === activeCategory;
+    const haystack = `${repo.n} ${repo.d} ${repo.l} ${categoryFor(repo).title}`.toLowerCase();
+    return matchesCategory && haystack.includes(query.toLowerCase());
+  }), [query, activeCategory]);
+  const grouped = categories.map((category) => ({ category, repos: shown.filter((repo) => categoryFor(repo).id === category.id) })).filter((group) => group.repos.length);
   const featured = featuredNames.map((name) => repos.find((repo) => repo.n === name)!).filter(Boolean);
 
   return (
@@ -111,26 +154,30 @@ export default function Home() {
         <div className="featuredGrid">
           {featured.map((repo, index) => <article className={`featureCard feature${index + 1}`} key={repo.n}>
             <div className="featureTop"><span className="index">0{index + 1}</span><span className={`language ${langClass[repo.l]}`}>{repo.l}</span></div>
-            <div><h3>{repo.n.replaceAll("_", " ").replaceAll("-", " ")}</h3><p>{repo.d}</p></div>
+            <ProjectVisual repo={repo} compact />
+            <div className="featureCopy"><span className="categoryTag">{categoryFor(repo).short}</span><h3>{repo.n.replaceAll("_", " ").replaceAll("-", " ")}</h3><p>{repo.d}</p></div>
             <a href={repo.h || repo.u} target="_blank" rel="noreferrer" aria-label={`Open ${repo.n}`}>Open project <span>↗</span></a>
           </article>)}
         </div>
       </section>
 
       <section className="archive section" id="archive">
-        <div className="sectionHeading archiveHeading"><div><p className="kicker">THE FULL INDEX</p><h2>All active projects</h2></div><p>“Active” means the repository was updated on GitHub in 2026. Forks are included and labeled.</p></div>
+        <div className="sectionHeading archiveHeading"><div><p className="kicker">SEVEN ROOMS · 53 EXPERIMENTS</p><h2>The project exhibition</h2></div><p>Not a wall of repos: a tour through the recurring questions, collaborators, obsessions, and useful detours of 2026.</p></div>
         <div className="controls">
           <label className="search"><span>⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search the experiments…" aria-label="Search projects" /></label>
-          <div className="filters" aria-label="Filter by language">{languages.map((item) => <button className={language === item ? "active" : ""} onClick={() => setLanguage(item)} key={item}>{item}</button>)}</div>
+          <div className="filters categoryFilters" aria-label="Filter by category"><button className={activeCategory === "all" ? "active" : ""} onClick={() => setActiveCategory("all")}>All <sup>53</sup></button>{categories.map((category) => <button className={activeCategory === category.id ? "active" : ""} onClick={() => setActiveCategory(category.id)} key={category.id}>{category.short} <sup>{repos.filter((repo) => categoryFor(repo).id === category.id).length}</sup></button>)}</div>
         </div>
-        <div className="resultsLine"><span>{shown.length} {shown.length === 1 ? "project" : "projects"}</span><span>Newest activity first</span></div>
-        <div className="repoGrid">
-          {shown.map((repo) => <article className="repoCard" key={repo.n}>
-            <div className="repoMeta"><span className={`language ${langClass[repo.l]}`}><i className={`dot ${langClass[repo.l]}`}/>{repo.l}</span><time dateTime={repo.t}>{prettyDate(repo.t)}</time></div>
-            <h3>{repo.n}</h3><p>{repo.d}</p>
-            <div className="repoLinks">{repo.f && <span className="fork">Fork</span>}{repo.h && <a href={repo.h} target="_blank" rel="noreferrer">Live ↗</a>}<a href={repo.u} target="_blank" rel="noreferrer">Code ↗</a></div>
-          </article>)}
-        </div>
+        <div className="resultsLine"><span>{shown.length} {shown.length === 1 ? "project" : "projects"} on view</span><span>Each room is sorted by recent activity</span></div>
+        <div className="categoryRooms">{grouped.map(({category, repos: categoryRepos}, roomIndex) => <section className={`categoryRoom room-${category.id}`} key={category.id}>
+          <header className="roomHeader"><div className="roomNumber">0{roomIndex + 1}</div><div><p>{category.mark} &nbsp; CATEGORY</p><h3>{category.title}</h3></div><p className="roomDescription">{category.description}</p><span className="roomCount">{categoryRepos.length}<small>projects</small></span></header>
+          <div className="storyGrid">{categoryRepos.map((repo, index) => <article className={`storyCard story-${(index % 5) + 1}`} key={repo.n}>
+            <ProjectVisual repo={repo}/>
+            <div className="storyBody"><div className="repoMeta"><span className={`language ${langClass[repo.l]}`}><i className={`dot ${langClass[repo.l]}`}/>{repo.l}</span><time dateTime={repo.t}>{prettyDate(repo.t)}</time></div>
+              <h4>{repo.n}</h4><p>{repo.d}</p>
+              <div className="repoLinks">{repo.f && <span className="fork">Fork</span>}{repo.h && <a href={repo.h} target="_blank" rel="noreferrer">See it live ↗</a>}<a href={repo.u} target="_blank" rel="noreferrer">View code ↗</a></div>
+            </div>
+          </article>)}</div>
+        </section>)}</div>
         {shown.length === 0 && <div className="empty">No matching rabbit holes. Try another search.</div>}
       </section>
 
