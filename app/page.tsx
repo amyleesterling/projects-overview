@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 
 type Repo = { n: string; d: string; l: string; u: string; h?: string; t: string; f?: boolean };
 
@@ -98,7 +98,7 @@ function categoryFor(repo: Repo): Category {
 }
 
 function projectHue(name: string) {
-  return [...name].reduce((total, character) => total + character.charCodeAt(0), 0) % 360;
+  return 185 + [...name].reduce((total, character) => total + character.charCodeAt(0), 0) % 35;
 }
 
 function ProjectVisual({ repo, compact = false }: { repo: Repo; compact?: boolean }) {
@@ -114,6 +114,104 @@ function ProjectVisual({ repo, compact = false }: { repo: Repo; compact?: boolea
 
 function prettyDate(date: string) {
   return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(new Date(`${date}T12:00:00`));
+}
+
+function NeuronParticleBanner() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const context = canvas.getContext("2d");
+    if (!context) return;
+
+    // A responsive banner port of amyleesterling/amysterling/particles.html.
+    type Particle = { x:number; y:number; baseX:number; baseY:number; vx:number; vy:number; size:number; warmth:boolean };
+    let particles: Particle[] = [];
+    let animationFrame = 0;
+    let width = 0;
+    let height = 0;
+    const pointer = { x:-1000, y:-1000, active:false };
+
+    const addPoint = (x:number, y:number, index:number) => particles.push({
+      x:x + (Math.random() - .5) * 12, y:y + (Math.random() - .5) * 12,
+      baseX:x, baseY:y, vx:0, vy:0, size:1.2 + Math.random() * 1.8, warmth:index % 37 === 0,
+    });
+
+    const buildNeuron = () => {
+      particles = [];
+      const centerX = width * .51;
+      const centerY = height * .51;
+      let index = 0;
+      for (let radius = 0; radius < Math.min(width, height) * .105; radius += 7) {
+        const count = Math.max(10, Math.round(radius * .9));
+        for (let step = 0; step < count; step += 2) {
+          const angle = step / count * Math.PI * 2;
+          addPoint(centerX + Math.cos(angle) * radius, centerY + Math.sin(angle) * radius * .82, index++);
+        }
+      }
+      const branches = [-2.75, -2.1, -1.48, -.72, -.12, .55, 1.18, 2.45];
+      branches.forEach((angle, branchIndex) => {
+        const length = Math.min(width * .34, height * (.29 + (branchIndex % 3) * .07));
+        for (let distance = 48; distance < length; distance += 7) {
+          const bend = Math.sin(distance / 34 + branchIndex) * 12;
+          const x = centerX + Math.cos(angle) * distance + Math.cos(angle + Math.PI / 2) * bend;
+          const y = centerY + Math.sin(angle) * distance + Math.sin(angle + Math.PI / 2) * bend;
+          addPoint(x, y, index++);
+          if (distance > length * .55 && distance % 21 < 7) {
+            const twigAngle = angle + (branchIndex % 2 ? .62 : -.62);
+            for (let twig = 7; twig < length * .25; twig += 8) addPoint(x + Math.cos(twigAngle) * twig, y + Math.sin(twigAngle) * twig, index++);
+          }
+        }
+      });
+    };
+
+    const resize = () => {
+      const rect = canvas.getBoundingClientRect();
+      const scale = Math.min(window.devicePixelRatio || 1, 2);
+      width = rect.width; height = rect.height;
+      canvas.width = Math.round(width * scale); canvas.height = Math.round(height * scale);
+      context.setTransform(scale, 0, 0, scale, 0, 0);
+      buildNeuron();
+    };
+    const move = (event: PointerEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      pointer.x = event.clientX - rect.left; pointer.y = event.clientY - rect.top; pointer.active = true;
+    };
+    const leave = () => { pointer.active = false; };
+    const draw = () => {
+      context.clearRect(0, 0, width, height);
+      for (const particle of particles) {
+        if (pointer.active) {
+          const dx = pointer.x - particle.x; const dy = pointer.y - particle.y;
+          const distance = Math.hypot(dx, dy) || 1;
+          if (distance < 115) {
+            const force = (115 - distance) / 115;
+            particle.vx -= dx / distance * force * 1.3; particle.vy -= dy / distance * force * 1.3;
+          }
+        }
+        particle.vx += (particle.baseX - particle.x) * .025; particle.vy += (particle.baseY - particle.y) * .025;
+        particle.vx *= .88; particle.vy *= .88; particle.x += particle.vx; particle.y += particle.vy;
+        context.fillStyle = particle.warmth ? "rgba(255,216,90,.95)" : "rgba(91,205,255,.9)";
+        context.beginPath(); context.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2); context.fill();
+      }
+      animationFrame = requestAnimationFrame(draw);
+    };
+
+    resize(); draw();
+    const observer = new ResizeObserver(resize); observer.observe(canvas);
+    canvas.addEventListener("pointermove", move); canvas.addEventListener("pointerleave", leave);
+    return () => {
+      cancelAnimationFrame(animationFrame); observer.disconnect();
+      canvas.removeEventListener("pointermove", move); canvas.removeEventListener("pointerleave", leave);
+    };
+  }, []);
+
+  return <div className="neuronBanner" aria-label="Interactive particle neuron; move your pointer through it">
+    <canvas ref={canvasRef}/>
+    <div className="neuronCount"><strong>52</strong><span>projects touched<br/>this year</span></div>
+    <span className="neuronHint">move through the neuron</span>
+  </div>;
 }
 
 export default function Home() {
@@ -141,11 +239,7 @@ export default function Home() {
           <p className="dek">Games made with kids. Brains rendered for museums. Tools for parties, hurricanes, pizza, and the gloriously unnecessary. This is one year of following every good question.</p>
           <div className="heroActions"><a className="primaryAction" href="#archive">Explore all 52 projects <span>↓</span></a><a className="textAction" href="https://github.com/amyleesterling" target="_blank" rel="noreferrer">@amyleesterling ↗</a></div>
         </div>
-        <div className="heroStat" aria-label="52 projects touched this year">
-          <span className="bigNumber">52</span>
-          <span className="statLabel">projects touched<br/>this year</span>
-          <span className="scribble">yes, really.</span>
-        </div>
+        <NeuronParticleBanner />
       </header>
 
       <section className="pulse" aria-label="Project activity by month">
