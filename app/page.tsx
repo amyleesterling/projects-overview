@@ -19,7 +19,7 @@ const repos: Repo[] = [
   {n:"fabled-jokes",d:"Git yer jokes.",l:"HTML",u:"https://github.com/amyleesterling/fabled-jokes",t:"2026-07-08"},
   {n:"whatisabrain",d:"Sometimes I wonder about mine.",l:"TypeScript",u:"https://github.com/amyleesterling/whatisabrain",t:"2026-07-08"},
   {n:"science-experiment",d:"A wall-scale visualization built for a 3628 × 1600 display.",l:"TypeScript",u:"https://github.com/amyleesterling/science-experiment",t:"2026-07-07"},
-  {n:"inner_cosmos",d:"A neuron experience for the general public.",l:"TypeScript",u:"https://github.com/amyleesterling/inner_cosmos",t:"2026-07-07"},
+  {n:"inner_cosmos",d:"A public-facing brain explorer built from real MICrONS connectomics data—no log-in, no jargon, no microscope required.",l:"TypeScript",u:"https://github.com/amyleesterling/inner_cosmos",h:"https://amyleesterling.github.io/inner_cosmos/",t:"2026-07-07"},
   {n:"inner-cosmos-wall",d:"A non-interactive museum attract loop for a 3628 × 1600 wall.",l:"TypeScript",u:"https://github.com/amyleesterling/inner-cosmos-wall",t:"2026-07-06"},
   {n:"heat-wave",d:"A mobile game to beat the heat.",l:"HTML",u:"https://github.com/amyleesterling/heat-wave",t:"2026-07-04"},
   {n:"extremely-strange",d:"An experiment filed under: extremely strange.",l:"Python",u:"https://github.com/amyleesterling/extremely-strange",t:"2026-07-03"},
@@ -59,8 +59,9 @@ const repos: Repo[] = [
   {n:"coras-mermaid",d:"A site created by Cora, age four.",l:"JavaScript",u:"https://github.com/amyleesterling/coras-mermaid",t:"2026-02-06"},
 ];
 
-const featuredNames = ["eyewire-ii", "flywire-neuron-gallery", "neuron-game"];
+const featuredNames = ["inner_cosmos", "eyewire-ii", "flywire-neuron-gallery", "neuron-game"];
 const featuredImages: Record<string, { src: string; alt: string }> = {
+  "inner_cosmos": { src:"/featured/inner-cosmos.png", alt:"Inner Cosmos landing page surrounded by real reconstructed neurons" },
   "eyewire-ii": { src:"/featured/eyewire-ii.png", alt:"EyeWire II neural access and identity verification screen" },
   "flywire-neuron-gallery": { src:"/featured/flywire-neuron-gallery.webp", alt:"A full Drosophila brain reconstructed from thousands of color-coded neurons" },
   "neuron-game": { src:"/featured/neuron-game.png", alt:"Neuron Snake game title screen on a dark scientific grid" },
