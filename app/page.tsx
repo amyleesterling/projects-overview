@@ -236,7 +236,7 @@ export default function Home() {
         <div className="heroCopy">
           <p className="eyebrow"><span className="liveDot" /> Projects touched this year · updated July 26</p>
           <h1>Building at the speed of <em>curiosity.</em></h1>
-          <p className="dek">Games made with kids. Brains rendered for museums. Tools for parties, hurricanes, pizza, and the gloriously unnecessary. This is one year of following every good question.</p>
+          <p className="dek">Games made with kids. Brains rendered for museums. Tools for parties, hurricanes, pizza, and the gloriously unnecessary. You’re welcome to explore—this is a summary of all my code projects!</p>
           <div className="heroActions"><a className="primaryAction" href="#archive">Explore all 52 projects <span>↓</span></a><a className="textAction" href="https://github.com/amyleesterling" target="_blank" rel="noreferrer">@amyleesterling ↗</a></div>
         </div>
         <NeuronParticleBanner />
@@ -261,7 +261,7 @@ export default function Home() {
       </section>
 
       <section className="archive section" id="archive">
-        <div className="sectionHeading archiveHeading"><div><p className="kicker">SEVEN ROOMS · 52 EXPERIMENTS</p><h2>The project exhibition</h2></div><p>Not a wall of repos: a tour through the recurring questions, collaborators, obsessions, and useful detours touched this year.</p></div>
+        <div className="sectionHeading archiveHeading"><div><p className="kicker">SEVEN ROOMS · 52 EXPERIMENTS</p><h2>The project exhibition</h2></div><p>These public repositories include experiments, side projects, things made just for fun, and work deployed professionally. This is an overview of the code I’ve made in public.</p></div>
         <div className="controls">
           <label className="search"><span>⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search the experiments…" aria-label="Search projects" /></label>
           <div className="filters categoryFilters" aria-label="Filter by category"><button className={activeCategory === "all" ? "active" : ""} onClick={() => setActiveCategory("all")}>All <sup>52</sup></button>{categories.map((category) => <button className={activeCategory === category.id ? "active" : ""} onClick={() => setActiveCategory(category.id)} key={category.id}>{category.short} <sup>{repos.filter((repo) => categoryFor(repo).id === category.id).length}</sup></button>)}</div>
