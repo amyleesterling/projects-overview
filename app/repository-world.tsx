@@ -1,0 +1,169 @@
+"use client";
+
+import { useEffect, useMemo, useRef, useState } from "react";
+
+export type RepositoryWorldProject = {
+  name:string; title:string; description:string; language:string; url:string;
+  category:string; categoryTitle:string; commits:number; featured:boolean;
+};
+
+type GraphNode = RepositoryWorldProject & { x:number; y:number; vx:number; vy:number; radius:number; community:number };
+type GraphEdge = { source:number; target:number; weight:number };
+
+const neighborhoodColors:Record<string,string> = {
+  brains:"#69d8ff", kids:"#54d2c8", earth:"#7eb5ff", ai:"#a99cff",
+  tools:"#a8e8ff", toys:"#4ebce9", ridiculous:"#ffd35f",
+};
+const centers:Record<string,[number,number]> = {
+  brains:[.25,.28], kids:[.74,.25], earth:[.82,.55], ai:[.63,.76],
+  tools:[.36,.75], toys:[.48,.48], ridiculous:[.12,.59],
+};
+const stopwords = new Set("a an and as at built by for from how in into is it just made more no not of on or some than that the their this through to turn up with your".split(" "));
+const semanticAliases:Record<string,string[]> = {
+  neuron:["brain","connectome","neural","synapse","neuroglancer","dendrite","retina","flywire","microns"],
+  story:["stories","fable","jokes","kids","kid","mythic","mermaid"],
+  planet:["earth","universe","climate","weather","hurricane","heat"],
+  playful:["game","games","toy","silly","fun","magic","ridiculous"],
+  intelligence:["ai","claude","language","model","collaboration"],
+  data:["data","datasets","analysis","stats","trends","compare","annotation"],
+};
+
+function hash(value:string) {
+  return [...value].reduce((result,character)=>((result<<5)-result+character.charCodeAt(0))|0,5381)>>>0;
+}
+
+function terms(project:RepositoryWorldProject) {
+  const raw=`${project.name} ${project.title} ${project.description}`.toLowerCase().replace(/[^a-z0-9]+/g," ").split(" ").filter(term=>term.length>2&&!stopwords.has(term));
+  const result=new Set(raw);
+  Object.entries(semanticAliases).forEach(([alias,words])=>{ if(words.some(word=>result.has(word))) result.add(alias); });
+  return result;
+}
+
+function buildGraph(projects:RepositoryWorldProject[]) {
+  const bags=projects.map(terms);
+  const candidates:{source:number;target:number;weight:number}[]=[];
+  for(let source=0;source<projects.length;source++) for(let target=source+1;target<projects.length;target++) {
+    const shared=[...bags[source]].filter(term=>bags[target].has(term));
+    let weight=shared.reduce((score,term)=>score+(Object.hasOwn(semanticAliases,term)?1.8:1.15),0);
+    if(projects[source].category===projects[target].category) weight+=1.35;
+    if(projects[source].language===projects[target].language) weight+=.42;
+    const family=["eyewire","inner","cosmos","fable","flywire","neuron","ridiculous"].some(term=>bags[source].has(term)&&bags[target].has(term));
+    if(family) weight+=2.5;
+    if(weight>=1.65) candidates.push({source,target,weight});
+  }
+  const chosen=new Map<string,GraphEdge>();
+  projects.forEach((_,index)=>{
+    candidates.filter(edge=>edge.source===index||edge.target===index).sort((a,b)=>b.weight-a.weight).slice(0,4).forEach(edge=>chosen.set(`${edge.source}-${edge.target}`,edge));
+  });
+  const edges=[...chosen.values()];
+
+  // Deterministic weighted label propagation: repositories repeatedly adopt the
+  // strongest neighboring community, with a small semantic-neighborhood prior.
+  let labels=projects.map((_,index)=>index);
+  for(let pass=0;pass<12;pass++) projects.forEach((project,index)=>{
+    const scores=new Map<number,number>();
+    edges.forEach(edge=>{
+      const neighbor=edge.source===index?edge.target:edge.target===index?edge.source:-1;
+      if(neighbor<0) return;
+      const label=labels[neighbor];
+      const prior=projects[neighbor].category===project.category?.62:0;
+      scores.set(label,(scores.get(label)||0)+edge.weight+prior);
+    });
+    const best=[...scores.entries()].sort((a,b)=>b[1]-a[1]||a[0]-b[0])[0];
+    if(best) labels[index]=best[0];
+  });
+
+  const nodes:GraphNode[]=projects.map((project,index)=>{
+    const seed=hash(project.name); const [cx,cy]=centers[project.category]||[.5,.5];
+    const angle=(seed%628)/100; const distance=24+(seed%62);
+    return {...project,x:cx*1000+Math.cos(angle)*distance,y:cy*650+Math.sin(angle)*distance,vx:0,vy:0,radius:project.featured?9:5.5+Math.min(4,Math.sqrt(project.commits)*.28),community:labels[index]};
+  });
+  return {nodes,edges};
+}
+
+export default function RepositoryWorld({projects}:{projects:RepositoryWorldProject[]}) {
+  const canvasRef=useRef<HTMLCanvasElement>(null);
+  const graph=useMemo(()=>buildGraph(projects),[projects]);
+  const [active,setActive]=useState("all");
+  const [selected,setSelected]=useState<RepositoryWorldProject|null>(null);
+  const categories=useMemo(()=>[...new Map(projects.map(project=>[project.category,{id:project.category,title:project.categoryTitle}])).values()],[projects]);
+
+  useEffect(()=>{
+    const canvas=canvasRef.current; if(!canvas) return;
+    const context=canvas.getContext("2d"); if(!context) return;
+    const nodes=graph.nodes.map(node=>({...node}));
+    let width=0,height=0,frame=0,inView=true,drag=-1,hover=-1,moved=false;
+    const pointer={x:-1000,y:-1000};
+    const reduceMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const resize=()=>{
+      const rect=canvas.getBoundingClientRect(); const ratio=Math.min(devicePixelRatio||1,2);
+      width=Math.max(1,rect.width); height=Math.max(1,rect.height); canvas.width=Math.round(width*ratio); canvas.height=Math.round(height*ratio);
+      context.setTransform(ratio,0,0,ratio,0,0);
+    };
+    const visible=(node:GraphNode)=>active==="all"||node.category===active;
+    const projectPoint=(node:GraphNode)=>({x:node.x/1000*width,y:node.y/650*height});
+    const tick=()=>{
+      if(!reduceMotion) {
+        nodes.forEach((node,index)=>{
+          if(index===drag) return;
+          const [cx,cy]=centers[node.category]||[.5,.5];
+          node.vx+=(cx*1000-node.x)*.00052; node.vy+=(cy*650-node.y)*.00052;
+        });
+        for(let a=0;a<nodes.length;a++) for(let b=a+1;b<nodes.length;b++) {
+          if(!visible(nodes[a])||!visible(nodes[b])) continue;
+          const dx=nodes[b].x-nodes[a].x,dy=nodes[b].y-nodes[a].y,distance=Math.max(18,Math.hypot(dx,dy));
+          if(distance<115){const force=(115-distance)*.0018;nodes[a].vx-=dx/distance*force;nodes[a].vy-=dy/distance*force;nodes[b].vx+=dx/distance*force;nodes[b].vy+=dy/distance*force;}
+        }
+        graph.edges.forEach(edge=>{
+          const a=nodes[edge.source],b=nodes[edge.target]; if(!visible(a)||!visible(b)) return;
+          const dx=b.x-a.x,dy=b.y-a.y,distance=Math.max(1,Math.hypot(dx,dy)); const desired=68+Math.max(0,42-edge.weight*6);
+          const force=(distance-desired)*.00038*Math.min(edge.weight,5); a.vx+=dx/distance*force;a.vy+=dy/distance*force;b.vx-=dx/distance*force;b.vy-=dy/distance*force;
+        });
+        nodes.forEach((node,index)=>{if(index!==drag){node.vx*=.9;node.vy*=.9;node.x=Math.max(35,Math.min(965,node.x+node.vx));node.y=Math.max(35,Math.min(615,node.y+node.vy));}});
+      }
+    };
+    const draw=()=>{
+      context.clearRect(0,0,width,height);
+      categories.forEach(category=>{
+        if(active!=="all"&&active!==category.id) return;
+        const group=nodes.filter(node=>node.category===category.id); if(!group.length)return;
+        const points=group.map(projectPoint); const cx=points.reduce((sum,p)=>sum+p.x,0)/points.length,cy=points.reduce((sum,p)=>sum+p.y,0)/points.length;
+        const rx=Math.max(85,...points.map(p=>Math.abs(p.x-cx)+48)),ry=Math.max(58,...points.map(p=>Math.abs(p.y-cy)+35));
+        const gradient=context.createRadialGradient(cx,cy,0,cx,cy,Math.max(rx,ry)); gradient.addColorStop(0,`${neighborhoodColors[category.id]}18`);gradient.addColorStop(1,`${neighborhoodColors[category.id]}00`);
+        context.fillStyle=gradient;context.beginPath();context.ellipse(cx,cy,rx,ry,-.08,0,Math.PI*2);context.fill();
+        context.fillStyle="rgba(177,226,244,.3)";context.font="600 10px ui-monospace, monospace";context.letterSpacing="1px";context.fillText(category.title.toUpperCase(),cx-rx+18,cy-ry+22);
+      });
+      graph.edges.forEach(edge=>{
+        const a=nodes[edge.source],b=nodes[edge.target]; if(!visible(a)||!visible(b))return; const p1=projectPoint(a),p2=projectPoint(b);
+        context.strokeStyle=a.community===b.community?"rgba(104,211,255,.18)":"rgba(111,157,188,.09)";context.lineWidth=Math.min(1.6,.35+edge.weight*.15);context.beginPath();context.moveTo(p1.x,p1.y);context.lineTo(p2.x,p2.y);context.stroke();
+      });
+      nodes.forEach((node,index)=>{
+        if(!visible(node))return; const point=projectPoint(node); const color=neighborhoodColors[node.category]||"#69d8ff"; const highlighted=index===hover||index===drag;
+        context.save();context.shadowColor=color;context.shadowBlur=highlighted?22:node.featured?13:7;context.fillStyle=color;context.beginPath();context.arc(point.x,point.y,node.radius+(highlighted?3:0),0,Math.PI*2);context.fill();
+        if(node.featured){context.strokeStyle="rgba(255,255,255,.82)";context.lineWidth=1.2;context.beginPath();context.arc(point.x,point.y,node.radius+5,0,Math.PI*2);context.stroke();}
+        if(highlighted||node.featured){context.fillStyle="rgba(225,247,255,.95)";context.font=`${highlighted?12:10}px ui-monospace, monospace`;context.textAlign="center";context.fillText(node.title,point.x,point.y-node.radius-10);}
+        context.restore();
+      });
+    };
+    const animate=()=>{tick();draw();frame=inView&&!reduceMotion?requestAnimationFrame(animate):0;};
+    const closest=(x:number,y:number)=>{let result=-1,best=26;nodes.forEach((node,index)=>{if(!visible(node))return;const p=projectPoint(node),distance=Math.hypot(p.x-x,p.y-y);if(distance<best){best=distance;result=index;}});return result;};
+    const position=(event:PointerEvent)=>{const rect=canvas.getBoundingClientRect();pointer.x=event.clientX-rect.left;pointer.y=event.clientY-rect.top;};
+    const move=(event:PointerEvent)=>{position(event);if(drag>=0){moved=true;nodes[drag].x=pointer.x/width*1000;nodes[drag].y=pointer.y/height*650;nodes[drag].vx=0;nodes[drag].vy=0;}hover=closest(pointer.x,pointer.y);canvas.style.cursor=hover>=0?drag>=0?"grabbing":"grab":"crosshair";if(reduceMotion)draw();};
+    const down=(event:PointerEvent)=>{position(event);drag=closest(pointer.x,pointer.y);moved=false;if(drag>=0){canvas.setPointerCapture(event.pointerId);canvas.style.cursor="grabbing";}};
+    const up=(event:PointerEvent)=>{if(drag>=0&&!moved)setSelected(nodes[drag]);drag=-1;if(canvas.hasPointerCapture(event.pointerId))canvas.releasePointerCapture(event.pointerId);};
+    const observer=new ResizeObserver(()=>{resize();draw();}); const visibility=new IntersectionObserver(([entry])=>{inView=entry.isIntersecting;if(inView&&!frame)animate();else if(!inView&&frame){cancelAnimationFrame(frame);frame=0;}},{rootMargin:"100px"});
+    observer.observe(canvas);visibility.observe(canvas);resize();animate();canvas.addEventListener("pointermove",move);canvas.addEventListener("pointerdown",down);canvas.addEventListener("pointerup",up);canvas.addEventListener("pointerleave",()=>{hover=-1;});
+    return()=>{cancelAnimationFrame(frame);observer.disconnect();visibility.disconnect();canvas.removeEventListener("pointermove",move);canvas.removeEventListener("pointerdown",down);canvas.removeEventListener("pointerup",up);};
+  },[active,categories,graph]);
+
+  return <section className="repositoryWorld section" id="world">
+    <div className="sectionHeading worldHeading"><div><p className="kicker">52 REPOSITORIES · 7 NEIGHBORHOODS</p><h2>The repository world</h2></div><p>A living map of the projects. Proximity comes from shared ideas, language, project families, and purpose; stronger relationships pull repositories closer together.</p></div>
+    <div className="worldControls" aria-label="Repository neighborhoods"><button className={active==="all"?"active":""} onClick={()=>setActive("all")}>Whole world</button>{categories.map(category=><button className={active===category.id?"active":""} onClick={()=>setActive(category.id)} key={category.id}><i style={{background:neighborhoodColors[category.id]}}/>{category.title}</button>)}</div>
+    <div className="worldStage">
+      <canvas ref={canvasRef} role="img" aria-label="Interactive network graph of 52 repositories grouped into seven semantic neighborhoods. Drag nodes to rearrange the map and select a repository for details."/>
+      <div className="worldReadout"><span>SEMANTIC SIMILARITY</span><span>WEIGHTED LABEL PROPAGATION</span><span>DRAG · SELECT · EXPLORE</span></div>
+    </div>
+    <div className={`worldSelection ${selected?"visible":""}`} aria-live="polite">{selected?<><span className="worldSelectionDot" style={{background:neighborhoodColors[selected.category]}}/><strong>{selected.title}</strong><span>{selected.description}</span><span>{selected.commits} commits · {selected.language}</span><a href={selected.url} target="_blank" rel="noreferrer">View repository ↗</a></>:<span>Select a node to inspect a repository.</span>}</div>
+  </section>;
+}

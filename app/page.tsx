@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode } from "react";
 import ProjectVisual from "./project-visual";
 import InnerCosmosPreview from "./inner-cosmos-preview";
+import RepositoryWorld from "./repository-world";
 
 type Repo = { n: string; title?: string; d: string; l: string; u: string; h?: string; t: string; f?: boolean };
 
@@ -202,6 +203,11 @@ function repoTitle(repo: Repo) {
 function prettyDate(date: string) {
   return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(new Date(`${date}T12:00:00`));
 }
+
+const repositoryWorldProjects = repos.map((repo) => {
+  const category=categoryFor(repo);
+  return {name:repo.n,title:repoTitle(repo),description:repo.d,language:repo.l,url:repo.u,category:category.id,categoryTitle:category.title,commits:commitPulse.find(item=>item.n===repo.n)?.c||0,featured:featuredNames.includes(repo.n)};
+});
 
 function NeuronSnakePreview() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -606,6 +612,8 @@ export default function Home() {
           <div className="pulseLegend"><span><i/>Each line is one repository</span><span>Hover to see commits by month</span><span>GitHub public contributions · Jan–Jul</span></div>
         </div>
       </section>
+
+      <RepositoryWorld projects={repositoryWorldProjects}/>
 
       <section className="featured section" id="featured">
         <div className="sectionHeading"><div><p className="kicker">A FEW FAVORITES</p><h2>Selected experiments</h2></div><p>No master plan—just a strong bias toward making the idea real.</p></div>
