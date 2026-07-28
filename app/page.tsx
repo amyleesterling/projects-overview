@@ -110,7 +110,7 @@ const publishedWorks = [
     credit:"Image: Amy Sterling, FlyWire and Princeton University · Cover design: Thomas Phillips",
   },
   {
-    title:"Wiring diagram",
+    title:"Fly connectome",
     publication:"Nature · October 2024",
     image:"https://media.springernature.com/w440/springer-static/cover-hires/journal/41586/634/8032",
     url:"https://www.nature.com/nature/volumes/634/issues/8032",
@@ -144,6 +144,27 @@ const publishedWorks = [
     url:"https://www.nature.com/immersive/d42859-024-00053-4/index.html",
     credit:"Rendered by Amy Sterling for FlyWire · Neurons identified and proofread by Salil Bidaye",
   },
+];
+
+const coauthoredArticles = [
+  { title:"Uncovering Sex Differences in the Drosophila Ventral Nerve Cord Through Connectome Alignment", venue:"bioRxiv preprint", year:"2026", url:"https://doi.org/10.64898/2026.06.14.732053" },
+  { title:"Distributed control circuits across a brain-and-cord connectome", venue:"Nature", year:"2026", url:"https://doi.org/10.1038/s41586-026-10735-w" },
+  { title:"EyeWire II — A connectomic resource for resolving cell types and circuits of the mouse retina", venue:"bioRxiv preprint", year:"2026", url:"https://doi.org/10.64898/2026.05.28.727403" },
+  { title:"Connectomic reconstruction from hippocampal CA3 reveals spatially graded mossy fiber inputs and selective feedforward inhibition to pyramidal cells", venue:"bioRxiv preprint", year:"2025", url:"https://doi.org/10.1101/2025.07.09.663979" },
+  { title:"Sexually-dimorphic neurons in the Drosophila whole-brain connectome", venue:"bioRxiv preprint", year:"2025", url:"https://doi.org/10.1101/2025.06.10.658788" },
+  { title:"Comparative connectomics of Drosophila descending and ascending neurons", venue:"Nature", year:"2025", url:"https://doi.org/10.1038/s41586-025-08925-z" },
+  { title:"Functional connectomics spanning multiple areas of mouse visual cortex", venue:"Nature", year:"2025", url:"https://doi.org/10.1038/s41586-025-08790-w" },
+  { title:"Predicting modular functions and neural coding of behavior from a synaptic wiring diagram", venue:"Nature Neuroscience", year:"2024", url:"https://doi.org/10.1038/s41593-024-01784-3" },
+  { title:"A Drosophila computational brain model reveals sensorimotor processing", venue:"Nature", year:"2024", url:"https://doi.org/10.1038/s41586-024-07763-9" },
+  { title:"The fly connectome reveals a path to the effectome", venue:"Nature", year:"2024", url:"https://doi.org/10.1038/s41586-024-07982-0" },
+  { title:"Network statistics of the whole-brain connectome of Drosophila", venue:"Nature", year:"2024", url:"https://doi.org/10.1038/s41586-024-07968-y" },
+  { title:"Neuronal parts list and wiring diagram for a visual system", venue:"Nature", year:"2024", url:"https://doi.org/10.1038/s41586-024-07981-1" },
+  { title:"Whole-brain annotation and multi-connectome cell typing of Drosophila", venue:"Nature", year:"2024", url:"https://doi.org/10.1038/s41586-024-07686-5" },
+  { title:"Neuronal wiring diagram of an adult brain", venue:"Nature", year:"2024", url:"https://doi.org/10.1038/s41586-024-07558-y" },
+  { title:"Neurotransmitter classification from electron microscopy images at synaptic sites in Drosophila melanogaster", venue:"Cell", year:"2024", url:"https://doi.org/10.1016/j.cell.2024.03.016" },
+  { title:"Cyclic structure with cellular precision in a vertebrate sensorimotor neural circuit", venue:"Current Biology", year:"2023", url:"https://doi.org/10.1016/j.cub.2023.05.010" },
+  { title:"Special nuclear layer contacts between starburst amacrine cells in the mouse retina", venue:"Frontiers in Ophthalmology", year:"2023", url:"https://doi.org/10.3389/fopht.2023.1129463" },
+  { title:"FlyWire: online community for whole-brain connectomics", venue:"Nature Methods", year:"2022", url:"https://doi.org/10.1038/s41592-021-01330-0" },
 ];
 
 type CategoryId = "brains" | "kids" | "earth" | "ai" | "tools" | "toys" | "ridiculous";
@@ -624,6 +645,14 @@ export default function Home() {
           {publishedWorks.map((work, index) => <a className={`publishedCard publishedCard${index + 1}`} href={work.url} target="_blank" rel="noreferrer" key={work.title}>
             <div className="publishedImage"><img src={work.image} alt={`${work.title}, ${work.publication}`}/><span>0{index + 1}</span></div>
             <div className="publishedCopy"><p>{work.publication}</p><h3>{work.title}</h3><small>{work.credit}</small><b>View publication <span>↗</span></b></div>
+          </a>)}
+        </div>
+        <div className="authorshipHeading"><p className="kicker">AUTHORSHIP · RESEARCH RECORD</p><h3>Coauthored articles</h3><p>Peer-reviewed papers and current public preprints, with duplicate preprint versions consolidated under the final publication.</p></div>
+        <div className="articleIndex">
+          {coauthoredArticles.map((article, index) => <a href={article.url} target="_blank" rel="noreferrer" key={article.url}>
+            <span>{String(index + 1).padStart(2,"0")}</span>
+            <div><h4>{article.title}</h4><p>{article.venue} · {article.year}</p></div>
+            <b>↗</b>
           </a>)}
         </div>
       </section>
