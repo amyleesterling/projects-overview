@@ -69,6 +69,51 @@ const featuredImages: Record<string, { src: string; alt: string }> = {
 const monthCounts = [{m:"Jan",n:0},{m:"Feb",n:4},{m:"Mar",n:11},{m:"Apr",n:6},{m:"May",n:6},{m:"Jun",n:3},{m:"Jul",n:22}];
 const langClass: Record<string,string> = {HTML:"html",TypeScript:"ts",JavaScript:"js",Python:"py",Other:"other"};
 
+const publishedWorks = [
+  {
+    title:"Method of the Year: EM connectomics",
+    publication:"Nature Methods · December 2025",
+    image:"https://media.springernature.com/w440/springer-static/cover-hires/journal/41592/22/12",
+    url:"https://www.nature.com/nmeth/volumes/22/issues/12",
+    credit:"Image: Amy Sterling, FlyWire and Princeton University · Cover design: Thomas Phillips",
+  },
+  {
+    title:"Wiring diagram",
+    publication:"Nature · October 2024",
+    image:"https://media.springernature.com/w440/springer-static/cover-hires/journal/41586/634/8032",
+    url:"https://www.nature.com/nature/volumes/634/issues/8032",
+    credit:"FlyWire visual contribution · Cover image: Perception",
+  },
+  {
+    title:"Cortex in context",
+    publication:"Nature · April 2025",
+    image:"https://media.springernature.com/w440/springer-static/cover-hires/journal/41586/640/8058",
+    url:"https://www.nature.com/nature/volumes/640/issues/8058",
+    credit:"MICrONS visual contribution · Cover image: Forrest Collman",
+  },
+  {
+    title:"The 50 largest neurons",
+    publication:"Nature News · October 2024",
+    image:"https://flywire.ai/assets/for_media/fw_50_L.png",
+    url:"https://www.nature.com/articles/d41586-024-03190-y",
+    credit:"Tyler Sloan and Amy Sterling for FlyWire, Princeton University",
+  },
+  {
+    title:"The complete FlyWire connectome",
+    publication:"Nature immersive · October 2024",
+    image:"https://www.nature.com/immersive/d42859-024-00053-4/assets/SFk1dBlacw/flywire-lead-image-2560x1440.jpg",
+    url:"https://www.nature.com/immersive/d42859-024-00053-4/index.html",
+    credit:"Visuals credited throughout to Amy Sterling, Tyler Sloan, FlyWire and Princeton University",
+  },
+  {
+    title:"Bolt neurons",
+    publication:"Nature immersive · FlyWire gallery",
+    image:"https://www.nature.com/immersive/d42859-024-00053-4/assets/kKqTcCsm3Q/flywire_sterling_gallery_bolt-750x521.webp",
+    url:"https://www.nature.com/immersive/d42859-024-00053-4/index.html",
+    credit:"Rendered by Amy Sterling for FlyWire · Neurons identified and proofread by Salil Bidaye",
+  },
+];
+
 type CategoryId = "brains" | "kids" | "earth" | "ai" | "tools" | "toys" | "ridiculous";
 type Category = { id: CategoryId; title: string; short: string; description: string; mark: string };
 
@@ -229,14 +274,14 @@ export default function Home() {
     <main>
       <nav className="topbar" aria-label="Primary navigation">
         <a className="wordmark" href="#top"><span>AS</span> Amy Sterling / Lab Notes</a>
-        <div className="navlinks"><a href="#featured">Selected</a><a href="#archive">All projects</a><a className="navButton" href="https://github.com/amyleesterling" target="_blank" rel="noreferrer">GitHub ↗</a></div>
+        <div className="navlinks"><a href="#published">Published</a><a href="#featured">Selected</a><a href="#archive">All projects</a><a className="navButton" href="https://github.com/amyleesterling" target="_blank" rel="noreferrer">GitHub ↗</a></div>
       </nav>
 
       <header className="hero" id="top">
         <div className="heroCopy">
           <p className="eyebrow"><span className="liveDot" /> Projects touched this year · updated July 26</p>
           <h1>Building at the speed of <em>curiosity.</em></h1>
-          <p className="dek">Games made with kids. Brains rendered for museums. Tools for parties, hurricanes, pizza, and the gloriously unnecessary. You’re welcome to explore—this is a summary of all my code projects!</p>
+          <p className="dek">Games made with kids. Brains rendered for magazines and museums. Tools for parties, hurricanes, pizza, and the gloriously unnecessary. You’re welcome to explore—this is a summary of all my code projects!</p>
           <div className="heroActions"><a className="primaryAction" href="#archive">Explore all 52 projects <span>↓</span></a><a className="textAction" href="https://github.com/amyleesterling" target="_blank" rel="noreferrer">@amyleesterling ↗</a></div>
         </div>
         <NeuronParticleBanner />
@@ -246,6 +291,16 @@ export default function Home() {
         <div className="pulseIntro"><span>THE PULSE · JAN–JUL 2026</span><strong>52 projects touched this year so far.</strong></div>
         <div className="bars">{monthCounts.map(({m,n}) => <div className="barItem" key={m}><div className="barTrack"><div className={`barFill ${n === 0 ? "emptyBar" : ""}`} style={{height:n === 0 ? "0%" : `${Math.max(14, n/23*100)}%`}}><span>{n}</span></div></div><small>{m}</small></div>)}</div>
         <div className="languageSummary"><span><i className="dot html"/>18 HTML</span><span><i className="dot ts"/>13 TypeScript</span><span><i className="dot js"/>10 JavaScript</span><span><i className="dot py"/>3 Python</span><span><i className="dot other"/>8 Other</span></div>
+      </section>
+
+      <section className="published section" id="published">
+        <div className="sectionHeading publishedHeading"><div><p className="kicker">IN PRINT · IN PUBLIC</p><h2>Published</h2></div><p>Selected renders and visual systems I helped create for connectomics research—appearing in magazines, scientific publications, and public science projects.</p></div>
+        <div className="publishedGrid">
+          {publishedWorks.map((work, index) => <a className={`publishedCard publishedCard${index + 1}`} href={work.url} target="_blank" rel="noreferrer" key={work.title}>
+            <div className="publishedImage"><img src={work.image} alt={`${work.title}, ${work.publication}`}/><span>0{index + 1}</span></div>
+            <div className="publishedCopy"><p>{work.publication}</p><h3>{work.title}</h3><small>{work.credit}</small><b>View publication <span>↗</span></b></div>
+          </a>)}
+        </div>
       </section>
 
       <section className="featured section" id="featured">
