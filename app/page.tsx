@@ -197,12 +197,12 @@ function NeuronSnakePreview() {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const soma = [.5,.53];
     const routes = [
-      { start:0, points:[soma,[.5,.43],[.5,.31],[.39,.31],[.39,.19],[.27,.19],[.27,.1]] },
-      { start:.14, points:[soma,[.47,.48],[.39,.42],[.29,.42],[.29,.31],[.17,.31],[.17,.2]] },
-      { start:.28, points:[soma,[.53,.47],[.61,.39],[.61,.25],[.73,.25],[.73,.13],[.86,.13]] },
-      { start:.4, points:[soma,[.43,.57],[.34,.63],[.23,.63],[.23,.76],[.1,.76]] },
-      { start:.52, points:[soma,[.57,.57],[.67,.63],[.79,.63],[.79,.49],[.91,.49],[.91,.38]] },
-      { start:.64, points:[soma,[.5,.63],[.5,.76],[.62,.76],[.62,.89],[.75,.89]] },
+      { points:[soma,[.5,.43],[.5,.31],[.39,.31],[.39,.19],[.27,.19],[.27,.1]] },
+      { points:[soma,[.47,.48],[.39,.42],[.29,.42],[.29,.31],[.17,.31],[.17,.2]] },
+      { points:[soma,[.53,.47],[.61,.39],[.61,.25],[.73,.25],[.73,.13],[.86,.13]] },
+      { points:[soma,[.43,.57],[.34,.63],[.23,.63],[.23,.76],[.1,.76]] },
+      { points:[soma,[.57,.57],[.67,.63],[.79,.63],[.79,.49],[.91,.49],[.91,.38]] },
+      { points:[soma,[.5,.63],[.5,.76],[.62,.76],[.62,.89],[.75,.89]] },
     ];
     const synapses = [[.27,.1],[.17,.2],[.86,.13],[.1,.76],[.91,.38],[.75,.89]];
 
@@ -265,8 +265,10 @@ function NeuronSnakePreview() {
     };
 
     const draw = (elapsed: number) => {
-      const cycle = reduceMotion ? .68 : (elapsed % 16000) / 16000;
-      const grow = Math.min(cycle / .88, 1);
+      const cycle = reduceMotion ? .68 : (elapsed % 19000) / 19000;
+      const playhead = Math.min(cycle / .94, .9999) * routes.length;
+      const activeRoute = Math.floor(playhead);
+      const activeProgress = playhead - activeRoute;
       context.clearRect(0, 0, width, height);
       context.fillStyle = "#01070c";
       context.fillRect(0, 0, width, height);
@@ -280,12 +282,12 @@ function NeuronSnakePreview() {
       context.restore();
 
       routes.forEach((route, index) => {
-        const routeProgress = Math.max(0, Math.min(1, (grow - route.start) / (1 - route.start)));
+        const routeProgress = index < activeRoute ? 1 : index === activeRoute ? activeProgress : 0;
         if (!routeProgress) return;
         const grown = partialPath(route.points, routeProgress);
         trace(grown, "#168fd0", 9, .1);
-        trace(grown, index % 2 ? "#2abaf2" : "#55d2ff", 2.5, .95);
-        if (routeProgress < 1) {
+        trace(grown, index === activeRoute ? "#55d2ff" : "#168fc4", index === activeRoute ? 2.8 : 2.1, index === activeRoute ? 1 : .72);
+        if (index === activeRoute && routeProgress < 1) {
           const [tipX, tipY] = pointAlong(route.points, routeProgress);
           context.save();
           context.shadowColor = "#5ee0ff";
@@ -299,10 +301,16 @@ function NeuronSnakePreview() {
       synapses.forEach(([x,y], index) => {
         const pulse = .72 + Math.sin(elapsed / 480 + index * 1.7) * .28;
         context.save();
-        context.shadowColor = "#ffd85a";
-        context.shadowBlur = 12 + pulse * 8;
-        context.fillStyle = `rgba(255,216,90,${.68 + pulse * .25})`;
-        context.beginPath(); context.arc(x * width,y * height,3 + pulse * 1.5,0,Math.PI * 2); context.fill();
+        const collected = index < activeRoute;
+        context.shadowColor = collected ? "#3dc7f2" : "#ffd85a";
+        context.shadowBlur = collected ? 7 : 12 + pulse * 8;
+        context.fillStyle = collected ? "rgba(61,199,242,.38)" : `rgba(255,216,90,${.68 + pulse * .25})`;
+        context.beginPath(); context.arc(x * width,y * height,collected ? 2.5 : 3 + pulse * 1.5,0,Math.PI * 2); context.fill();
+        if (collected) {
+          context.strokeStyle = "rgba(88,216,255,.7)";
+          context.lineWidth = 1;
+          context.beginPath(); context.arc(x * width,y * height,7,0,Math.PI * 2); context.stroke();
+        }
         context.restore();
       });
 
@@ -324,8 +332,9 @@ function NeuronSnakePreview() {
       context.save();
       context.font = `${Math.max(9, width * .012)}px ui-monospace, SFMono-Regular, Menlo, monospace`;
       context.fillStyle = "rgba(111,211,250,.65)";
-      context.fillText(`SYNAPSES  ${String(Math.round(grow * synapses.length)).padStart(2,"0")}`, 18, height - 18);
-      context.textAlign = "right"; context.fillText(cycle > .88 ? "NEURON COMPLETE" : "DENDRITE GROWTH", width - 18, height - 18);
+      const collectedCount = activeRoute + (activeProgress > .96 ? 1 : 0);
+      context.fillText(`SYNAPSES  ${String(Math.min(synapses.length, collectedCount)).padStart(2,"0")} / ${String(synapses.length).padStart(2,"0")}`, 18, height - 18);
+      context.textAlign = "right"; context.fillText(cycle > .94 ? "NEURON COMPLETE" : `SEEKING TARGET  ${String(activeRoute + 1).padStart(2,"0")}`, width - 18, height - 18);
       context.restore();
     };
 
