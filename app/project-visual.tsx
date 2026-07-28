@@ -71,6 +71,21 @@ function drawProjectIcon(context: CanvasRenderingContext2D, name: string) {
     context.stroke(); line([[x,y-38*scale],[x,y+48*scale]]);
     arc(x-22*scale,y-9*scale,18*scale,-2.7,.7); arc(x+22*scale,y+10*scale,18*scale,.4,3.7);
   };
+  const speech = (x:number,y:number,w:number,h:number,flip=false) => {
+    context.beginPath(); context.roundRect(x,y,w,h,14); context.stroke();
+    const tailX=flip ? x+w*.73 : x+w*.27;
+    line([[tailX,y+h],[tailX+(flip?15:-15),y+h+17],[tailX+(flip?-2:2),y+h]]);
+  };
+  const nodes = (points:number[][], connections:number[][]) => {
+    connections.forEach(([a,b])=>line([points[a],points[b]]));
+    points.forEach(([x,y],index)=>circle(x,y,index===0?8:5,index===0));
+  };
+  const fly = (x=150,y=89,scale=1) => {
+    ellipse(x,y+5,13*scale,34*scale); circle(x,y-32*scale,11*scale);
+    ellipse(x-31*scale,y-10*scale,36*scale,20*scale,-.48);
+    ellipse(x+31*scale,y-10*scale,36*scale,20*scale,.48);
+    line([[x-9*scale,y+27*scale],[x-39*scale,y+53*scale]]); line([[x+9*scale,y+27*scale],[x+39*scale,y+53*scale]]);
+  };
 
   context.save();
   context.strokeStyle = "#fff";
@@ -81,10 +96,12 @@ function drawProjectIcon(context: CanvasRenderingContext2D, name: string) {
 
   switch (name) {
     case "philogelos":
-      rect(92,38,116,108,10); line([[110,66],[190,66],[110,88],[174,88],[110,110],[158,110]]);
-      context.beginPath(); context.moveTo(176,146); context.quadraticCurveTo(199,157,210,132); context.stroke(); spark(225,42,10); break;
+      context.beginPath(); context.moveTo(111,145); context.quadraticCurveTo(90,122,105,98); context.quadraticCurveTo(86,61,122,32);
+      context.quadraticCurveTo(169,10,195,43); context.quadraticCurveTo(210,68,187,84); context.quadraticCurveTo(176,92,182,115); context.lineTo(198,145); context.stroke();
+      circle(153,62,4,true); arc(158,87,25,.15,2.55); line([[119,38],[105,20],[132,31]]); spark(224,54,12); break;
     case "inner-cosmos":
-      circle(150,88,23); [[76,35],[224,35],[62,116],[238,116],[150,25],[150,151]].forEach(([x,y])=>{line([[150,88],[x,y]]);circle(x,y,9);}); break;
+      brain(150,88,.72); circle(150,88,18); [[79,34],[223,38],[68,127],[232,124],[150,19],[150,157]].forEach(([x,y])=>{line([[150,88],[x,y]]);circle(x,y,7);});
+      ellipse(150,88,103,64,-.12); break;
     case "partypost":
       rect(72,48,156,94,10); line([[76,57],[150,110],[224,57]]); spark(242,40,11); circle(57,50,5,true); circle(246,128,5,true); break;
     case "kids-who-vibecode":
@@ -95,9 +112,12 @@ function drawProjectIcon(context: CanvasRenderingContext2D, name: string) {
     case "hurricane":
       for(let radius=12;radius<68;radius+=13) arc(150,88,radius,-.45,Math.PI*1.45); circle(150,88,6,true); line([[84,41],[56,34]]); line([[216,135],[245,144]]); break;
     case "atlas-of-the-unseen":
-      ellipse(150,88,72,49,-.15); ellipse(150,88,50,72,.85); [[91,59],[182,39],[209,111],[121,127]].forEach(([x,y])=>circle(x,y,5,true)); star(150,88,16); break;
+      line([[73,39],[125,25],[177,42],[229,27],[229,137],[177,152],[125,135],[73,150],[73,39]]);
+      line([[125,25],[125,135],[177,152],[177,42]]); context.save(); context.setLineDash([5,8]); line([[87,119],[117,91],[148,103],[181,69],[215,52]]); context.restore();
+      circle(117,91,6,true); circle(181,69,6,true); star(215,52,10); break;
     case "seunglabdata":
-      ellipse(150,45,65,20); line([[85,45],[85,129]]); line([[215,45],[215,129]]); arc(150,87,65,0,Math.PI); arc(150,129,65,0,Math.PI); line([[85,86],[215,86]]); break;
+      ellipse(116,45,54,17); line([[62,45],[62,126]]); line([[170,45],[170,126]]); arc(116,85,54,0,Math.PI); arc(116,126,54,0,Math.PI); line([[62,84],[170,84]]);
+      nodes([[215,61],[196,91],[231,109],[202,139],[251,73]],[[0,1],[0,4],[1,2],[1,3],[2,3],[2,4]]); break;
     case "cocos-mythic-meadow":
       context.beginPath(); context.moveTo(93,129); context.quadraticCurveTo(91,65,139,55); context.quadraticCurveTo(182,48,204,91);
       context.quadraticCurveTo(181,143,93,129); context.stroke(); line([[137,55],[159,20],[168,59]]); line([[101,81],[73,58],[92,100]]); star(224,53,13); circle(167,81,4,true); break;
@@ -109,22 +129,23 @@ function drawProjectIcon(context: CanvasRenderingContext2D, name: string) {
       context.quadraticCurveTo(184,67,207,82); context.quadraticCurveTo(229,97,221,119); context.quadraticCurveTo(207,145,158,144); context.lineTo(99,144); context.stroke();
       line([[132,88],[153,102],[188,91],[211,102]]); line([[126,66],[142,68],[158,61]]); break;
     case "fabled-jokes":
-      circle(150,88,61); arc(150,91,34,.12,Math.PI-.12); arc(121,73,8,Math.PI,TAU); arc(179,73,8,Math.PI,TAU); spark(224,40,10); break;
+      speech(61,41,112,78); speech(139,72,102,68,true); arc(115,80,25,.12,Math.PI-.12); circle(96,68,4,true); circle(130,68,4,true); spark(235,39,10); break;
     case "whatisabrain":
       brain(150,89,1.18); break;
     case "science-experiment":
-      rect(49,35,202,105,9); line([[92,154],[208,154],[150,140],[150,154]]); line([[69,114],[112,76],[151,102],[196,55],[231,78]]); break;
+      rect(35,32,230,116,4); for(let x=73;x<265;x+=38) line([[x,32],[x,148]]); for(let y=61;y<148;y+=29) line([[35,y],[265,y]]);
+      context.beginPath(); context.moveTo(46,125); context.bezierCurveTo(82,116,91,70,126,91); context.bezierCurveTo(162,112,176,47,211,62); context.lineTo(253,44); context.stroke();
+      circle(126,91,6,true); circle(211,62,6,true); break;
     case "inner_cosmos":
       neuron(150,88,1.05); spark(228,43,9); break;
     case "inner-cosmos-wall":
       rect(45,35,210,108,8); neuron(150,88,.62); line([[108,157],[192,157],[150,143],[150,157]]); break;
     case "heat-wave":
-      circle(98,67,28); for(let angle=0;angle<TAU;angle+=Math.PI/4) line([[98+Math.cos(angle)*39,67+Math.sin(angle)*39],[98+Math.cos(angle)*52,67+Math.sin(angle)*52]]);
-      context.beginPath(); context.moveTo(145,115); context.bezierCurveTo(171,90,190,141,217,113); context.bezierCurveTo(234,97,245,110,253,116); context.stroke(); break;
+      circle(88,56,25); for(let angle=0;angle<TAU;angle+=Math.PI/4) line([[88+Math.cos(angle)*35,56+Math.sin(angle)*35],[88+Math.cos(angle)*47,56+Math.sin(angle)*47]]);
+      rect(170,31,28,92,14); circle(184,132,27); line([[184,112],[184,56]]); line([[204,55],[219,55],[204,78],[217,78],[204,101],[222,101]]); break;
     case "extremely-strange":
-      context.beginPath(); context.moveTo(98,30); context.bezierCurveTo(211,56,87,122,202,150); context.stroke();
-      context.beginPath(); context.moveTo(202,30); context.bezierCurveTo(89,56,213,122,98,150); context.stroke();
-      for(let y=48;y<146;y+=24) line([[113+(y%48?24:0),y],[187-(y%48?24:0),y]]); break;
+      ellipse(150,88,79,48,-.48); ellipse(150,88,79,48,.48); circle(150,88,17); context.save(); context.setLineDash([5,8]); circle(150,88,69); context.restore();
+      [[75,44],[228,48],[75,134],[229,132]].forEach(([x,y],index)=>index%2?spark(x,y,8):circle(x,y,5,true)); break;
     case "fableous":
       line([[74,135],[74,52],[145,67],[150,140],[155,67],[226,52],[226,135],[155,151],[145,151],[74,135]]);
       line([[150,68],[150,31]]); line([[150,45],[128,29]]); line([[150,48],[174,31]]); break;
@@ -135,7 +156,8 @@ function drawProjectIcon(context: CanvasRenderingContext2D, name: string) {
     case "ma-car-lease-analysis-":
       line([[64,111],[78,75],[112,59],[195,59],[225,82],[239,111],[64,111]]); circle(101,118,17); circle(205,118,17); line([[118,65],[131,92],[204,92],[187,64]]); break;
     case "amysterling":
-      circle(150,58,25); arc(150,141,62,Math.PI,TAU); [[63,45],[235,54],[72,132],[229,129]].forEach(([x,y])=>{circle(x,y,5,true);line([[150,88],[x,y]]);}); break;
+      circle(150,82,54); context.font="700 58px Arial"; context.textAlign="center"; context.textBaseline="middle"; context.fillText("AS",150,84);
+      [[65,39],[235,39],[63,137],[237,137]].forEach(([x,y])=>circle(x,y,6,true)); line([[102,48],[65,39],[96,111],[63,137]]); line([[198,48],[235,39],[204,111],[237,137]]); break;
     case "wood-coal-pizza":
       line([[91,43],[224,82],[107,151],[91,43]]); arc(143,70,32,.25,2.2); circle(142,92,7,true); circle(174,107,7,true);
       context.beginPath(); context.moveTo(70,131); context.quadraticCurveTo(55,103,81,86); context.quadraticCurveTo(68,63,91,51); context.stroke(); break;
@@ -149,14 +171,15 @@ function drawProjectIcon(context: CanvasRenderingContext2D, name: string) {
       context.beginPath(); context.arc(115,76,48,.7,Math.PI*1.72); context.quadraticCurveTo(142,91,115,124); context.stroke();
       line([[154,105],[154,48],[207,61],[207,121],[154,109],[101,121]]); star(225,39,10); break;
     case "drosophila_datause_2026":
-      ellipse(150,89,15,37); ellipse(111,73,38,23,-.45); ellipse(189,73,38,23,.45); circle(150,45,12);
-      line([[138,111],[109,142],[91,145]]); line([[162,111],[191,142],[209,145]]); line([[137,63],[112,36]]); line([[163,63],[188,36]]); break;
+      fly(120,88,.9); line([[182,139],[182,101],[206,101],[206,73],[230,73],[230,37]]); line([[216,50],[230,35],[244,50]]); circle(182,139,5,true); circle(206,101,5,true); circle(230,73,5,true); break;
     case "flywire-neuron-gallery":
       brain(150,88,.95); ellipse(102,89,31,19,-.3); ellipse(198,89,31,19,.3); spark(150,88,11); break;
     case "explore-the-universe":
-      [18,37,61].forEach(r=>circle(150,88,r)); circle(150,88,6,true); line([[150,27],[150,9]]); line([[211,88],[232,88]]); break;
+      circle(150,88,11,true); [34,58,82].forEach((r,index)=>{ellipse(150,88,r,r*.42,-.28); const a=.7+index*1.72; circle(150+Math.cos(a)*r,88+Math.sin(a)*r*.42,5+index*2,index===2);});
+      spark(231,35,9); spark(72,133,6); break;
     case "neuronal-surprise-surfing":
-      neuron(130,94,.78); star(213,55,25); line([[183,74],[202,64]]); break;
+      neuron(116,72,.62); context.beginPath(); context.moveTo(46,133); context.bezierCurveTo(86,86,126,161,170,113); context.bezierCurveTo(198,82,226,101,253,126); context.stroke();
+      line([[103,116],[140,112],[123,126],[103,116]]); star(222,46,17); break;
     case "explore-the-verse-2-":
       context.save(); context.lineWidth=5;
       ellipse(150,88,74,24,-.34); ellipse(150,88,57,17,.42); arc(150,88,42,-2.8,.6); arc(150,88,31,.2,3.8);
@@ -164,13 +187,13 @@ function drawProjectIcon(context: CanvasRenderingContext2D, name: string) {
     case "eyewire-ii":
       eye(150,88,1); neuron(150,88,.33); break;
     case "AnnotationEngine":
-      ellipse(113,52,45,15); line([[68,52],[68,115]]); line([[158,52],[158,115]]); arc(113,84,45,0,Math.PI); arc(113,115,45,0,Math.PI);
-      context.beginPath(); context.moveTo(214,56); context.bezierCurveTo(174,56,174,105,214,140); context.bezierCurveTo(254,105,254,56,214,56); context.stroke(); circle(214,83,10); break;
+      line([[62,58],[126,28],[188,59],[124,91],[62,58],[62,119],[124,151],[188,119],[188,59]]); line([[124,91],[124,151]]);
+      context.beginPath(); context.moveTo(173,53); context.lineTo(225,53); context.lineTo(253,81); context.lineTo(225,109); context.lineTo(173,53); context.stroke(); circle(198,70,7); break;
     case "eyewire-ii-avatar":
       circle(133,66,28); arc(133,151,62,Math.PI,TAU); circle(214,108,27); line([[214,93],[214,123],[203,113],[225,113]]); break;
     case "vibeshift":
-      rect(75,51,116,92,17); circle(108,87,6,true); circle(158,87,6,true); arc(133,102,24,.2,Math.PI-.2);
-      line([[98,51],[88,30]]); line([[168,51],[179,30]]); star(221,75,18); break;
+      rect(55,49,120,92,17); circle(91,86,6,true); circle(139,86,6,true); arc(115,104,24,.2,Math.PI-.2); line([[82,49],[72,29]]); line([[148,49],[159,29]]);
+      circle(220,87,38); star(220,82,17); line([[204,119],[210,151],[220,138],[233,151],[237,119]]); break;
     case "build-a-planet":
       circle(132,91,52); line([[91,68],[111,56],[130,63],[137,79],[124,93],[103,91],[91,105]]);
       line([[148,47],[165,59],[171,78],[193,88],[177,105],[166,130],[146,140]]);
@@ -192,7 +215,8 @@ function drawProjectIcon(context: CanvasRenderingContext2D, name: string) {
       line([[103,29],[197,29],[103,151],[197,151],[103,29]]); line([[118,45],[182,45],[150,86],[118,45]]); line([[118,135],[182,135],[150,94],[118,135]]);
       ellipse(150,90,28,10,.4); circle(150,90,4,true); break;
     case "ridiculous":
-      line([[150,26],[150,117]]); circle(150,145,6,true); context.beginPath(); context.moveTo(90,118); context.quadraticCurveTo(115,86,140,118); context.quadraticCurveTo(165,150,210,105); context.stroke(); spark(221,48,10); break;
+      context.beginPath(); context.moveTo(78,126); context.lineTo(93,54); context.lineTo(126,82); context.lineTo(150,35); context.lineTo(178,82); context.lineTo(208,54); context.lineTo(224,126); context.closePath(); context.stroke();
+      circle(104,104,5,true); circle(151,104,5,true); circle(198,104,5,true); line([[91,142],[211,142]]); spark(241,39,9); break;
     case "shield":
       context.beginPath(); context.moveTo(150,25); context.lineTo(222,52); context.lineTo(210,112); context.quadraticCurveTo(192,145,150,158);
       context.quadraticCurveTo(108,145,90,112); context.lineTo(78,52); context.closePath(); context.stroke(); line([[112,89],[139,116],[192,62]]); break;
@@ -215,8 +239,7 @@ function drawProjectIcon(context: CanvasRenderingContext2D, name: string) {
       context.beginPath(); context.moveTo(58,131); context.quadraticCurveTo(96,25,136,137); context.quadraticCurveTo(165,63,194,138); context.quadraticCurveTo(215,94,239,138); context.stroke(); context.restore();
       circle(96,73,13,true); line([[126,142],[136,130],[146,142]]); line([[187,142],[194,132],[201,142]]); break;
     case "what-i-am":
-      context.beginPath(); context.roundRect(57,36,137,88,14); context.stroke(); line([[90,124],[77,149],[120,124]]);
-      line([[215,39],[215,143]]); arc(215,91,32,-Math.PI/2,Math.PI/2); line([[211,59],[211,123]]); break;
+      speech(45,35,126,86); circle(111,75,16); arc(111,123,40,Math.PI,TAU); line([[204,31],[204,149]]); arc(204,90,37,-Math.PI/2,Math.PI/2); line([[199,53],[199,127]]); spark(240,47,8); break;
     case "coras-mermaid":
       context.beginPath(); context.moveTo(109,29); context.bezierCurveTo(205,55,86,111,181,147); context.stroke();
       context.beginPath(); context.moveTo(181,147); context.quadraticCurveTo(214,132,231,151); context.quadraticCurveTo(205,164,181,147); context.stroke();
