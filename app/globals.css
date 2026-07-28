@@ -12,8 +12,9 @@ button,input { font:inherit; }
 .navlinks { display:flex; align-items:center; gap:28px; font-size:14px; font-weight:650; }
 .navlinks a:not(.navButton):hover { text-decoration:underline; text-underline-offset:5px; }
 .navButton { background:rgba(51,182,239,.12); color:#bceaff; padding:12px 18px; border:1px solid rgba(83,200,255,.4); border-radius:999px; }
-.hero { min-height:650px; display:grid; grid-template-columns:minmax(0,1.05fr) minmax(420px,.95fr); gap:4vw; padding:72px 7vw 76px; align-items:center; overflow:hidden; position:relative; background:radial-gradient(circle at 76% 40%,rgba(31,143,197,.18),transparent 32%),linear-gradient(135deg,#071523 0%,#081a2d 58%,#07111e 100%); }
+.hero { min-height:650px; display:grid; grid-template-columns:minmax(0,1.02fr) minmax(420px,.98fr); gap:4vw; padding:72px 7vw 76px; align-items:center; overflow:visible; position:relative; z-index:1; background:radial-gradient(circle at 76% 40%,rgba(31,143,197,.18),transparent 32%),linear-gradient(135deg,#071523 0%,#081a2d 58%,#07111e 100%); }
 .hero:before { content:""; position:absolute; width:520px; height:520px; border:1px solid rgba(91,205,255,.14); border-radius:50%; right:-300px; top:-200px; box-shadow:0 0 0 65px rgba(37,164,218,.06),0 0 0 130px rgba(37,164,218,.035); }
+.heroCopy { position:relative; z-index:3; }
 .eyebrow,.kicker { font-family:var(--font-mono); font-size:12px; letter-spacing:.12em; text-transform:uppercase; font-weight:500; }
 .eyebrow { display:flex; align-items:center; gap:10px; margin:0 0 26px; }
 .liveDot { width:9px; height:9px; border-radius:50%; background:var(--teal); box-shadow:0 0 0 5px rgba(32,188,174,.16); }
@@ -24,14 +25,13 @@ h1 em { font-family:Georgia,serif; font-weight:400; color:var(--coral); }
 .primaryAction { background:linear-gradient(135deg,#2dbcf3,#167eb8); color:#03101d; padding:16px 20px; border-radius:4px; font-size:14px; font-weight:800; display:flex; gap:28px; box-shadow:0 0 36px rgba(45,188,243,.18); }
 .primaryAction:hover,.navButton:hover { background:#73d7ff; color:#03101d; }
 .textAction { font-family:var(--font-mono); font-size:13px; border-bottom:1px solid; padding:8px 0; }
-.neuronBanner { height:500px; min-width:0; position:relative; overflow:hidden; border-radius:48% 52% 44% 56% / 56% 42% 58% 44%; background:radial-gradient(circle at 48% 48%,#123f68 0%,#092643 52%,#06172b 100%); box-shadow:18px 20px 0 rgba(7,24,46,.12); isolation:isolate; }
+.neuronBanner { width:min(47vw,720px); height:850px; position:absolute; right:3vw; top:20px; z-index:2; overflow:hidden; border-radius:48% 52% 44% 56% / 56% 42% 58% 44%; background:radial-gradient(circle at 48% 48%,#123f68 0%,#092643 52%,#06172b 100%); box-shadow:18px 20px 0 rgba(7,24,46,.12); isolation:isolate; }
 .neuronBanner:after { content:""; position:absolute; inset:18px; border:1px solid rgba(108,215,255,.24); border-radius:inherit; pointer-events:none; }
 .neuronBanner canvas { display:block; width:100%; height:100%; cursor:crosshair; touch-action:none; }
-.neuronCount { position:absolute; left:28px; top:27px; color:white; display:flex; align-items:center; gap:12px; pointer-events:none; }
+.neuronCount { position:absolute; right:31px; top:30px; color:white; display:flex; align-items:center; gap:12px; pointer-events:none; }
 .neuronCount strong { font-size:43px; line-height:.8; letter-spacing:-.07em; }
 .neuronCount span { font:9px/1.45 var(--font-mono); letter-spacing:.12em; text-transform:uppercase; color:#a9dff5; }
-.neuronHint { position:absolute; right:29px; bottom:25px; color:#a9dff5; font:9px var(--font-mono); letter-spacing:.13em; text-transform:uppercase; pointer-events:none; }
-.pulse { background:#040b14; color:white; display:grid; grid-template-columns:minmax(245px,.62fr) minmax(0,1.9fr); gap:6vw; padding:58px 7vw 46px; align-items:end; border-top:1px solid rgba(87,197,244,.14); border-bottom:1px solid rgba(87,197,244,.14); box-shadow:inset 0 0 90px rgba(25,129,176,.05); }
+.pulse { min-height:245px; position:relative; background:#040b14; color:white; display:grid; grid-template-columns:minmax(205px,.7fr) minmax(270px,1.3fr); gap:3vw; padding:52px 49vw 44px 7vw; align-items:end; border-top:1px solid rgba(87,197,244,.14); border-bottom:1px solid rgba(87,197,244,.14); box-shadow:inset 0 0 90px rgba(25,129,176,.05); }
 .pulseIntro span { font-family:var(--font-mono); color:var(--acid); font-size:11px; letter-spacing:.15em; display:block; margin-bottom:12px; }
 .pulseIntro strong { font-size:22px; line-height:1.25; letter-spacing:-.03em; }
 .pulseIntro p { color:#7896a7; margin:13px 0 0; font:10px/1.5 var(--font-mono); letter-spacing:.05em; }
@@ -179,3 +179,5 @@ footer>div { display:flex; gap:16px; align-items:center; }footer p { margin:0; c
 @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; }.featureCard,.storyCard { transition:none; }.orbit,.visualMark,.scanline { animation:none; } }
 @media (max-width:900px) { .pulse { grid-template-columns:minmax(220px,.7fr) minmax(0,1.3fr); gap:4vw; } }
 @media (max-width:600px) { .pulse { grid-template-columns:1fr; padding:46px 5vw 34px; gap:22px; }.pulseChart { overflow-x:auto; overflow-y:hidden; padding-top:130px; margin-top:-120px; padding-bottom:5px; }.commitBars,.pulseLegend { min-width:720px; }.commitBars { margin-top:0; }.pulseLegend { padding-bottom:4px; } }
+@media (min-width:681px) and (max-width:900px) { .hero { grid-template-columns:minmax(0,1fr) minmax(0,1fr); padding:68px 6vw 72px; }.hero h1 { font-size:clamp(48px,7vw,68px); }.neuronBanner { position:absolute; width:49vw; height:760px; right:0; top:18px; }.pulse { grid-template-columns:minmax(160px,.72fr) minmax(190px,1.28fr); gap:2.5vw; padding:46px 50vw 40px 6vw; } }
+@media (max-width:680px) { .hero { display:block; padding:62px 6vw 0; }.hero h1 { font-size:clamp(49px,14vw,72px); }.neuronBanner { position:relative; width:100%; height:620px; right:auto; top:auto; margin:46px auto -88px; border-radius:44% 56% 48% 52% / 52% 43% 57% 48%; }.pulse { grid-template-columns:1fr; padding:126px 5vw 36px; gap:22px; }.pulseChart { overflow-x:auto; overflow-y:hidden; padding-top:130px; margin-top:-120px; padding-bottom:5px; }.commitBars,.pulseLegend { min-width:720px; } }

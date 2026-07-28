@@ -381,7 +381,7 @@ function NeuronParticleBanner() {
       const scaledHeight = sourceCanvas.height * imageScale;
       const offsetX = (width - scaledWidth) / 2;
       const offsetY = (height - scaledHeight) / 2;
-      const spacing = width < 500 ? 6 : 5;
+      const spacing = width < 500 ? 11 : 9;
 
       for (let sourceY = 0; sourceY < sourceCanvas.height; sourceY += spacing) {
         for (let sourceX = 0; sourceX < sourceCanvas.width; sourceX += spacing) {
@@ -464,7 +464,6 @@ function NeuronParticleBanner() {
   return <div className="neuronBanner" aria-label="Interactive particle simulation of a real pyramidal neuron; move your pointer through it">
     <canvas ref={canvasRef}/>
     <div className="neuronCount"><strong>52</strong><span>projects touched<br/>this year</span></div>
-    <span className="neuronHint">move through the neuron</span>
   </div>;
 }
 
@@ -483,13 +482,13 @@ export default function Home() {
     <main>
       <nav className="topbar" aria-label="Primary navigation">
         <a className="wordmark" href="#top"><span>AS</span> Amy Sterling / Lab Notes</a>
-        <div className="navlinks"><a href="#published">Published</a><a href="#featured">Selected</a><a href="#archive">All projects</a><a className="navButton" href="https://github.com/amyleesterling" target="_blank" rel="noreferrer">GitHub ↗</a></div>
+        <div className="navlinks"><a href="#featured">Selected</a><a href="#archive">All projects</a><a href="#published">Published</a><a className="navButton" href="https://github.com/amyleesterling" target="_blank" rel="noreferrer">GitHub ↗</a></div>
       </nav>
 
       <header className="hero" id="top">
         <div className="heroCopy">
           <p className="eyebrow"><span className="liveDot" /> Projects touched this year · updated July 26</p>
-          <h1>Building at the speed of <em>curiosity.</em></h1>
+          <h1>GitHub repository <em>exploration.</em></h1>
           <p className="dek">Games made with kids. Brains rendered for magazines and museums. Tools for parties, hurricanes, pizza, and the gloriously unnecessary. You’re welcome to explore—this is a summary of all my code projects!</p>
           <div className="heroActions"><a className="primaryAction" href="#archive">Explore all 52 projects <span>↓</span></a><a className="textAction" href="https://github.com/amyleesterling" target="_blank" rel="noreferrer">@amyleesterling ↗</a></div>
         </div>
@@ -516,16 +515,6 @@ export default function Home() {
             })}
           </div>
           <div className="pulseLegend"><span><i/>Each line is one repository</span><span>Hover to see commits by month</span><span>GitHub public contributions · Jan–Jul</span></div>
-        </div>
-      </section>
-
-      <section className="published section" id="published">
-        <div className="sectionHeading publishedHeading"><div><p className="kicker">IN PRINT · IN PUBLIC</p><h2>Published</h2></div><p>Selected renders and visual systems I helped create for connectomics research—appearing in magazines, scientific publications, and public science projects.</p></div>
-        <div className="publishedGrid">
-          {publishedWorks.map((work, index) => <a className={`publishedCard publishedCard${index + 1}`} href={work.url} target="_blank" rel="noreferrer" key={work.title}>
-            <div className="publishedImage"><img src={work.image} alt={`${work.title}, ${work.publication}`}/><span>0{index + 1}</span></div>
-            <div className="publishedCopy"><p>{work.publication}</p><h3>{work.title}</h3><small>{work.credit}</small><b>View publication <span>↗</span></b></div>
-          </a>)}
         </div>
       </section>
 
@@ -561,7 +550,17 @@ export default function Home() {
         {shown.length === 0 && <div className="empty">No matching rabbit holes. Try another search.</div>}
       </section>
 
-      <footer><div><span className="footerMark">AS</span><p>Made from public GitHub data.<br/>Last checked July 26, 2026.</p></div><p className="footerQuote">Stay curious.<br/><em>Ship the weird thing.</em></p><a href="#top">Back to top ↑</a></footer>
+      <section className="published section" id="published">
+        <div className="sectionHeading publishedHeading"><div><p className="kicker">IN PRINT · IN PUBLIC</p><h2>Published</h2></div><p>Selected renders and visual systems I helped create for connectomics research—appearing in magazines, scientific publications, and public science projects.</p></div>
+        <div className="publishedGrid">
+          {publishedWorks.map((work, index) => <a className={`publishedCard publishedCard${index + 1}`} href={work.url} target="_blank" rel="noreferrer" key={work.title}>
+            <div className="publishedImage"><img src={work.image} alt={`${work.title}, ${work.publication}`}/><span>0{index + 1}</span></div>
+            <div className="publishedCopy"><p>{work.publication}</p><h3>{work.title}</h3><small>{work.credit}</small><b>View publication <span>↗</span></b></div>
+          </a>)}
+        </div>
+      </section>
+
+      <footer><div><span className="footerMark">AS</span><p>Made from public GitHub data.<br/>Last checked July 26, 2026.</p></div><p className="footerQuote">Building at the speed of<br/><em>curiosity.</em></p><a href="#top">Back to top ↑</a></footer>
     </main>
   );
 }
