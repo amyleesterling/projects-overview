@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 
-type Repo = { n: string; d: string; l: string; u: string; h?: string; t: string; f?: boolean };
+type Repo = { n: string; title?: string; d: string; l: string; u: string; h?: string; t: string; f?: boolean };
 
 const repos: Repo[] = [
   {n:"philogelos",d:"Funny philosopher.",l:"HTML",u:"https://github.com/amyleesterling/philogelos",t:"2026-07-26"},
@@ -48,7 +48,7 @@ const repos: Repo[] = [
   {n:"theLastWebsite",d:"The only one.",l:"HTML",u:"https://github.com/amyleesterling/theLastWebsite",t:"2026-03-26"},
   {n:"ridiculous",d:"Be more ridiculous.",l:"Other",u:"https://github.com/amyleesterling/ridiculous",t:"2026-03-25"},
   {n:"shield",d:"A small JavaScript experiment.",l:"JavaScript",u:"https://github.com/amyleesterling/shield",t:"2026-03-24"},
-  {n:"neuron-game",d:"The classic snake loop reimagined as a growing neuron—collect signals, extend dendrites, and avoid your own circuitry.",l:"HTML",u:"https://github.com/amyleesterling/neuron-game",h:"https://amyleesterling.github.io/neuron-game/",t:"2026-03-22"},
+  {n:"neuron-game",title:"Neuron Snake",d:"The classic snake loop reimagined as a growing neuron—collect signals, extend dendrites, and avoid your own circuitry.",l:"HTML",u:"https://github.com/amyleesterling/neuron-game",h:"https://amyleesterling.github.io/neuron-game/",t:"2026-03-22"},
   {n:"badges",d:"A game-badge iteration tool.",l:"HTML",u:"https://github.com/amyleesterling/badges",t:"2026-03-20"},
   {n:"eyewire-ii-tutorial",d:"Connectomics training for neuroglancer.",l:"JavaScript",u:"https://github.com/amyleesterling/eyewire-ii-tutorial",t:"2026-03-13"},
   {n:"eyewire-ii-tags",d:"Segment tagging for neuroglancer.",l:"HTML",u:"https://github.com/amyleesterling/eyewire-ii-tags",t:"2026-03-06"},
@@ -146,6 +146,10 @@ function projectHue(name: string) {
   return 185 + [...name].reduce((total, character) => total + character.charCodeAt(0), 0) % 35;
 }
 
+function repoTitle(repo: Repo) {
+  return repo.title || repo.n.replaceAll("_", " ").replaceAll("-", " ");
+}
+
 function ProjectVisual({ repo, compact = false }: { repo: Repo; compact?: boolean }) {
   const category = categoryFor(repo);
   const hue = projectHue(repo.n);
@@ -159,6 +163,168 @@ function ProjectVisual({ repo, compact = false }: { repo: Repo; compact?: boolea
 
 function prettyDate(date: string) {
   return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(new Date(`${date}T12:00:00`));
+}
+
+function NeuronSnakePreview() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const context = canvas.getContext("2d");
+    if (!context) return;
+
+    let width = 0;
+    let height = 0;
+    let animationFrame = 0;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const path = [[.12,.69],[.28,.69],[.28,.38],[.42,.38],[.42,.58],[.59,.58],[.59,.25],[.78,.25],[.78,.48],[.9,.48]];
+    const branches = [
+      [[.06,.16],[.18,.1],[.3,.13],[.35,.26]], [[.34,.08],[.36,.26],[.48,.35]],
+      [[.61,.08],[.59,.25]], [[.78,.25],[.88,.12],[.96,.17]],
+      [[.18,.69],[.12,.84],[.06,.82]], [[.42,.58],[.49,.79],[.61,.85]],
+      [[.59,.58],[.69,.72],[.82,.68],[.92,.82]], [[.78,.48],[.9,.48],[.96,.6]],
+    ];
+    const synapses = [[.17,.22],[.31,.57],[.51,.19],[.69,.4],[.86,.2],[.9,.73],[.18,.84],[.58,.83]];
+
+    const sizeCanvas = () => {
+      const bounds = canvas.getBoundingClientRect();
+      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      width = Math.max(1, bounds.width);
+      height = Math.max(1, bounds.height);
+      canvas.width = Math.round(width * ratio);
+      canvas.height = Math.round(height * ratio);
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
+    };
+
+    const trace = (points: number[][], color: string, lineWidth: number, alpha = 1) => {
+      context.save();
+      context.strokeStyle = color;
+      context.lineWidth = lineWidth;
+      context.globalAlpha = alpha;
+      context.lineCap = "round";
+      context.lineJoin = "round";
+      context.beginPath();
+      points.forEach(([x,y], index) => index ? context.lineTo(x * width, y * height) : context.moveTo(x * width, y * height));
+      context.stroke();
+      context.restore();
+    };
+
+    const metrics = (points: number[][]) => {
+      const lengths = points.slice(1).map((point, index) => Math.hypot((point[0] - points[index][0]) * width, (point[1] - points[index][1]) * height));
+      return { lengths, total:lengths.reduce((sum, value) => sum + value, 0) };
+    };
+
+    const pointAlong = (points: number[][], progress: number) => {
+      const { lengths, total } = metrics(points);
+      let distance = Math.max(0, Math.min(1, progress)) * total;
+      for (let index = 0; index < lengths.length; index++) {
+        if (distance <= lengths[index]) {
+          const amount = distance / lengths[index];
+          return [points[index][0] + (points[index + 1][0] - points[index][0]) * amount, points[index][1] + (points[index + 1][1] - points[index][1]) * amount];
+        }
+        distance -= lengths[index];
+      }
+      return points[points.length - 1];
+    };
+
+    const partialPath = (points: number[][], progress: number) => {
+      const result: number[][] = [points[0]];
+      const { lengths, total } = metrics(points);
+      let distance = Math.max(0, Math.min(1, progress)) * total;
+      for (let index = 0; index < lengths.length; index++) {
+        if (distance >= lengths[index]) {
+          result.push(points[index + 1]);
+          distance -= lengths[index];
+        } else {
+          const amount = distance / lengths[index];
+          result.push([points[index][0] + (points[index + 1][0] - points[index][0]) * amount, points[index][1] + (points[index + 1][1] - points[index][1]) * amount]);
+          break;
+        }
+      }
+      return result;
+    };
+
+    const draw = (elapsed: number) => {
+      const cycle = reduceMotion ? .42 : (elapsed % 18000) / 18000;
+      const grow = Math.min(cycle / .67, 1);
+      const dying = cycle > .72 && cycle < .91;
+      const deathAmount = dying ? Math.sin(((cycle - .72) / .19) * Math.PI) : 0;
+      context.clearRect(0, 0, width, height);
+      context.fillStyle = "#01070c";
+      context.fillRect(0, 0, width, height);
+
+      context.save();
+      context.strokeStyle = "rgba(59,174,224,.09)";
+      context.lineWidth = 1;
+      const grid = Math.max(24, width / 24);
+      for (let x = 0; x < width; x += grid) { context.beginPath(); context.moveTo(x,0); context.lineTo(x,height); context.stroke(); }
+      for (let y = 0; y < height; y += grid) { context.beginPath(); context.moveTo(0,y); context.lineTo(width,y); context.stroke(); }
+      context.restore();
+
+      branches.forEach((branch, index) => trace(branch, index % 3 ? "#0c5680" : "#1686b8", 2, .38 * (1 - deathAmount * .75)));
+      trace(path, "#0c4269", 7, .22);
+      trace(partialPath(path, grow), "#28b9f0", 3, 1 - deathAmount * .8);
+      trace(partialPath(path, grow), "#56d2ff", 9, .11 * (1 - deathAmount));
+
+      synapses.forEach(([x,y], index) => {
+        const pulse = .72 + Math.sin(elapsed / 480 + index * 1.7) * .28;
+        context.save();
+        context.shadowColor = "#ffd85a";
+        context.shadowBlur = 12 + pulse * 8;
+        context.fillStyle = `rgba(255,216,90,${.68 + pulse * .25})`;
+        context.beginPath(); context.arc(x * width,y * height,3 + pulse * 1.5,0,Math.PI * 2); context.fill();
+        context.restore();
+      });
+
+      const [headX, headY] = pointAlong(path, grow);
+      const x = headX * width;
+      const y = headY * height;
+      context.save();
+      context.globalAlpha = 1 - deathAmount * .75;
+      context.shadowColor = "#2caef5";
+      context.shadowBlur = 25;
+      const gradient = context.createLinearGradient(x, y - 38, x, y + 28);
+      gradient.addColorStop(0, "#53c6ff"); gradient.addColorStop(1, "#1767c1");
+      context.fillStyle = gradient;
+      context.beginPath(); context.moveTo(x, y - 34); context.quadraticCurveTo(x + 35, y + 12, x + 29, y + 25); context.quadraticCurveTo(x, y + 34, x - 29, y + 25); context.quadraticCurveTo(x - 35, y + 12, x, y - 34); context.fill();
+      context.restore();
+
+      context.save();
+      context.strokeStyle = "#f45f9a"; context.lineWidth = 2; context.setLineDash([5,5]); context.globalAlpha = .75 * (1 - deathAmount);
+      context.beginPath(); context.moveTo(x,y + 27); context.lineTo(x,Math.min(height, y + height * .25)); context.stroke(); context.restore();
+
+      context.save();
+      context.font = `${Math.max(9, width * .012)}px ui-monospace, SFMono-Regular, Menlo, monospace`;
+      context.fillStyle = "rgba(111,211,250,.65)";
+      context.fillText(`SYNAPSES  ${String(Math.max(1, Math.round(grow * 8))).padStart(2,"0")}`, 18, height - 18);
+      context.textAlign = "right"; context.fillText(dying ? "APOPTOSIS" : cycle > .91 ? "REGENERATING" : "GROWTH PHASE", width - 18, height - 18);
+      context.restore();
+
+      if (dying) {
+        context.save();
+        context.textAlign = "center"; context.textBaseline = "middle";
+        context.font = `700 ${Math.max(20, width * .046)}px ui-monospace, SFMono-Regular, Menlo, monospace`;
+        context.shadowColor = "#f04d83"; context.shadowBlur = 24;
+        context.fillStyle = `rgba(255,91,140,${deathAmount * .9})`;
+        context.fillText("APOPTOSIS", width / 2, height / 2);
+        context.restore();
+      }
+    };
+
+    const start = performance.now();
+    const animate = (now: number) => {
+      draw(now - start);
+      if (!reduceMotion) animationFrame = requestAnimationFrame(animate);
+    };
+    const observer = new ResizeObserver(() => { sizeCanvas(); if (reduceMotion) draw(0); });
+    observer.observe(canvas);
+    sizeCanvas();
+    animationFrame = requestAnimationFrame(animate);
+    return () => { cancelAnimationFrame(animationFrame); observer.disconnect(); };
+  }, []);
+
+  return <canvas className="neuronSnakePreview" ref={canvasRef} role="img" aria-label="Slow-motion demo of Neuron Snake growing dendrites, collecting synapses, undergoing apoptosis, and regenerating"/>;
 }
 
 function NeuronParticleBanner() {
@@ -308,9 +474,9 @@ export default function Home() {
         <div className="featuredGrid">
           {featured.map((repo, index) => <article className={`featureCard feature${index + 1}`} key={repo.n}>
             <div className="featureTop"><span className="index">0{index + 1}</span><span className={`language ${langClass[repo.l]}`}>{repo.l}</span></div>
-            <div className="featuredShot"><img src={featuredImages[repo.n].src} alt={featuredImages[repo.n].alt}/></div>
-            <div className="featureCopy"><span className="categoryTag">{categoryFor(repo).short}</span><h3>{repo.n.replaceAll("_", " ").replaceAll("-", " ")}</h3><p>{repo.d}</p></div>
-            <a href={repo.h || repo.u} target="_blank" rel="noreferrer" aria-label={`Open ${repo.n}`}>Open project <span>↗</span></a>
+            <div className="featuredShot">{repo.n === "neuron-game" ? <NeuronSnakePreview/> : <img src={featuredImages[repo.n].src} alt={featuredImages[repo.n].alt}/>}</div>
+            <div className="featureCopy"><span className="categoryTag">{categoryFor(repo).short}</span><h3>{repoTitle(repo)}</h3><p>{repo.d}</p></div>
+            <a href={repo.h || repo.u} target="_blank" rel="noreferrer" aria-label={`Open ${repoTitle(repo)}`}>Open project <span>↗</span></a>
           </article>)}
         </div>
       </section>
@@ -327,7 +493,7 @@ export default function Home() {
           <div className="storyGrid">{categoryRepos.map((repo, index) => <article className={`storyCard story-${(index % 5) + 1}`} key={repo.n}>
             <ProjectVisual repo={repo}/>
             <div className="storyBody"><div className="repoMeta"><span className={`language ${langClass[repo.l]}`}><i className={`dot ${langClass[repo.l]}`}/>{repo.l}</span><time dateTime={repo.t}>{prettyDate(repo.t)}</time></div>
-              <h4>{repo.n}</h4><p>{repo.d}</p>
+              <h4>{repoTitle(repo)}</h4><p>{repo.d}</p>
               <div className="repoLinks">{repo.f && <span className="fork">Fork</span>}{repo.h && <a href={repo.h} target="_blank" rel="noreferrer">See it live ↗</a>}<a href={repo.u} target="_blank" rel="noreferrer">View code ↗</a></div>
             </div>
           </article>)}</div>
