@@ -195,14 +195,16 @@ function NeuronSnakePreview() {
     let height = 0;
     let animationFrame = 0;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const path = [[.12,.69],[.28,.69],[.28,.38],[.42,.38],[.42,.58],[.59,.58],[.59,.25],[.78,.25],[.78,.48],[.9,.48]];
-    const branches = [
-      [[.06,.16],[.18,.1],[.3,.13],[.35,.26]], [[.34,.08],[.36,.26],[.48,.35]],
-      [[.61,.08],[.59,.25]], [[.78,.25],[.88,.12],[.96,.17]],
-      [[.18,.69],[.12,.84],[.06,.82]], [[.42,.58],[.49,.79],[.61,.85]],
-      [[.59,.58],[.69,.72],[.82,.68],[.92,.82]], [[.78,.48],[.9,.48],[.96,.6]],
+    const soma = [.5,.53];
+    const routes = [
+      { start:0, points:[soma,[.5,.43],[.5,.31],[.39,.31],[.39,.19],[.27,.19],[.27,.1]] },
+      { start:.14, points:[soma,[.47,.48],[.39,.42],[.29,.42],[.29,.31],[.17,.31],[.17,.2]] },
+      { start:.28, points:[soma,[.53,.47],[.61,.39],[.61,.25],[.73,.25],[.73,.13],[.86,.13]] },
+      { start:.4, points:[soma,[.43,.57],[.34,.63],[.23,.63],[.23,.76],[.1,.76]] },
+      { start:.52, points:[soma,[.57,.57],[.67,.63],[.79,.63],[.79,.49],[.91,.49],[.91,.38]] },
+      { start:.64, points:[soma,[.5,.63],[.5,.76],[.62,.76],[.62,.89],[.75,.89]] },
     ];
-    const synapses = [[.17,.22],[.31,.57],[.51,.19],[.69,.4],[.86,.2],[.9,.73],[.18,.84],[.58,.83]];
+    const synapses = [[.27,.1],[.17,.2],[.86,.13],[.1,.76],[.91,.38],[.75,.89]];
 
     const sizeCanvas = () => {
       const bounds = canvas.getBoundingClientRect();
@@ -263,10 +265,8 @@ function NeuronSnakePreview() {
     };
 
     const draw = (elapsed: number) => {
-      const cycle = reduceMotion ? .42 : (elapsed % 18000) / 18000;
-      const grow = Math.min(cycle / .67, 1);
-      const dying = cycle > .72 && cycle < .91;
-      const deathAmount = dying ? Math.sin(((cycle - .72) / .19) * Math.PI) : 0;
+      const cycle = reduceMotion ? .68 : (elapsed % 16000) / 16000;
+      const grow = Math.min(cycle / .88, 1);
       context.clearRect(0, 0, width, height);
       context.fillStyle = "#01070c";
       context.fillRect(0, 0, width, height);
@@ -279,10 +279,22 @@ function NeuronSnakePreview() {
       for (let y = 0; y < height; y += grid) { context.beginPath(); context.moveTo(0,y); context.lineTo(width,y); context.stroke(); }
       context.restore();
 
-      branches.forEach((branch, index) => trace(branch, index % 3 ? "#0c5680" : "#1686b8", 2, .38 * (1 - deathAmount * .75)));
-      trace(path, "#0c4269", 7, .22);
-      trace(partialPath(path, grow), "#28b9f0", 3, 1 - deathAmount * .8);
-      trace(partialPath(path, grow), "#56d2ff", 9, .11 * (1 - deathAmount));
+      routes.forEach((route, index) => {
+        const routeProgress = Math.max(0, Math.min(1, (grow - route.start) / (1 - route.start)));
+        if (!routeProgress) return;
+        const grown = partialPath(route.points, routeProgress);
+        trace(grown, "#168fd0", 9, .1);
+        trace(grown, index % 2 ? "#2abaf2" : "#55d2ff", 2.5, .95);
+        if (routeProgress < 1) {
+          const [tipX, tipY] = pointAlong(route.points, routeProgress);
+          context.save();
+          context.shadowColor = "#5ee0ff";
+          context.shadowBlur = 18;
+          context.fillStyle = "#b8f3ff";
+          context.beginPath(); context.arc(tipX * width, tipY * height, 3.2, 0, Math.PI * 2); context.fill();
+          context.restore();
+        }
+      });
 
       synapses.forEach(([x,y], index) => {
         const pulse = .72 + Math.sin(elapsed / 480 + index * 1.7) * .28;
@@ -294,11 +306,9 @@ function NeuronSnakePreview() {
         context.restore();
       });
 
-      const [headX, headY] = pointAlong(path, grow);
-      const x = headX * width;
-      const y = headY * height;
+      const x = soma[0] * width;
+      const y = soma[1] * height;
       context.save();
-      context.globalAlpha = 1 - deathAmount * .75;
       context.shadowColor = "#2caef5";
       context.shadowBlur = 25;
       const gradient = context.createLinearGradient(x, y - 38, x, y + 28);
@@ -308,25 +318,15 @@ function NeuronSnakePreview() {
       context.restore();
 
       context.save();
-      context.strokeStyle = "#f45f9a"; context.lineWidth = 2; context.setLineDash([5,5]); context.globalAlpha = .75 * (1 - deathAmount);
+      context.strokeStyle = "#f45f9a"; context.lineWidth = 2; context.setLineDash([5,5]); context.globalAlpha = .75;
       context.beginPath(); context.moveTo(x,y + 27); context.lineTo(x,Math.min(height, y + height * .25)); context.stroke(); context.restore();
 
       context.save();
       context.font = `${Math.max(9, width * .012)}px ui-monospace, SFMono-Regular, Menlo, monospace`;
       context.fillStyle = "rgba(111,211,250,.65)";
-      context.fillText(`SYNAPSES  ${String(Math.max(1, Math.round(grow * 8))).padStart(2,"0")}`, 18, height - 18);
-      context.textAlign = "right"; context.fillText(dying ? "APOPTOSIS" : cycle > .91 ? "REGENERATING" : "GROWTH PHASE", width - 18, height - 18);
+      context.fillText(`SYNAPSES  ${String(Math.round(grow * synapses.length)).padStart(2,"0")}`, 18, height - 18);
+      context.textAlign = "right"; context.fillText(cycle > .88 ? "NEURON COMPLETE" : "DENDRITE GROWTH", width - 18, height - 18);
       context.restore();
-
-      if (dying) {
-        context.save();
-        context.textAlign = "center"; context.textBaseline = "middle";
-        context.font = `700 ${Math.max(20, width * .046)}px ui-monospace, SFMono-Regular, Menlo, monospace`;
-        context.shadowColor = "#f04d83"; context.shadowBlur = 24;
-        context.fillStyle = `rgba(255,91,140,${deathAmount * .9})`;
-        context.fillText("APOPTOSIS", width / 2, height / 2);
-        context.restore();
-      }
     };
 
     const start = performance.now();
@@ -341,7 +341,7 @@ function NeuronSnakePreview() {
     return () => { cancelAnimationFrame(animationFrame); observer.disconnect(); };
   }, []);
 
-  return <canvas className="neuronSnakePreview" ref={canvasRef} role="img" aria-label="Slow-motion demo of Neuron Snake growing dendrites, collecting synapses, undergoing apoptosis, and regenerating"/>;
+  return <canvas className="neuronSnakePreview" ref={canvasRef} role="img" aria-label="Slow-motion demo of Neuron Snake with a fixed soma and branching neurites growing toward synapses"/>;
 }
 
 function NeuronParticleBanner() {
