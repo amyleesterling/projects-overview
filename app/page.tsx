@@ -474,7 +474,7 @@ function NeuronParticleBanner() {
   return <div className="neuronBanner" aria-label="Interactive particle simulation of a real pyramidal neuron; move your pointer through it">
     <canvas ref={canvasRef}/>
     <div className="neuronIdentity"><span>NEURAL MORPHOLOGY · 01</span><strong>PYRAMIDAL NEURON</strong><b>PRIMARY VISUAL CORTEX · V1</b></div>
-    <div className="neuronTelemetry"><span><i/>CELL CLASS<b>EXCITATORY</b></span><span><i/>COMPARTMENTS<b>APICAL · BASAL · AXON</b></span><span><i/>DISPLAY<b>PARTICLE MORPHOLOGY</b></span></div>
+    <div className="neuronTelemetry"><span><i/>CELL CLASS<b>EXCITATORY</b></span><span><i/>COMPONENTS<b>DENDRITES · SOMA · AXON</b></span><span><i/>DISPLAY<b>PARTICLE MORPHOLOGY</b></span></div>
     <div className="neuronSignal" aria-hidden="true"><i/><i/><i/><i/><i/><i/><i/><i/><i/><i/><i/><i/></div>
   </div>;
 }
