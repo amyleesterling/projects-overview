@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import ProjectVisual from "./project-visual";
+import InnerCosmosPreview from "./inner-cosmos-preview";
 
 type Repo = { n: string; title?: string; d: string; l: string; u: string; h?: string; t: string; f?: boolean };
 
@@ -463,7 +464,9 @@ function NeuronParticleBanner() {
 
   return <div className="neuronBanner" aria-label="Interactive particle simulation of a real pyramidal neuron; move your pointer through it">
     <canvas ref={canvasRef}/>
-    <div className="neuronCount"><strong>52</strong><span>projects touched<br/>this year</span></div>
+    <div className="neuronIdentity"><span>NEURAL MORPHOLOGY · 01</span><strong>PYRAMIDAL NEURON</strong><b>PRIMARY VISUAL CORTEX · V1</b></div>
+    <div className="neuronTelemetry"><span><i/>CELL CLASS<b>EXCITATORY</b></span><span><i/>COMPARTMENTS<b>APICAL · BASAL · AXON</b></span><span><i/>DISPLAY<b>PARTICLE MORPHOLOGY</b></span></div>
+    <div className="neuronSignal" aria-hidden="true"><i/><i/><i/><i/><i/><i/><i/><i/><i/><i/><i/><i/></div>
   </div>;
 }
 
@@ -523,7 +526,7 @@ export default function Home() {
         <div className="featuredGrid">
           {featured.map((repo, index) => <article className={`featureCard feature${index + 1}`} key={repo.n}>
             <div className="featureTop"><span className="index">0{index + 1}</span><span className={`language ${langClass[repo.l]}`}>{repo.l}</span></div>
-            <div className="featuredShot">{repo.n === "neuron-game" ? <NeuronSnakePreview/> : <img src={featuredImages[repo.n].src} alt={featuredImages[repo.n].alt}/>}</div>
+            <div className="featuredShot">{repo.n === "inner_cosmos" ? <InnerCosmosPreview/> : repo.n === "neuron-game" ? <NeuronSnakePreview/> : <img src={featuredImages[repo.n].src} alt={featuredImages[repo.n].alt}/>}</div>
             <div className="featureCopy"><span className="categoryTag">{categoryFor(repo).short}</span><h3>{repoTitle(repo)}</h3><p>{repo.d}</p></div>
             <a href={repo.h || repo.u} target="_blank" rel="noreferrer" aria-label={`Open ${repoTitle(repo)}`}>Open project <span>↗</span></a>
           </article>)}
