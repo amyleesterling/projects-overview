@@ -134,31 +134,21 @@ h1 em { font-family:Georgia,serif; font-weight:400; color:var(--coral); }
 .fork { margin-right:auto; background:var(--acid); color:var(--ink); padding:4px 7px; text-transform:uppercase; }
 .empty { text-align:center; border:1px solid var(--ink); padding:70px; font-family:Georgia,serif; font-style:italic; font-size:24px; }
 
-/* Every project gets a small, living cover rather than a generic repo tile. */
-.projectVisual { --project-hue:210; --delay:0s; height:230px; min-height:180px; overflow:hidden; position:relative; isolation:isolate; border-bottom:1px solid rgba(101,207,250,.2); background:hsl(var(--project-hue) 67% 58%); }
-.projectVisual.compact { height:180px; min-height:0; border:1px solid rgba(18,20,35,.65); }
-.visualGrid { position:absolute; inset:0; opacity:.24; background-image:linear-gradient(rgba(18,20,35,.42) 1px,transparent 1px),linear-gradient(90deg,rgba(18,20,35,.42) 1px,transparent 1px); background-size:26px 26px; transform:perspective(250px) rotateX(58deg) scale(1.45) translateY(22%); transform-origin:bottom; }
-.orbit { position:absolute; width:110px; height:110px; border:2px solid var(--ink); border-radius:50%; left:20%; top:24%; animation:drift 7s ease-in-out var(--delay) infinite alternate; }
-.orbit:after,.orbit:before { content:""; position:absolute; width:13px; height:13px; border:2px solid var(--ink); background:var(--acid); border-radius:50%; }
-.orbit:before { top:-7px; left:47px; }.orbit:after { bottom:7px; right:4px; }
-.orbitTwo { width:180px; height:70px; left:auto; right:-25px; top:54%; animation-duration:9s; transform:rotate(-18deg); }
-.visualMark { position:absolute; top:18px; right:21px; font:54px/1 Georgia,serif; z-index:2; animation:tilt 5s ease-in-out var(--delay) infinite alternate; }
-.visualInitials { position:absolute; left:18px; bottom:5px; font-size:clamp(62px,8vw,124px); line-height:.8; font-weight:850; letter-spacing:-.12em; color:rgba(18,20,35,.88); z-index:2; }
-.scanline { position:absolute; left:0; right:0; height:2px; top:-4px; background:rgba(255,255,255,.85); box-shadow:0 0 14px white; animation:scan 4.7s linear var(--delay) infinite; z-index:3; }
-.visual-brains { background:radial-gradient(circle at 68% 30%,var(--acid) 0 5%,transparent 5.5%),hsl(var(--project-hue) 58% 67%); }
-.visual-brains .orbit { border-radius:45% 55% 52% 48%; box-shadow:24px 10px 0 -20px var(--ink),-18px 30px 0 -20px var(--ink); }
-.visual-kids { background:linear-gradient(135deg,#86d5ff,#b9f1ec); }
-.visual-kids .orbit { border-radius:28% 72% 34% 66%; border-width:4px; }
-.visual-earth { background:radial-gradient(circle at 46% 47%,var(--blue) 0 12%,transparent 12.5% 22%,var(--ink) 22.5% 23%,transparent 23.5%),hsl(var(--project-hue) 62% 68%); }
-.visual-earth .orbit { width:210px; height:210px; top:-20px; left:20%; border-color:rgba(18,20,35,.5); }
-.visual-ai { background:linear-gradient(115deg,var(--lav),#55bfc7); }
-.visual-ai .visualGrid { background-size:13px 13px; transform:rotate(8deg) scale(1.2); }
-.visual-tools { background:linear-gradient(165deg,#fff 0 34%,#7fd8e8 34%); }
-.visual-tools .orbit { border-radius:4px; width:150px; height:86px; box-shadow:8px 8px 0 var(--ink); }
-.visual-toys { background:conic-gradient(from 40deg at 60% 50%,#2da9e8,#87ddff,var(--acid),var(--teal)); }
-.visual-toys .orbit { border-radius:0; transform:rotate(22deg); }
-.visual-ridiculous { background:var(--acid); }
-.visual-ridiculous .visualMark { font-size:110px; transform:rotate(12deg); color:var(--coral); text-shadow:4px 4px 0 var(--ink); }
+/* Each repository becomes its own tiny particle instrument. */
+.projectVisual { --project-hue:205; height:230px; min-height:180px; overflow:hidden; position:relative; isolation:isolate; border-bottom:1px solid rgba(101,207,250,.2); background:radial-gradient(circle at 50% 46%,hsla(var(--project-hue),70%,35%,.42),transparent 50%),linear-gradient(145deg,#071a2d,#04101d); cursor:crosshair; }
+.projectVisual:after { content:""; position:absolute; inset:0; z-index:3; pointer-events:none; background:linear-gradient(120deg,rgba(91,208,255,.05),transparent 36%,transparent 68%,rgba(31,194,181,.06)); box-shadow:inset 0 0 0 1px rgba(106,214,255,.055),inset 0 -45px 60px -50px rgba(1,7,13,.9); }
+.projectVisual.compact { height:180px; min-height:0; border:1px solid rgba(104,211,255,.16); }
+.projectVisual canvas { display:block; width:100%; height:100%; position:relative; z-index:2; touch-action:none; }
+.visualField { position:absolute; inset:-25% -10% -5%; z-index:1; opacity:.18; pointer-events:none; background-image:linear-gradient(rgba(87,191,235,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(87,191,235,.12) 1px,transparent 1px); background-size:26px 26px; transform:perspective(280px) rotateX(61deg) translateY(23%); transform-origin:bottom; }
+.visualGravity { position:absolute; right:14px; bottom:11px; z-index:4; color:rgba(111,201,237,.47); font:7px var(--font-mono); letter-spacing:.11em; text-transform:uppercase; opacity:0; transform:translateY(4px); transition:opacity .2s,transform .2s; pointer-events:none; }
+.projectVisual:hover .visualGravity { opacity:1; transform:translateY(0); }
+.visual-brains { background:radial-gradient(circle at 50% 48%,rgba(48,139,204,.31),transparent 52%),linear-gradient(145deg,#071b31,#04101d); }
+.visual-kids { background:radial-gradient(circle at 50% 48%,rgba(40,188,190,.22),transparent 55%),linear-gradient(145deg,#08243a,#061421); }
+.visual-earth { background:radial-gradient(circle at 50% 48%,rgba(56,140,222,.26),transparent 54%),linear-gradient(145deg,#071d34,#04101e); }
+.visual-ai { background:radial-gradient(circle at 50% 48%,rgba(105,123,225,.24),transparent 53%),linear-gradient(145deg,#101a3a,#05101f); }
+.visual-tools { background:radial-gradient(circle at 50% 48%,rgba(40,175,199,.22),transparent 54%),linear-gradient(145deg,#082132,#05121e); }
+.visual-toys { background:radial-gradient(circle at 50% 48%,rgba(47,171,222,.25),transparent 54%),linear-gradient(145deg,#071d33,#06101f); }
+.visual-ridiculous { background:radial-gradient(circle at 50% 48%,rgba(255,198,74,.1),transparent 54%),linear-gradient(145deg,#0b2034,#06111f); }
 
 .categoryRooms { display:flex; flex-direction:column; gap:110px; margin-top:40px; }
 .categoryRoom { scroll-margin-top:30px; }

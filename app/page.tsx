@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import ProjectVisual from "./project-visual";
 
 type Repo = { n: string; title?: string; d: string; l: string; u: string; h?: string; t: string; f?: boolean };
 
@@ -172,23 +173,8 @@ function categoryFor(repo: Repo): Category {
   return match || categories.find((category) => category.id === "toys")!;
 }
 
-function projectHue(name: string) {
-  return 185 + [...name].reduce((total, character) => total + character.charCodeAt(0), 0) % 35;
-}
-
 function repoTitle(repo: Repo) {
   return repo.title || repo.n.replaceAll("_", " ").replaceAll("-", " ");
-}
-
-function ProjectVisual({ repo, compact = false }: { repo: Repo; compact?: boolean }) {
-  const category = categoryFor(repo);
-  const hue = projectHue(repo.n);
-  const initials = repo.n.split(/[-_]/).filter(Boolean).slice(0, 2).map((word) => word[0]).join("").toUpperCase();
-  const style = { "--project-hue": hue, "--delay": `${-(hue % 17) / 4}s` } as CSSProperties;
-  return <div className={`projectVisual visual-${category.id} ${compact ? "compact" : ""}`} style={style} aria-hidden="true">
-    <span className="visualGrid"/><span className="orbit orbitOne"/><span className="orbit orbitTwo"/><span className="visualMark">{category.mark}</span>
-    <span className="visualInitials">{initials}</span><span className="scanline"/>
-  </div>;
 }
 
 function prettyDate(date: string) {
@@ -565,7 +551,7 @@ export default function Home() {
         <div className="categoryRooms">{grouped.map(({category, repos: categoryRepos}, roomIndex) => <section className={`categoryRoom room-${category.id}`} key={category.id}>
           <header className="roomHeader"><div className="roomNumber">0{roomIndex + 1}</div><div><p>{category.mark} &nbsp; CATEGORY</p><h3>{category.title}</h3></div><p className="roomDescription">{category.description}</p><span className="roomCount">{categoryRepos.length}<small>projects</small></span></header>
           <div className="storyGrid">{categoryRepos.map((repo, index) => <article className={`storyCard story-${(index % 5) + 1}`} key={repo.n}>
-            <ProjectVisual repo={repo}/>
+            <ProjectVisual name={repo.n} category={categoryFor(repo).id}/>
             <div className="storyBody"><div className="repoMeta"><span className={`language ${langClass[repo.l]}`}><i className={`dot ${langClass[repo.l]}`}/>{repo.l}</span><time dateTime={repo.t}>{prettyDate(repo.t)}</time></div>
               <h4>{repoTitle(repo)}</h4><p>{repo.d}</p>
               <div className="repoLinks">{repo.f && <span className="fork">Fork</span>}{repo.h && <a href={repo.h} target="_blank" rel="noreferrer">See it live ↗</a>}<a href={repo.u} target="_blank" rel="noreferrer">View code ↗</a></div>
