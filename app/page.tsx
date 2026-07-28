@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode } from "react";
 import ProjectVisual from "./project-visual";
 import InnerCosmosPreview from "./inner-cosmos-preview";
 
@@ -353,6 +353,52 @@ function NeuronSnakePreview() {
   return <canvas className="neuronSnakePreview" ref={canvasRef} role="img" aria-label="Slow-motion demo of Neuron Snake with a fixed soma and branching neurites growing toward synapses"/>;
 }
 
+function DraggablePanel({ className, children, label }: { className:string; children:ReactNode; label:string }) {
+  const panelRef = useRef<HTMLDivElement>(null);
+  const dragRef = useRef({ pointerId:-1, startX:0, startY:0, originX:0, originY:0, baseLeft:0, baseTop:0, parentWidth:0, parentHeight:0, width:0, height:0 });
+  const [offset, setOffset] = useState({ x:0, y:0 });
+  const [dragging, setDragging] = useState(false);
+
+  const beginDrag = (event:ReactPointerEvent<HTMLDivElement>) => {
+    const panel = panelRef.current;
+    const parent = panel?.parentElement;
+    if (!panel || !parent) return;
+    const rect = panel.getBoundingClientRect();
+    const parentRect = parent.getBoundingClientRect();
+    dragRef.current = {
+      pointerId:event.pointerId, startX:event.clientX, startY:event.clientY,
+      originX:offset.x, originY:offset.y,
+      baseLeft:rect.left - parentRect.left - offset.x,
+      baseTop:rect.top - parentRect.top - offset.y,
+      parentWidth:parentRect.width, parentHeight:parentRect.height,
+      width:rect.width, height:rect.height,
+    };
+    event.currentTarget.setPointerCapture(event.pointerId);
+    setDragging(true);
+  };
+
+  const moveDrag = (event:ReactPointerEvent<HTMLDivElement>) => {
+    const drag = dragRef.current;
+    if (!dragging || event.pointerId !== drag.pointerId) return;
+    const proposedX = drag.originX + event.clientX - drag.startX;
+    const proposedY = drag.originY + event.clientY - drag.startY;
+    setOffset({
+      x:Math.min(drag.parentWidth - drag.baseLeft - drag.width, Math.max(-drag.baseLeft, proposedX)),
+      y:Math.min(drag.parentHeight - drag.baseTop - drag.height, Math.max(-drag.baseTop, proposedY)),
+    });
+  };
+
+  const endDrag = (event:ReactPointerEvent<HTMLDivElement>) => {
+    if (event.pointerId !== dragRef.current.pointerId) return;
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
+    setDragging(false);
+  };
+
+  return <div ref={panelRef} className={`${className} draggablePanel ${dragging ? "isDragging" : ""}`} style={{"--drag-x":`${offset.x}px`,"--drag-y":`${offset.y}px`} as CSSProperties} onPointerDown={beginDrag} onPointerMove={moveDrag} onPointerUp={endDrag} onPointerCancel={endDrag} role="group" aria-label={label} title="Drag to move">
+    {children}
+  </div>;
+}
+
 function NeuronParticleBanner() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -473,10 +519,20 @@ function NeuronParticleBanner() {
 
   return <div className="neuronBanner" aria-label="Interactive particle simulation of a real pyramidal neuron; move your pointer through it">
     <canvas ref={canvasRef}/>
-    <div className="neuronIdentity"><span>NEURAL MORPHOLOGY · 01</span><strong>PYRAMIDAL NEURON</strong><b>PRIMARY VISUAL CORTEX · V1</b></div>
-    <div className="neuronTelemetry"><span><i/>CELL CLASS<b>EXCITATORY</b></span><span><i/>COMPONENTS<b>DENDRITES · SOMA · AXON</b></span><span><i/>DISPLAY<b>PARTICLE MORPHOLOGY</b></span></div>
+    <DraggablePanel className="neuronIdentity" label="Draggable pyramidal neuron identity panel"><span>NEURAL MORPHOLOGY · 01</span><strong>PYRAMIDAL NEURON</strong><b>PRIMARY VISUAL CORTEX · V1</b></DraggablePanel>
+    <DraggablePanel className="neuronTelemetry" label="Draggable neuron telemetry panel"><span><i/>CELL CLASS<b>EXCITATORY</b></span><span><i/>COMPONENTS<b>DENDRITES · SOMA · AXON</b></span><span><i/>DISPLAY<b>PARTICLE MORPHOLOGY</b></span></DraggablePanel>
     <div className="neuronSignal" aria-hidden="true"><i/><i/><i/><i/><i/><i/><i/><i/><i/><i/><i/><i/></div>
   </div>;
+}
+
+function ArchiveProjectVisual({ repo }: { repo:Repo }) {
+  if (repo.n === "inner_cosmos") return <div className="projectVisual featuredArchiveVisual"><InnerCosmosPreview/></div>;
+  if (repo.n === "neuron-game") return <div className="projectVisual featuredArchiveVisual"><NeuronSnakePreview/></div>;
+  if (repo.n === "eyewire-ii" || repo.n === "flywire-neuron-gallery") {
+    const image = featuredImages[repo.n];
+    return <div className="projectVisual featuredArchiveVisual"><img src={image.src} alt={image.alt}/></div>;
+  }
+  return <ProjectVisual name={repo.n} category={categoryFor(repo).id}/>;
 }
 
 export default function Home() {
@@ -552,7 +608,7 @@ export default function Home() {
         <div className="categoryRooms">{grouped.map(({category, repos: categoryRepos}, roomIndex) => <section className={`categoryRoom room-${category.id}`} key={category.id}>
           <header className="roomHeader"><div className="roomNumber">0{roomIndex + 1}</div><div><p>{category.mark} &nbsp; CATEGORY</p><h3>{category.title}</h3></div><p className="roomDescription">{category.description}</p><span className="roomCount">{categoryRepos.length}<small>projects</small></span></header>
           <div className="storyGrid">{categoryRepos.map((repo, index) => <article className={`storyCard story-${(index % 5) + 1}`} key={repo.n}>
-            <ProjectVisual name={repo.n} category={categoryFor(repo).id}/>
+            <ArchiveProjectVisual repo={repo}/>
             <div className="storyBody"><div className="repoMeta"><span className={`language ${langClass[repo.l]}`}><i className={`dot ${langClass[repo.l]}`}/>{repo.l}</span><time dateTime={repo.t}>{prettyDate(repo.t)}</time></div>
               <h4>{repoTitle(repo)}</h4><p>{repo.d}</p>
               <div className="repoLinks">{repo.f && <span className="fork">Fork</span>}{repo.h && <a href={repo.h} target="_blank" rel="noreferrer">See it live ↗</a>}<a href={repo.u} target="_blank" rel="noreferrer">View code ↗</a></div>
