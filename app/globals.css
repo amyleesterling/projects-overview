@@ -31,18 +31,36 @@ h1 em { font-family:Georgia,serif; font-weight:400; color:var(--coral); }
 .neuronCount strong { font-size:43px; line-height:.8; letter-spacing:-.07em; }
 .neuronCount span { font:9px/1.45 var(--font-mono); letter-spacing:.12em; text-transform:uppercase; color:#a9dff5; }
 .neuronHint { position:absolute; right:29px; bottom:25px; color:#a9dff5; font:9px var(--font-mono); letter-spacing:.13em; text-transform:uppercase; pointer-events:none; }
-.pulse { background:#040b14; color:white; display:grid; grid-template-columns:.8fr 1.3fr .9fr; gap:7vw; padding:56px 7vw; align-items:center; border-top:1px solid rgba(87,197,244,.14); border-bottom:1px solid rgba(87,197,244,.14); box-shadow:inset 0 0 90px rgba(25,129,176,.05); }
+.pulse { background:#040b14; color:white; display:grid; grid-template-columns:minmax(245px,.62fr) minmax(0,1.9fr); gap:6vw; padding:58px 7vw 46px; align-items:end; border-top:1px solid rgba(87,197,244,.14); border-bottom:1px solid rgba(87,197,244,.14); box-shadow:inset 0 0 90px rgba(25,129,176,.05); }
 .pulseIntro span { font-family:var(--font-mono); color:var(--acid); font-size:11px; letter-spacing:.15em; display:block; margin-bottom:12px; }
 .pulseIntro strong { font-size:22px; line-height:1.25; letter-spacing:-.03em; }
-.bars { height:110px; display:flex; gap:18px; align-items:end; }
-.barItem { height:100%; flex:1; text-align:center; color:#9b9ca8; font:11px var(--font-mono); }
-.barTrack { height:88px; display:flex; align-items:end; border-bottom:1px solid #555665; }
-.barFill { width:100%; background:linear-gradient(180deg,var(--blue),var(--teal)); min-height:14px; position:relative; transition:.3s; }
-.barFill.emptyBar { min-height:0; }
-.barFill span { position:absolute; top:-18px; left:0; right:0; color:white; font-size:10px; }
-.barItem small { display:block; margin-top:7px; }
-.languageSummary { display:grid; grid-template-columns:1fr 1fr; gap:14px; font:11px var(--font-mono); }
-.languageSummary span { display:flex; gap:8px; align-items:center; }
+.pulseIntro p { color:#7896a7; margin:13px 0 0; font:10px/1.5 var(--font-mono); letter-spacing:.05em; }
+.pulseIntro p b { color:#78d8ff; font-size:13px; }
+.pulseChart { min-width:0; }
+.commitBars { height:132px; display:flex; align-items:flex-end; gap:clamp(2px,.34vw,6px); padding-top:28px; border-bottom:1px solid rgba(102,202,243,.25); position:relative; }
+.commitBarItem { flex:1; min-width:3px; height:100%; display:flex; align-items:flex-end; position:relative; outline:none; }
+.commitBar { width:100%; height:var(--bar-height); min-height:3px; border-radius:3px 3px 0 0; background:linear-gradient(180deg,#76d8ff 0%,#2bace3 48%,#168f9f 100%); box-shadow:0 0 10px rgba(52,184,230,.14); opacity:.78; transition:opacity .2s,filter .2s,transform .2s; transform-origin:bottom; }
+.commitBarItem:nth-child(4n+2) .commitBar { background:linear-gradient(180deg,#9fcaff,#47bce8 52%,#157f9e); }
+.commitBarItem:nth-child(4n+3) .commitBar { background:linear-gradient(180deg,#63e4e1,#22b7c3 55%,#116f8b); }
+.commitBarItem.quietRepo .commitBar { background:#3f5967; opacity:.45; }
+.commitBarItem:hover .commitBar,.commitBarItem:focus-visible .commitBar { opacity:1; filter:brightness(1.25); transform:scaleX(1.7); box-shadow:0 0 18px rgba(92,211,255,.5); }
+.commitTooltip { width:265px; padding:14px; position:absolute; z-index:8; left:50%; bottom:calc(100% + 11px); transform:translateX(-50%) translateY(5px); opacity:0; visibility:hidden; pointer-events:none; border:1px solid rgba(100,210,255,.34); border-radius:12px; background:rgba(4,16,29,.97); box-shadow:0 20px 55px rgba(0,0,0,.55),0 0 28px rgba(45,184,237,.1); backdrop-filter:blur(16px); transition:opacity .18s,transform .18s,visibility .18s; }
+.commitBarItem:nth-child(-n+7) .commitTooltip { left:0; transform:translateY(5px); }
+.commitBarItem:nth-last-child(-n+7) .commitTooltip { left:auto; right:0; transform:translateY(5px); }
+.commitBarItem:hover .commitTooltip,.commitBarItem:focus-visible .commitTooltip { opacity:1; visibility:visible; transform:translateX(-50%) translateY(0); }
+.commitBarItem:nth-child(-n+7):hover .commitTooltip,.commitBarItem:nth-child(-n+7):focus-visible .commitTooltip,.commitBarItem:nth-last-child(-n+7):hover .commitTooltip,.commitBarItem:nth-last-child(-n+7):focus-visible .commitTooltip { transform:translateY(0); }
+.tooltipTop { display:flex; justify-content:space-between; align-items:baseline; gap:12px; font-family:var(--font-mono); }
+.tooltipTop b { color:#dff7ff; font-size:11px; overflow-wrap:anywhere; }
+.tooltipTop em { color:#ffd166; font-size:10px; font-style:normal; white-space:nowrap; }
+.monthBreakdown { height:75px; display:flex; gap:7px; align-items:flex-end; margin:16px 0 10px; border-bottom:1px solid rgba(108,205,245,.17); }
+.monthColumn { height:100%; flex:1; display:flex; align-items:center; justify-content:flex-end; flex-direction:column; position:relative; }
+.monthColumn i { width:100%; height:var(--month-height); min-height:1px; background:linear-gradient(#63cefa,#188db1); opacity:.9; }
+.monthColumn small { position:absolute; top:calc(100% + 4px); color:#7293a3; font:7px var(--font-mono); }
+.monthColumn strong { position:absolute; bottom:calc(var(--month-height) + 3px); color:#b9dfef; font:7px var(--font-mono); }
+.tooltipHint { display:block; margin-top:18px; color:#61c8ef; font:8px var(--font-mono); letter-spacing:.1em; text-transform:uppercase; }
+.pulseLegend { display:flex; justify-content:space-between; gap:16px; margin-top:12px; color:#66889a; font:8px var(--font-mono); letter-spacing:.06em; text-transform:uppercase; }
+.pulseLegend span { display:flex; align-items:center; gap:7px; }
+.pulseLegend i { width:14px; height:2px; display:inline-block; background:#42c7ee; box-shadow:0 0 7px rgba(66,199,238,.5); }
 .dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:#aaa; flex:none; }
 .dot.html,.language.html:before { background:var(--coral); }.dot.ts,.language.ts:before { background:var(--blue); }.dot.js,.language.js:before { background:var(--acid); }.dot.py,.language.py:before { background:var(--lav); }.dot.other,.language.other:before { background:#aaa; }
 .section { padding:110px 7vw; }
@@ -169,3 +187,5 @@ footer>div { display:flex; gap:16px; align-items:center; }footer p { margin:0; c
 @media (max-width:900px) { .hero { grid-template-columns:1fr; padding-top:70px; }.neuronBanner { width:min(100%,650px); height:430px; justify-self:center; }.pulse { grid-template-columns:1fr 1fr; }.languageSummary { grid-column:1/-1; }.publishedCard { grid-column:span 6; }.featuredGrid { grid-auto-rows:auto; }.featureCard { grid-column:span 12; min-height:600px; }.repoGrid { grid-template-columns:repeat(2,1fr); }.controls { align-items:flex-start; flex-direction:column; }.search { width:100%; max-width:none; }.roomHeader { grid-template-columns:45px 1fr 80px; }.roomDescription { grid-column:2/4; margin:0; }.storyCard,.storyCard.story-1,.storyCard.story-2 { grid-column:span 6; }.storyCard.story-1 .projectVisual,.storyCard.story-2 .projectVisual { height:260px; } }
 @media (max-width:600px) { .topbar { height:68px; }.wordmark { font-size:13px; }.navlinks>a:not(.navButton) { display:none; }.hero { padding:64px 6vw; min-height:0; }.neuronBanner { height:340px; border-radius:38px; }.neuronHint { display:none; }.pulse { grid-template-columns:1fr; }.bars { order:3; }.languageSummary { grid-column:auto; }.section { padding:78px 5vw; }.sectionHeading { align-items:flex-start; flex-direction:column; }.sectionHeading>p { margin:0; }.publishedGrid { display:block; }.publishedCard { display:block; margin-bottom:18px; }.publishedImage { height:340px; }.repoGrid { grid-template-columns:1fr; }.filters { gap:5px; }.filters button { padding:9px 10px; }.repoCard { min-height:220px; }.featuredGrid { display:block; }.featureCard { margin-bottom:14px; }.navButton { padding:10px 14px; }footer { grid-template-columns:1fr; }.footerQuote { margin:20px 0; }.categoryRooms { gap:75px; }.roomHeader { grid-template-columns:35px 1fr 60px; gap:12px; }.roomHeader h3 { font-size:34px; }.roomDescription { grid-column:1/4; }.roomCount { font-size:38px; }.storyGrid { display:block; }.storyCard,.storyCard.story-1,.storyCard.story-2 { margin-bottom:18px; }.projectVisual,.storyCard.story-1 .projectVisual,.storyCard.story-2 .projectVisual { height:235px; }.categoryFilters { flex-wrap:nowrap; overflow:auto; max-width:100%; padding-bottom:8px; }.categoryFilters button { white-space:nowrap; }.archive { overflow:hidden; } }
 @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; }.featureCard,.storyCard { transition:none; }.orbit,.visualMark,.scanline { animation:none; } }
+@media (max-width:900px) { .pulse { grid-template-columns:minmax(220px,.7fr) minmax(0,1.3fr); gap:4vw; } }
+@media (max-width:600px) { .pulse { grid-template-columns:1fr; padding:46px 5vw 34px; gap:22px; }.pulseChart { overflow-x:auto; overflow-y:hidden; padding-top:130px; margin-top:-120px; padding-bottom:5px; }.commitBars,.pulseLegend { min-width:720px; }.commitBars { margin-top:0; }.pulseLegend { padding-bottom:4px; } }

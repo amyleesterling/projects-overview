@@ -66,7 +66,37 @@ const featuredImages: Record<string, { src: string; alt: string }> = {
   "flywire-neuron-gallery": { src:"/featured/flywire-neuron-gallery.webp", alt:"A full Drosophila brain reconstructed from thousands of color-coded neurons" },
   "neuron-game": { src:"/featured/neuron-game.png", alt:"Neuron Snake game title screen on a dark scientific grid" },
 };
-const monthCounts = [{m:"Jan",n:0},{m:"Feb",n:4},{m:"Mar",n:11},{m:"Apr",n:6},{m:"May",n:6},{m:"Jun",n:3},{m:"Jul",n:22}];
+const pulseMonths = ["Jan","Feb","Mar","Apr","May","Jun","Jul"];
+const commitPulse = [
+  {n:"inner_cosmos",c:133,m:[0,0,0,78,51,0,4]}, {n:"neuron-game",c:106,m:[0,0,106,0,0,0,0]},
+  {n:"seunglabdata",c:80,m:[0,22,1,0,0,0,57]}, {n:"amysterling",c:69,m:[0,65,0,3,0,0,1]},
+  {n:"kids-who-vibecode",c:69,m:[0,0,0,0,0,0,69]}, {n:"philogelos",c:61,m:[0,0,61,0,0,0,0]},
+  {n:"partypost",c:44,m:[0,0,0,0,37,0,7]}, {n:"science-experiment",c:43,m:[0,0,0,0,0,0,43]},
+  {n:"whatisabrain",c:43,m:[0,0,0,0,0,0,43]}, {n:"theLastWebsite",c:41,m:[0,0,41,0,0,0,0]},
+  {n:"Department_of_Ridiculous",c:40,m:[0,0,25,15,0,0,0]}, {n:"eyewire-ii",c:33,m:[0,0,21,12,0,0,0]},
+  {n:"flywire-neuron-gallery",c:21,m:[0,0,0,0,21,0,0]}, {n:"coras-mermaid",c:17,m:[0,17,0,0,0,0,0]},
+  {n:"atlas-of-the-unseen",c:17,m:[0,0,0,0,0,0,17]}, {n:"heat-wave",c:14,m:[0,0,0,0,0,0,14]},
+  {n:"sophie-shark-game",c:12,m:[0,0,0,0,0,0,12]}, {n:"MagicBoard",c:12,m:[6,0,0,0,0,6,0]},
+  {n:"cribbles",c:10,m:[0,10,0,0,0,0,0]}, {n:"fabled-jokes",c:10,m:[0,0,0,0,0,0,10]},
+  {n:"what-i-am",c:9,m:[0,9,0,0,0,0,0]}, {n:"thefartsite",c:9,m:[7,0,0,0,0,2,0]},
+  {n:"hurricane",c:8,m:[0,0,0,0,0,0,8]}, {n:"the650",c:8,m:[0,0,0,0,0,0,8]},
+  {n:"bouncebar",c:8,m:[0,8,0,0,0,0,0]}, {n:"kindling",c:6,m:[0,0,0,0,0,4,2]},
+  {n:"badges",c:6,m:[0,0,6,0,0,0,0]}, {n:"youth-sports-moneymachine",c:6,m:[0,0,0,0,0,0,6]},
+  {n:"extremely-strange",c:5,m:[0,0,0,0,0,0,5]}, {n:"fableous",c:5,m:[0,0,0,0,0,0,5]},
+  {n:"cocos-mythic-meadow",c:5,m:[0,0,0,0,0,0,5]}, {n:"neuronal-surprise-surfing",c:5,m:[0,0,0,0,5,0,0]},
+  {n:"inner-cosmos",c:5,m:[0,0,0,0,0,0,5]}, {n:"shield",c:4,m:[0,0,4,0,0,0,0]},
+  {n:"explore-the-verse-2-",c:4,m:[0,0,0,0,4,0,0]}, {n:"eyewire-ii-tags",c:3,m:[0,0,3,0,0,0,0]},
+  {n:"moontoast",c:3,m:[0,0,0,0,3,0,0]}, {n:"build-a-planet",c:3,m:[0,0,0,3,0,0,0]},
+  {n:"wood-coal-pizza",c:2,m:[0,0,0,0,0,2,0]}, {n:"stretch-ai",c:2,m:[0,0,2,0,0,0,0]},
+  {n:"explore-the-universe",c:1,m:[0,0,0,0,1,0,0]}, {n:"ridiculous",c:1,m:[0,0,1,0,0,0,0]},
+  {n:"realFeel_climateCompare",c:1,m:[0,0,1,0,0,0,0]}, {n:"drosophila_datause_2026",c:1,m:[0,0,0,0,1,0,0]},
+  {n:"synapticConnection",c:1,m:[0,0,1,0,0,0,0]}, {n:"eyewire-ii-tutorial",c:1,m:[0,0,1,0,0,0,0]},
+  {n:"eyewire-ii-avatar",c:1,m:[0,0,0,1,0,0,0]}, {n:"ma-car-lease-analysis-",c:1,m:[0,0,0,0,0,0,1]},
+  {n:"inner-cosmos-wall",c:1,m:[0,0,0,0,0,0,1]}, {n:"AnnotationEngine",c:0,m:[0,0,0,0,0,0,0]},
+  {n:"vibeshift",c:0,m:[0,0,0,0,0,0,0]}, {n:"animateKidStories",c:0,m:[0,0,0,0,0,0,0]},
+];
+const totalPublicCommits = commitPulse.reduce((total, repo) => total + repo.c, 0);
+const maxRepoCommits = Math.max(...commitPulse.map((repo) => repo.c));
 const langClass: Record<string,string> = {HTML:"html",TypeScript:"ts",JavaScript:"js",Python:"py",Other:"other"};
 
 const publishedWorks = [
@@ -453,10 +483,27 @@ export default function Home() {
         <NeuronParticleBanner />
       </header>
 
-      <section className="pulse" aria-label="2026 project activity by month, year to date">
-        <div className="pulseIntro"><span>THE PULSE · JAN–JUL 2026</span><strong>52 projects touched this year so far.</strong></div>
-        <div className="bars">{monthCounts.map(({m,n}) => <div className="barItem" key={m}><div className="barTrack"><div className={`barFill ${n === 0 ? "emptyBar" : ""}`} style={{height:n === 0 ? "0%" : `${Math.max(14, n/23*100)}%`}}><span>{n}</span></div></div><small>{m}</small></div>)}</div>
-        <div className="languageSummary"><span><i className="dot html"/>18 HTML</span><span><i className="dot ts"/>13 TypeScript</span><span><i className="dot js"/>10 JavaScript</span><span><i className="dot py"/>3 Python</span><span><i className="dot other"/>8 Other</span></div>
+      <section className="pulse" aria-label="2026 public commit activity by repository">
+        <div className="pulseIntro"><span>THE CODE PULSE · 2026</span><strong>52 projects touched this year.</strong><p><b>{totalPublicCommits}</b> public commits across the collection.</p></div>
+        <div className="pulseChart">
+          <div className="commitBars" aria-label="One bar per public repository, ordered by commit count">
+            {commitPulse.map((item) => {
+              const repo = repos.find((candidate) => candidate.n === item.n);
+              const title = repo ? repoTitle(repo) : item.n;
+              const barHeight = item.c ? Math.max(6, Math.log1p(item.c) / Math.log1p(maxRepoCommits) * 100) : 2;
+              const monthMax = Math.max(...item.m, 1);
+              return <a className={`commitBarItem ${item.c === 0 ? "quietRepo" : ""}`} href={repo?.u || `https://github.com/amyleesterling/${item.n}`} target="_blank" rel="noreferrer" key={item.n} aria-label={`${title}: ${item.c} public commits in 2026. Open repository.`}>
+                <span className="commitBar" style={{"--bar-height":`${barHeight}%`} as CSSProperties}/>
+                <span className="commitTooltip">
+                  <span className="tooltipTop"><b>{title}</b><em>{item.c} {item.c === 1 ? "commit" : "commits"}</em></span>
+                  <span className="monthBreakdown">{item.m.map((count, index) => <span className="monthColumn" key={pulseMonths[index]}><i style={{"--month-height":`${count ? Math.max(8, count / monthMax * 100) : 2}%`} as CSSProperties}/><small>{pulseMonths[index]}</small><strong>{count}</strong></span>)}</span>
+                  <span className="tooltipHint">View repository ↗</span>
+                </span>
+              </a>;
+            })}
+          </div>
+          <div className="pulseLegend"><span><i/>Each line is one repository</span><span>Hover to see commits by month</span><span>GitHub public contributions · Jan–Jul</span></div>
+        </div>
       </section>
 
       <section className="published section" id="published">
