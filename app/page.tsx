@@ -366,45 +366,48 @@ function NeuronParticleBanner() {
     const context = canvas.getContext("2d");
     if (!context) return;
 
-    // A responsive banner port of amyleesterling/amysterling/particles.html.
-    type Particle = { x:number; y:number; baseX:number; baseY:number; vx:number; vy:number; size:number; warmth:boolean };
+    // Faithful responsive port of amyleesterling/amysterling/particles.html.
+    type Particle = { x:number; y:number; baseX:number; baseY:number; vx:number; vy:number; size:number; density:number };
     let particles: Particle[] = [];
     let animationFrame = 0;
     let width = 0;
     let height = 0;
+    let imageReady = false;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const pointer = { x:-1000, y:-1000, active:false };
 
-    const addPoint = (x:number, y:number, index:number) => particles.push({
-      x:x + (Math.random() - .5) * 12, y:y + (Math.random() - .5) * 12,
-      baseX:x, baseY:y, vx:0, vy:0, size:1.2 + Math.random() * 1.8, warmth:index % 37 === 0,
-    });
+    const sourceImage = new Image();
 
-    const buildNeuron = () => {
+    const buildPyramidalNeuron = () => {
+      if (!imageReady || !width || !height) return;
       particles = [];
-      const centerX = width * .51;
-      const centerY = height * .51;
-      let index = 0;
-      for (let radius = 0; radius < Math.min(width, height) * .105; radius += 7) {
-        const count = Math.max(10, Math.round(radius * .9));
-        for (let step = 0; step < count; step += 2) {
-          const angle = step / count * Math.PI * 2;
-          addPoint(centerX + Math.cos(angle) * radius, centerY + Math.sin(angle) * radius * .82, index++);
-        }
-      }
-      const branches = [-2.75, -2.1, -1.48, -.72, -.12, .55, 1.18, 2.45];
-      branches.forEach((angle, branchIndex) => {
-        const length = Math.min(width * .34, height * (.29 + (branchIndex % 3) * .07));
-        for (let distance = 48; distance < length; distance += 7) {
-          const bend = Math.sin(distance / 34 + branchIndex) * 12;
-          const x = centerX + Math.cos(angle) * distance + Math.cos(angle + Math.PI / 2) * bend;
-          const y = centerY + Math.sin(angle) * distance + Math.sin(angle + Math.PI / 2) * bend;
-          addPoint(x, y, index++);
-          if (distance > length * .55 && distance % 21 < 7) {
-            const twigAngle = angle + (branchIndex % 2 ? .62 : -.62);
-            for (let twig = 7; twig < length * .25; twig += 8) addPoint(x + Math.cos(twigAngle) * twig, y + Math.sin(twigAngle) * twig, index++);
+      const sourceCanvas = document.createElement("canvas");
+      sourceCanvas.width = sourceImage.naturalWidth;
+      sourceCanvas.height = sourceImage.naturalHeight;
+      const sourceContext = sourceCanvas.getContext("2d", { willReadFrequently:true });
+      if (!sourceContext) return;
+      sourceContext.drawImage(sourceImage, 0, 0);
+      const pixels = sourceContext.getImageData(0, 0, sourceCanvas.width, sourceCanvas.height).data;
+      const maxWidth = Math.min(width * .86, 720);
+      const maxHeight = height * .93;
+      const imageScale = Math.min(maxWidth / sourceCanvas.width, maxHeight / sourceCanvas.height);
+      const scaledWidth = sourceCanvas.width * imageScale;
+      const scaledHeight = sourceCanvas.height * imageScale;
+      const offsetX = (width - scaledWidth) / 2;
+      const offsetY = (height - scaledHeight) / 2;
+      const spacing = width < 500 ? 6 : 5;
+
+      for (let sourceY = 0; sourceY < sourceCanvas.height; sourceY += spacing) {
+        for (let sourceX = 0; sourceX < sourceCanvas.width; sourceX += spacing) {
+          const pixel = (sourceY * sourceCanvas.width + sourceX) * 4;
+          const alpha = pixels[pixel + 3];
+          if (alpha > 30 && (pixels[pixel] > 20 || pixels[pixel + 1] > 20 || pixels[pixel + 2] > 20)) {
+            const x = offsetX + sourceX * imageScale;
+            const y = offsetY + sourceY * imageScale;
+            particles.push({ x, y, baseX:x, baseY:y, vx:0, vy:0, size:width < 500 ? 1.15 : 1.45, density:10 + Math.random() * 50 });
           }
         }
-      });
+      }
     };
 
     const resize = () => {
@@ -413,42 +416,66 @@ function NeuronParticleBanner() {
       width = rect.width; height = rect.height;
       canvas.width = Math.round(width * scale); canvas.height = Math.round(height * scale);
       context.setTransform(scale, 0, 0, scale, 0, 0);
-      buildNeuron();
+      buildPyramidalNeuron();
     };
     const move = (event: PointerEvent) => {
       const rect = canvas.getBoundingClientRect();
       pointer.x = event.clientX - rect.left; pointer.y = event.clientY - rect.top; pointer.active = true;
     };
-    const leave = () => { pointer.active = false; };
+    const leave = () => { pointer.active = false; pointer.x = -1000; pointer.y = -1000; };
     const draw = () => {
       context.clearRect(0, 0, width, height);
-      for (const particle of particles) {
-        if (pointer.active) {
+      const now = performance.now();
+      for (let index = 0; index < particles.length; index++) {
+        const particle = particles[index];
+        if (pointer.active && !reduceMotion) {
           const dx = pointer.x - particle.x; const dy = pointer.y - particle.y;
           const distance = Math.hypot(dx, dy) || 1;
-          if (distance < 115) {
-            const force = (115 - distance) / 115;
-            particle.vx -= dx / distance * force * 1.3; particle.vy -= dy / distance * force * 1.3;
+          const radius = Math.min(150, width * .3);
+          if (distance < radius) {
+            const force = (radius - distance) / radius;
+            const turbulence = (Math.random() - .5) * .9;
+            particle.vx = -(dx / distance) * force * particle.density * .16 + turbulence;
+            particle.vy = -(dy / distance) * force * particle.density * .16 + turbulence;
           }
         }
-        particle.vx += (particle.baseX - particle.x) * .025; particle.vy += (particle.baseY - particle.y) * .025;
-        particle.vx *= .88; particle.vy *= .88; particle.x += particle.vx; particle.y += particle.vy;
-        context.fillStyle = particle.warmth ? "rgba(255,216,90,.95)" : "rgba(91,205,255,.9)";
+        particle.vx *= .94; particle.vy *= .94;
+        particle.x += particle.vx + (particle.baseX - particle.x) / 8;
+        particle.y += particle.vy + (particle.baseY - particle.y) / 8;
+        const shimmer = .76 + Math.sin(index * .17 + now * .0014) * .16;
+        context.fillStyle = `rgba(111,151,255,${shimmer})`;
         context.beginPath(); context.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2); context.fill();
       }
-      animationFrame = requestAnimationFrame(draw);
+
+      context.save();
+      context.strokeStyle = "rgba(87,187,255,.13)";
+      context.lineWidth = .55;
+      for (let index = 0; index < particles.length; index += 3) {
+        const particle = particles[index];
+        for (let neighbor = index + 3; neighbor < Math.min(index + 42, particles.length); neighbor += 3) {
+          const next = particles[neighbor];
+          if (Math.hypot(particle.x - next.x, particle.y - next.y) < 11) {
+            context.beginPath(); context.moveTo(particle.x, particle.y); context.lineTo(next.x, next.y); context.stroke();
+          }
+        }
+      }
+      context.restore();
+      if (!reduceMotion) animationFrame = requestAnimationFrame(draw);
     };
 
-    resize(); draw();
-    const observer = new ResizeObserver(resize); observer.observe(canvas);
+    sourceImage.onload = () => { imageReady = true; resize(); draw(); };
+    sourceImage.src = "/featured/pyramidal-neuron.png";
+    resize();
+    const observer = new ResizeObserver(() => { resize(); if (reduceMotion && imageReady) draw(); }); observer.observe(canvas);
     canvas.addEventListener("pointermove", move); canvas.addEventListener("pointerleave", leave);
     return () => {
       cancelAnimationFrame(animationFrame); observer.disconnect();
+      sourceImage.onload = null;
       canvas.removeEventListener("pointermove", move); canvas.removeEventListener("pointerleave", leave);
     };
   }, []);
 
-  return <div className="neuronBanner" aria-label="Interactive particle neuron; move your pointer through it">
+  return <div className="neuronBanner" aria-label="Interactive particle simulation of a real pyramidal neuron; move your pointer through it">
     <canvas ref={canvasRef}/>
     <div className="neuronCount"><strong>52</strong><span>projects touched<br/>this year</span></div>
     <span className="neuronHint">move through the neuron</span>
