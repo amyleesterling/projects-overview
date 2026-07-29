@@ -86,6 +86,7 @@ export default function RepositoryWorld({projects}:{projects:RepositoryWorldProj
   const graph=useMemo(()=>buildGraph(projects),[projects]);
   const [active,setActive]=useState("all");
   const [selected,setSelected]=useState<RepositoryWorldProject|null>(null);
+  const [infoOpen,setInfoOpen]=useState(false);
   const categories=useMemo(()=>[...new Map(projects.map(project=>[project.category,{id:project.category,title:project.categoryTitle}])).values()],[projects]);
 
   useEffect(()=>{
@@ -162,6 +163,17 @@ export default function RepositoryWorld({projects}:{projects:RepositoryWorldProj
     <div className="worldControls" aria-label="Repository neighborhoods"><button className={active==="all"?"active":""} onClick={()=>setActive("all")}>Whole world</button>{categories.map(category=><button className={active===category.id?"active":""} onClick={()=>setActive(category.id)} key={category.id}><i style={{background:neighborhoodColors[category.id]}}/>{category.title}</button>)}</div>
     <div className="worldStage">
       <canvas ref={canvasRef} role="img" aria-label="Interactive network graph of 52 repositories grouped into seven semantic neighborhoods. Drag nodes to rearrange the map and select a repository for details."/>
+      <button className="worldInfoButton" type="button" aria-label={infoOpen?"Close community detection information":"How are repository communities detected?"} aria-expanded={infoOpen} aria-controls="world-method" onClick={()=>setInfoOpen(open=>!open)}>{infoOpen?"×":"i"}</button>
+      <aside className={`worldMethod ${infoOpen?"visible":""}`} id="world-method" aria-hidden={!infoOpen}>
+        <p>HOW THIS WORLD ORGANIZES ITSELF</p>
+        <h3>Community detection</h3>
+        <ol>
+          <li><b>Connect.</b><span>Names and descriptions become semantic signals. Shared ideas, technology, and project-family names create weighted links.</span></li>
+          <li><b>Detect.</b><span>Repositories repeatedly adopt the strongest neighboring community through weighted label propagation. The seven editorial categories provide only a light prior.</span></li>
+          <li><b>Settle.</b><span>Related projects attract, all projects repel, and neighborhood gravity keeps the world readable as the graph moves.</span></li>
+        </ol>
+        <div><span><i className="methodNode"/>Node size = 2026 commits</span><span><i className="methodRing"/>Ring = featured project</span><span><i className="methodLink"/>Line = inferred relationship</span></div>
+      </aside>
       <div className="worldReadout"><span>SEMANTIC SIMILARITY</span><span>WEIGHTED LABEL PROPAGATION</span><span>DRAG · SELECT · EXPLORE</span></div>
     </div>
     <div className={`worldSelection ${selected?"visible":""}`} aria-live="polite">{selected?<><span className="worldSelectionDot" style={{background:neighborhoodColors[selected.category]}}/><strong>{selected.title}</strong><span>{selected.description}</span><span>{selected.commits} commits · {selected.language}</span><a href={selected.url} target="_blank" rel="noreferrer">View repository ↗</a></>:<span>Select a node to inspect a repository.</span>}</div>
