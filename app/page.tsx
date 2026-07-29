@@ -5,9 +5,10 @@ import ProjectVisual from "./project-visual";
 import InnerCosmosPreview from "./inner-cosmos-preview";
 import RepositoryWorld from "./repository-world";
 
-type Repo = { n: string; title?: string; d: string; l: string; u: string; h?: string; t: string; f?: boolean };
+type Repo = { n: string; title?: string; d: string; l: string; u: string; h?: string; p?: string; t: string; f?: boolean };
 
 const repos: Repo[] = [
+  {n:"ca3",title:"CA3 Renderings",d:"A cinematic atlas of 982 real cells from a connectomic reconstruction of mouse hippocampal CA3—rendered from roughly 124 million triangles.",l:"HTML",u:"https://github.com/amyleesterling/ca3",h:"https://amyleesterling.github.io/ca3/",p:"https://doi.org/10.1101/2025.07.09.663979",t:"2026-07-29"},
   {n:"philogelos",d:"Funny philosopher.",l:"HTML",u:"https://github.com/amyleesterling/philogelos",t:"2026-07-26"},
   {n:"inner-cosmos",d:"A hub linking every Inner Cosmos experience: main site, kids, museum wall, scales, and citations.",l:"HTML",u:"https://github.com/amyleesterling/inner-cosmos",t:"2026-07-23"},
   {n:"partypost",d:"A free kids’ birthday party RSVP tool.",l:"TypeScript",u:"https://github.com/amyleesterling/partypost",h:"https://partypost.vercel.app",t:"2026-07-20"},
@@ -62,8 +63,9 @@ const repos: Repo[] = [
   {n:"coras-mermaid",d:"A site created by Cora, age four.",l:"JavaScript",u:"https://github.com/amyleesterling/coras-mermaid",t:"2026-02-06"},
 ];
 
-const featuredNames = ["inner_cosmos", "eyewire-ii", "flywire-neuron-gallery", "neuron-game"];
+const featuredNames = ["ca3", "inner_cosmos", "eyewire-ii", "flywire-neuron-gallery", "neuron-game"];
 const featuredImages: Record<string, { src: string; alt: string }> = {
+  "ca3": { src:"https://amyleesterling.github.io/ca3/images/00_banner.jpg", alt:"A dense rendering of CA3 pyramidal cells, interneurons, and mossy fiber axons" },
   "inner_cosmos": { src:"/featured/inner-cosmos.png", alt:"Inner Cosmos landing page surrounded by real reconstructed neurons" },
   "eyewire-ii": { src:"/featured/eyewire-ii.png", alt:"EyeWire II neural access and identity verification screen" },
   "flywire-neuron-gallery": { src:"/featured/flywire-neuron-gallery.webp", alt:"A full Drosophila brain reconstructed from thousands of color-coded neurons" },
@@ -71,6 +73,7 @@ const featuredImages: Record<string, { src: string; alt: string }> = {
 };
 const pulseMonths = ["Jan","Feb","Mar","Apr","May","Jun","Jul"];
 const commitPulse = [
+  {n:"ca3",c:34,m:[0,0,0,0,0,0,34]},
   {n:"inner_cosmos",c:133,m:[0,0,0,78,51,0,4]}, {n:"neuron-game",c:106,m:[0,0,106,0,0,0,0]},
   {n:"seunglabdata",c:80,m:[0,22,1,0,0,0,57]}, {n:"amysterling",c:69,m:[0,65,0,3,0,0,1]},
   {n:"kids-who-vibecode",c:69,m:[0,0,0,0,0,0,69]}, {n:"philogelos",c:61,m:[0,0,61,0,0,0,0]},
@@ -182,7 +185,7 @@ const categories: Category[] = [
 ];
 
 const categoryNames: Record<CategoryId, string[]> = {
-  brains:["inner-cosmos","seunglabdata","the650","whatisabrain","science-experiment","inner_cosmos","inner-cosmos-wall","drosophila_datause_2026","flywire-neuron-gallery","neuronal-surprise-surfing","eyewire-ii","AnnotationEngine","eyewire-ii-avatar","synapticConnection","neuron-game","eyewire-ii-tutorial","eyewire-ii-tags"],
+  brains:["ca3","inner-cosmos","seunglabdata","the650","whatisabrain","science-experiment","inner_cosmos","inner-cosmos-wall","drosophila_datause_2026","flywire-neuron-gallery","neuronal-surprise-surfing","eyewire-ii","AnnotationEngine","eyewire-ii-avatar","synapticConnection","neuron-game","eyewire-ii-tutorial","eyewire-ii-tags"],
   kids:["kids-who-vibecode","sophie-shark-game","cocos-mythic-meadow","heat-wave","MagicBoard","thefartsite","moontoast","animateKidStories","coras-mermaid"],
   earth:["hurricane","youth-sports-moneymachine","ma-car-lease-analysis-","wood-coal-pizza","explore-the-universe","explore-the-verse-2-","build-a-planet","realFeel_climateCompare"],
   ai:["atlas-of-the-unseen","extremely-strange","fableous","kindling","vibeshift","what-i-am","cribbles"],
@@ -207,7 +210,7 @@ function prettyDate(date: string) {
 const repositoryWorldProjects = repos.map((repo) => {
   const category=categoryFor(repo);
   const pulse=commitPulse.find(item=>item.n===repo.n);
-  return {name:repo.n,title:repoTitle(repo),description:repo.d,language:repo.l,url:repo.u,liveUrl:repo.h,thumbnail:featuredImages[repo.n]?.src,category:category.id,categoryTitle:category.title,commits:pulse?.c||0,months:pulse?.m||[0,0,0,0,0,0,0],touchedMonth:Number(repo.t.slice(5,7)),featured:featuredNames.includes(repo.n)};
+  return {name:repo.n,title:repoTitle(repo),description:repo.d,language:repo.l,url:repo.u,liveUrl:repo.h,publicationUrl:repo.p,thumbnail:featuredImages[repo.n]?.src,category:category.id,categoryTitle:category.title,commits:pulse?.c||0,months:pulse?.m||[0,0,0,0,0,0,0],touchedMonth:Number(repo.t.slice(5,7)),featured:featuredNames.includes(repo.n)};
 });
 
 function NeuronSnakePreview() {
@@ -573,7 +576,7 @@ function NeuronParticleBanner() {
 function ArchiveProjectVisual({ repo }: { repo:Repo }) {
   if (repo.n === "inner_cosmos") return <div className="projectVisual featuredArchiveVisual"><InnerCosmosPreview/></div>;
   if (repo.n === "neuron-game") return <div className="projectVisual featuredArchiveVisual"><NeuronSnakePreview/></div>;
-  if (repo.n === "eyewire-ii" || repo.n === "flywire-neuron-gallery") {
+  if (featuredImages[repo.n]) {
     const image = featuredImages[repo.n];
     return <div className="projectVisual featuredArchiveVisual"><img src={image.src} alt={image.alt}/></div>;
   }
@@ -600,16 +603,16 @@ export default function Home() {
 
       <header className="hero" id="top">
         <div className="heroCopy">
-          <p className="eyebrow"><span className="liveDot" /> Projects touched this year · updated July 26</p>
+          <p className="eyebrow"><span className="liveDot" /> Projects touched this year · updated July 29</p>
           <h1>GitHub repository <em>exploration.</em></h1>
           <p className="dek">Games made with kids. Brains rendered for magazines and museums. Tools for parties, hurricanes, pizza, and the gloriously unnecessary. You’re welcome to explore—this is a summary of all my code projects!</p>
-          <div className="heroActions"><a className="primaryAction" href="#archive">Explore all 52 projects <span>↓</span></a><a className="textAction" href="https://github.com/amyleesterling" target="_blank" rel="noreferrer">@amyleesterling ↗</a></div>
+          <div className="heroActions"><a className="primaryAction" href="#archive">Explore all {repos.length} projects <span>↓</span></a><a className="textAction" href="https://github.com/amyleesterling" target="_blank" rel="noreferrer">@amyleesterling ↗</a></div>
         </div>
         <NeuronParticleBanner />
       </header>
 
       <section className="pulse" aria-label="2026 public commit activity by repository">
-        <div className="pulseIntro"><span>THE CODE PULSE · 2026</span><strong>52 projects touched this year.</strong><p><b>{totalPublicCommits}</b> public commits across the collection.</p></div>
+        <div className="pulseIntro"><span>THE CODE PULSE · 2026</span><strong>{repos.length} projects touched this year.</strong><p><b>{totalPublicCommits}</b> public commits across the collection.</p></div>
         <div className="pulseChart">
           <div className="commitBars" aria-label="One bar per public repository, ordered by commit count">
             {commitPulse.map((item) => {
@@ -646,10 +649,10 @@ export default function Home() {
       </section>
 
       <section className="archive section" id="archive">
-        <div className="sectionHeading archiveHeading"><div><p className="kicker">SEVEN ROOMS · 52 EXPERIMENTS</p><h2>The project exhibition</h2></div><p>These public repositories include experiments, side projects, things made just for fun, and work deployed professionally. This is an overview of the code I’ve made in public.</p></div>
+        <div className="sectionHeading archiveHeading"><div><p className="kicker">SEVEN ROOMS · {repos.length} EXPERIMENTS</p><h2>The project exhibition</h2></div><p>These public repositories include experiments, side projects, things made just for fun, and work deployed professionally. This is an overview of the code I’ve made in public.</p></div>
         <div className="controls">
           <label className="search"><span>⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search the experiments…" aria-label="Search projects" /></label>
-          <div className="filters categoryFilters" aria-label="Filter by category"><button className={activeCategory === "all" ? "active" : ""} onClick={() => setActiveCategory("all")}>All <sup>52</sup></button>{categories.map((category) => <button className={activeCategory === category.id ? "active" : ""} onClick={() => setActiveCategory(category.id)} key={category.id}>{category.short} <sup>{repos.filter((repo) => categoryFor(repo).id === category.id).length}</sup></button>)}</div>
+          <div className="filters categoryFilters" aria-label="Filter by category"><button className={activeCategory === "all" ? "active" : ""} onClick={() => setActiveCategory("all")}>All <sup>{repos.length}</sup></button>{categories.map((category) => <button className={activeCategory === category.id ? "active" : ""} onClick={() => setActiveCategory(category.id)} key={category.id}>{category.short} <sup>{repos.filter((repo) => categoryFor(repo).id === category.id).length}</sup></button>)}</div>
         </div>
         <div className="resultsLine"><span>{shown.length} {shown.length === 1 ? "project" : "projects"} on view</span><span>Each room is sorted by recent activity</span></div>
         <div className="categoryRooms">{grouped.map(({category, repos: categoryRepos}, roomIndex) => <section className={`categoryRoom room-${category.id}`} key={category.id}>
@@ -658,7 +661,7 @@ export default function Home() {
             <ArchiveProjectVisual repo={repo}/>
             <div className="storyBody"><div className="repoMeta"><span className={`language ${langClass[repo.l]}`}><i className={`dot ${langClass[repo.l]}`}/>{repo.l}</span><time dateTime={repo.t}>{prettyDate(repo.t)}</time></div>
               <h4>{repoTitle(repo)}</h4><p>{repo.d}</p>
-              <div className="repoLinks">{repo.f && <span className="fork">Fork</span>}{repo.h && <a href={repo.h} target="_blank" rel="noreferrer">See it live ↗</a>}<a href={repo.u} target="_blank" rel="noreferrer">View code ↗</a></div>
+              <div className="repoLinks">{repo.f && <span className="fork">Fork</span>}{repo.h && <a href={repo.h} target="_blank" rel="noreferrer">See it live ↗</a>}{repo.p&&<a href={repo.p} target="_blank" rel="noreferrer">Read paper ↗</a>}<a href={repo.u} target="_blank" rel="noreferrer">View code ↗</a></div>
             </div>
           </article>)}</div>
         </section>)}</div>
