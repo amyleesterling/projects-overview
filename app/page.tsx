@@ -207,7 +207,7 @@ function prettyDate(date: string) {
 const repositoryWorldProjects = repos.map((repo) => {
   const category=categoryFor(repo);
   const pulse=commitPulse.find(item=>item.n===repo.n);
-  return {name:repo.n,title:repoTitle(repo),description:repo.d,language:repo.l,url:repo.u,category:category.id,categoryTitle:category.title,commits:pulse?.c||0,months:pulse?.m||[0,0,0,0,0,0,0],touchedMonth:Number(repo.t.slice(5,7)),featured:featuredNames.includes(repo.n)};
+  return {name:repo.n,title:repoTitle(repo),description:repo.d,language:repo.l,url:repo.u,liveUrl:repo.h,thumbnail:featuredImages[repo.n]?.src,category:category.id,categoryTitle:category.title,commits:pulse?.c||0,months:pulse?.m||[0,0,0,0,0,0,0],touchedMonth:Number(repo.t.slice(5,7)),featured:featuredNames.includes(repo.n)};
 });
 
 function NeuronSnakePreview() {

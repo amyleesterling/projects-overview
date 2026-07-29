@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import ProjectVisual from "./project-visual";
 
 export type RepositoryWorldProject = {
-  name:string; title:string; description:string; language:string; url:string;
+  name:string; title:string; description:string; language:string; url:string; liveUrl?:string; thumbnail?:string;
   category:string; categoryTitle:string; commits:number; months:number[]; touchedMonth:number; featured:boolean;
 };
 
@@ -19,6 +20,11 @@ const centers:Record<string,[number,number]> = {
   tools:[.36,.75], toys:[.48,.48], ridiculous:[.12,.59],
 };
 const monthNames=["Jan","Feb","Mar","Apr","May","Jun","Jul"];
+const constellationTours = [
+  {id:"connectome",title:"The Connectome Arc",description:"From mapping single neurons to making whole connectomes visible.",names:["drosophila_datause_2026","flywire-neuron-gallery","eyewire-ii","inner_cosmos"]},
+  {id:"kids",title:"Small Creative Directors",description:"Projects built with very opinionated young collaborators.",names:["kids-who-vibecode","sophie-shark-game","cocos-mythic-meadow","coras-mermaid","moontoast"]},
+  {id:"ridiculous",title:"A Brief History of Ridiculousness",description:"A tour through useful uselessness and unnecessary excellence.",names:["philogelos","fabled-jokes","Department_of_Ridiculous","ridiculous","theLastWebsite","thefartsite"]},
+];
 const stopwords = new Set("a an and as at built by for from how in into is it just made more no not of on or some than that the their this through to turn up with your".split(" "));
 const semanticAliases:Record<string,string[]> = {
   neuron:["brain","connectome","neural","synapse","neuroglancer","dendrite","retina","flywire","microns"],
@@ -95,7 +101,28 @@ export default function RepositoryWorld({projects}:{projects:RepositoryWorldProj
   const [infoOpen,setInfoOpen]=useState(false);
   const [month,setMonth]=useState(7);
   const [playing,setPlaying]=useState(false);
+  const [activeTour,setActiveTour]=useState<string|null>(null);
+  const [tourStep,setTourStep]=useState(0);
+  const [ridiculousTaps,setRidiculousTaps]=useState(0);
+  const [easterEgg,setEasterEgg]=useState(false);
   const categories=useMemo(()=>[...new Map(projects.map(project=>[project.category,{id:project.category,title:project.categoryTitle}])).values()],[projects]);
+  const currentTour=constellationTours.find(tour=>tour.id===activeTour);
+  const tourNames=useMemo(()=>currentTour?.names.filter(name=>projects.some(project=>project.name===name))||[],[currentTour,projects]);
+  const selectedIndex=selected?graph.nodes.findIndex(node=>node.name===selected.name):-1;
+  const related=useMemo(()=>{
+    if(selectedIndex<0)return [];
+    return graph.edges.filter(edge=>edge.source===selectedIndex||edge.target===selectedIndex).sort((a,b)=>b.weight-a.weight).slice(0,4).map(edge=>graph.nodes[edge.source===selectedIndex?edge.target:edge.source]);
+  },[graph,selectedIndex]);
+
+  const chooseProject=(project:RepositoryWorldProject)=>{setActive("all");setMonth(7);setSelected(project);setInfoOpen(false);};
+  const startTour=(id:string)=>{const tour=constellationTours.find(item=>item.id===id);if(!tour)return;setActive("all");setMonth(7);setPlaying(false);setInfoOpen(false);setActiveTour(id);setTourStep(0);const first=projects.find(project=>project.name===tour.names[0]);if(first)setSelected(first);};
+  const stopTour=()=>{setActiveTour(null);setTourStep(0);};
+  const selectCategory=(id:string)=>{
+    setActive(id);stopTour();
+    if(id!=="ridiculous"){setRidiculousTaps(0);return;}
+    const next=ridiculousTaps+1;setRidiculousTaps(next);
+    if(next>=3){setEasterEgg(true);setRidiculousTaps(0);setActive("all");}
+  };
 
   useEffect(()=>{
     if(!playing)return;
@@ -104,6 +131,8 @@ export default function RepositoryWorld({projects}:{projects:RepositoryWorldProj
   },[playing]);
 
   useEffect(()=>{if(selected&&firstActiveMonth(selected)>month)setSelected(null);},[month,selected]);
+  useEffect(()=>{if(!easterEgg)return;const timer=window.setTimeout(()=>setEasterEgg(false),9000);return()=>window.clearTimeout(timer);},[easterEgg]);
+  useEffect(()=>{if(!currentTour)return;const project=projects.find(item=>item.name===tourNames[tourStep]);if(project)setSelected(project);},[currentTour,projects,tourNames,tourStep]);
 
   useEffect(()=>{
     const canvas=canvasRef.current; if(!canvas) return;
@@ -119,6 +148,7 @@ export default function RepositoryWorld({projects}:{projects:RepositoryWorldProj
       context.setTransform(ratio,0,0,ratio,0,0);
     };
     const visible=(node:GraphNode)=>(active==="all"||node.category===active)&&firstActiveMonth(node)<=month;
+    const inTour=(node:GraphNode)=>!tourNames.length||tourNames.includes(node.name);
     const cumulative=(node:GraphNode)=>node.months.slice(0,month).reduce((sum,value)=>sum+value,0);
     const nodeRadius=(node:GraphNode)=>node.featured?9:5.5+Math.min(4,Math.sqrt(cumulative(node))*.28);
     const projectPoint=(node:GraphNode)=>({x:node.x/1000*width,y:node.y/650*height});
@@ -128,6 +158,7 @@ export default function RepositoryWorld({projects}:{projects:RepositoryWorldProj
           if(index===drag) return;
           const [cx,cy]=centers[node.category]||[.5,.5];
           node.vx+=(cx*1000-node.x)*.00052; node.vy+=(cy*650-node.y)*.00052;
+          if(easterEgg){node.vx+=Math.sin(performance.now()*.006+index)*.12;node.vy+=Math.cos(performance.now()*.007+index*1.7)*.12;}
         });
         for(let a=0;a<nodes.length;a++) for(let b=a+1;b<nodes.length;b++) {
           if(!visible(nodes[a])||!visible(nodes[b])) continue;
@@ -155,15 +186,22 @@ export default function RepositoryWorld({projects}:{projects:RepositoryWorldProj
       });
       graph.edges.forEach(edge=>{
         const a=nodes[edge.source],b=nodes[edge.target]; if(!visible(a)||!visible(b))return; const p1=projectPoint(a),p2=projectPoint(b);
-        context.strokeStyle=a.community===b.community?"rgba(104,211,255,.18)":"rgba(111,157,188,.09)";context.lineWidth=Math.min(1.6,.35+edge.weight*.15);context.beginPath();context.moveTo(p1.x,p1.y);context.lineTo(p2.x,p2.y);context.stroke();
+        const incident=selectedIndex===edge.source||selectedIndex===edge.target;
+        context.strokeStyle=incident?"rgba(151,231,255,.72)":tourNames.length&&(!inTour(a)||!inTour(b))?"rgba(100,150,180,.025)":a.community===b.community?"rgba(104,211,255,.18)":"rgba(111,157,188,.09)";context.lineWidth=incident?1.8:Math.min(1.6,.35+edge.weight*.15);context.beginPath();context.moveTo(p1.x,p1.y);context.lineTo(p2.x,p2.y);context.stroke();
       });
+      if(tourNames.length){
+        const route=tourNames.map(name=>nodes.find(node=>node.name===name)).filter(Boolean) as GraphNode[];
+        context.save();context.strokeStyle="rgba(116,224,255,.72)";context.lineWidth=2;context.setLineDash([4,8]);context.shadowColor="#63d8ff";context.shadowBlur=12;context.beginPath();route.forEach((node,index)=>{const p=projectPoint(node);index?context.lineTo(p.x,p.y):context.moveTo(p.x,p.y);});context.stroke();context.restore();
+      }
       nodes.forEach((node,index)=>{
         if(!visible(node))return; const point=projectPoint(node); const color=neighborhoodColors[node.category]||"#69d8ff"; const highlighted=index===hover||index===drag;
         const radius=nodeRadius(node); const activeNow=node.months[month-1]>0;
-        context.save();context.shadowColor=color;context.shadowBlur=highlighted?22:node.featured?13:7;context.fillStyle=color;context.beginPath();context.arc(point.x,point.y,radius+(highlighted?3:0),0,Math.PI*2);context.fill();
+        const chosen=index===selectedIndex;context.save();context.globalAlpha=inTour(node)?1:.14;context.shadowColor=color;context.shadowBlur=highlighted||chosen?25:node.featured?13:7;context.fillStyle=color;context.beginPath();context.arc(point.x,point.y,radius+(highlighted||chosen?3:0),0,Math.PI*2);context.fill();
+        if(chosen){context.strokeStyle="rgba(226,249,255,.95)";context.lineWidth=1.5;context.beginPath();context.arc(point.x,point.y,radius+10+Math.sin(performance.now()*.005)*2,0,Math.PI*2);context.stroke();}
         if(activeNow){const pulse=radius+7+(Math.sin(performance.now()*.004+index)*.5+.5)*7;context.strokeStyle=`${color}${highlighted?"aa":"58"}`;context.lineWidth=1;context.beginPath();context.arc(point.x,point.y,pulse,0,Math.PI*2);context.stroke();}
         if(node.featured){context.strokeStyle="rgba(255,255,255,.82)";context.lineWidth=1.2;context.beginPath();context.arc(point.x,point.y,radius+5,0,Math.PI*2);context.stroke();}
         if(highlighted||node.featured){context.fillStyle="rgba(225,247,255,.95)";context.font=`${highlighted?12:10}px ui-monospace, monospace`;context.textAlign="center";context.fillText(node.title,point.x,point.y-radius-10);}
+        if(easterEgg){const eye=radius*.48+2;context.shadowBlur=0;context.fillStyle="#f4fbff";[-1,1].forEach(side=>{context.beginPath();context.arc(point.x+side*eye*.72,point.y-eye*.35,eye,0,Math.PI*2);context.fill();context.fillStyle="#071421";context.beginPath();context.arc(point.x+side*eye*.72+Math.sin(performance.now()*.003+index)*eye*.25,point.y-eye*.25,eye*.38,0,Math.PI*2);context.fill();context.fillStyle="#f4fbff";});}
         context.restore();
       });
     };
@@ -176,17 +214,18 @@ export default function RepositoryWorld({projects}:{projects:RepositoryWorldProj
     const observer=new ResizeObserver(()=>{resize();draw();}); const visibility=new IntersectionObserver(([entry])=>{inView=entry.isIntersecting;if(inView&&!frame)animate();else if(!inView&&frame){cancelAnimationFrame(frame);frame=0;}},{rootMargin:"100px"});
     observer.observe(canvas);visibility.observe(canvas);resize();animate();canvas.addEventListener("pointermove",move);canvas.addEventListener("pointerdown",down);canvas.addEventListener("pointerup",up);canvas.addEventListener("pointerleave",()=>{hover=-1;});
     return()=>{cancelAnimationFrame(frame);observer.disconnect();visibility.disconnect();canvas.removeEventListener("pointermove",move);canvas.removeEventListener("pointerdown",down);canvas.removeEventListener("pointerup",up);};
-  },[active,categories,graph,month]);
+  },[active,categories,easterEgg,graph,month,selectedIndex,tourNames]);
 
   return <section className="repositoryWorld section" id="world">
     <div className="sectionHeading worldHeading"><div><p className="kicker">52 REPOSITORIES · 7 NEIGHBORHOODS</p><h2>The repository world</h2></div><p>A living map of the projects. Proximity comes from shared ideas, language, project families, and purpose; stronger relationships pull repositories closer together.</p></div>
-    <div className="worldControls" aria-label="Repository neighborhoods"><button className={active==="all"?"active":""} onClick={()=>setActive("all")}>Whole world</button>{categories.map(category=><button className={active===category.id?"active":""} onClick={()=>setActive(category.id)} key={category.id}><i style={{background:neighborhoodColors[category.id]}}/>{category.title}</button>)}</div>
+    <div className="worldControls" aria-label="Repository neighborhoods"><button className={active==="all"?"active":""} onClick={()=>{setActive("all");stopTour();}}>Whole world</button>{categories.map(category=><button className={active===category.id?"active":""} onClick={()=>selectCategory(category.id)} key={category.id}><i style={{background:neighborhoodColors[category.id]}}/>{category.title}</button>)}</div>
     <div className="worldTimeline">
       <button type="button" className="timelinePlay" aria-label={playing?"Pause repository timeline":"Play repository timeline"} onClick={()=>{if(playing){setPlaying(false);return;}if(month===7)setMonth(1);setPlaying(true);}}>{playing?"Ⅱ":"▶"}</button>
       <label><span>2026 / <b>{monthNames[month-1]}</b></span><input type="range" min="1" max="7" step="1" value={month} aria-label={`Repository world through ${monthNames[month-1]} 2026`} onChange={event=>{setPlaying(false);setMonth(Number(event.target.value));}}/><i style={{width:`${(month-1)/6*100}%`}}/></label>
       <div className="timelineMonths" aria-hidden="true">{monthNames.map((name,index)=><span className={index+1<=month?"reached":""} key={name}>{name}</span>)}</div>
       <strong>{projects.filter(project=>firstActiveMonth(project)<=month).length}<small> repositories visible</small></strong>
     </div>
+    <div className="constellationTours"><div><span>GUIDED CONSTELLATION TOURS</span><p>Follow a story through the repository world.</p></div>{constellationTours.map(tour=><button type="button" className={activeTour===tour.id?"active":""} onClick={()=>startTour(tour.id)} key={tour.id}><i>{String(tour.names.length).padStart(2,"0")}</i><span>{tour.title}</span></button>)}</div>
     <div className="worldStage">
       <canvas ref={canvasRef} role="img" aria-label="Interactive network graph of 52 repositories grouped into seven semantic neighborhoods. Drag nodes to rearrange the map and select a repository for details."/>
       <button className="worldInfoButton" type="button" aria-label={infoOpen?"Close community detection information":"How are repository communities detected?"} aria-expanded={infoOpen} aria-controls="world-method" onClick={()=>setInfoOpen(open=>!open)}>{infoOpen?"×":"i"}</button>
@@ -200,8 +239,13 @@ export default function RepositoryWorld({projects}:{projects:RepositoryWorldProj
         </ol>
         <div><span><i className="methodNode"/>Node size = 2026 commits</span><span><i className="methodRing"/>Ring = featured project</span><span><i className="methodLink"/>Line = inferred relationship</span></div>
       </aside>
+      {currentTour&&tourNames.length>0&&<div className="tourHud"><p>GUIDED CONSTELLATION · {String(tourStep+1).padStart(2,"0")} / {String(tourNames.length).padStart(2,"0")}</p><h3>{currentTour.title}</h3><span>{currentTour.description}</span><strong>{selected?.title}</strong><div><button type="button" disabled={tourStep===0} onClick={()=>setTourStep(step=>Math.max(0,step-1))}>← Back</button><button type="button" onClick={()=>{if(tourStep>=tourNames.length-1)stopTour();else setTourStep(step=>step+1);}}>{tourStep>=tourNames.length-1?"Finish":"Next →"}</button><button type="button" onClick={stopTour}>Exit</button></div></div>}
+      <aside className={`worldDrawer ${selected?"visible":""}`} aria-hidden={!selected}>
+        {selected&&<><button className="drawerClose" type="button" aria-label="Close repository details" onClick={()=>{setSelected(null);stopTour();}}>×</button><div className="drawerVisual">{selected.thumbnail?<img src={selected.thumbnail} alt=""/>:<ProjectVisual name={selected.name} category={selected.category} compact/>}</div><p className="drawerKicker"><i style={{background:neighborhoodColors[selected.category]}}/>{selected.categoryTitle} · {selected.language}</p><h3>{selected.title}</h3><p className="drawerDescription">{selected.description}</p><div className="drawerActivity"><div><span>2026 ACTIVITY</span><strong>{selected.months.slice(0,month).reduce((sum,value)=>sum+value,0)} commits</strong></div><div className="drawerBars">{selected.months.map((value,index)=><i key={monthNames[index]} title={`${monthNames[index]}: ${value} commits`} className={index<month?"visible":""} style={{height:`${Math.max(3,value/Math.max(...selected.months,1)*100)}%`}}><span>{monthNames[index]}</span></i>)}</div></div>{related.length>0&&<div className="drawerRelated"><span>STRONGEST RELATIONSHIPS</span>{related.map(project=><button type="button" key={project.name} onClick={()=>chooseProject(project)}><i style={{background:neighborhoodColors[project.category]}}/>{project.title}<b>→</b></button>)}</div>}<div className="drawerLinks">{selected.liveUrl&&<a href={selected.liveUrl} target="_blank" rel="noreferrer">Open project ↗</a>}<a href={selected.url} target="_blank" rel="noreferrer">View code ↗</a></div></>}
+      </aside>
+      {easterEgg&&<div className="worldEasterEgg" aria-live="polite"><strong>THE DEPARTMENT HAS SEIZED THE GRAPH</strong><span>compliance is optional</span></div>}
       <div className="worldReadout"><span>WORLD STATE · {monthNames[month-1].toUpperCase()} 2026</span><span>WEIGHTED LABEL PROPAGATION</span><span>DRAG · SELECT · EXPLORE</span></div>
     </div>
-    <div className={`worldSelection ${selected?"visible":""}`} aria-live="polite">{selected?<><span className="worldSelectionDot" style={{background:neighborhoodColors[selected.category]}}/><strong>{selected.title}</strong><span>{selected.description}</span><span>{selected.months.slice(0,month).reduce((sum,value)=>sum+value,0)} commits through {monthNames[month-1]} · {selected.language}</span><a href={selected.url} target="_blank" rel="noreferrer">View repository ↗</a></>:<span>Select a node to inspect a repository.</span>}</div>
+    <div className="worldSelection" aria-live="polite"><span>{selected?`${selected.title} selected.`:"Select a node to open its field guide, or take a constellation tour."}</span></div>
   </section>;
 }
