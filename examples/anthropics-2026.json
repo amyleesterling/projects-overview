@@ -1,0 +1,474 @@
+{
+  "owner": "anthropics",
+  "year": 2026,
+  "generatedAt": "2026-07-29T23:46:08.944Z",
+  "source": "https://github.com/anthropics",
+  "repositories": [
+    {
+      "n": "claude-plugins-official",
+      "d": "Official, Anthropic-managed directory of high quality Claude Code Plugins.",
+      "l": "Python",
+      "u": "https://github.com/anthropics/claude-plugins-official",
+      "h": "https://code.claude.com/docs/en/plugins",
+      "t": "2026-07-29",
+      "topics": [
+        "claude-code",
+        "mcp",
+        "skills"
+      ],
+      "stars": 32835
+    },
+    {
+      "n": "claude-plugins-community",
+      "d": "Community plugin marketplace for Claude Cowork and Claude Code. Read-only mirror — submit plugins at clau.de/plugin-directory-submission.",
+      "l": "Python",
+      "u": "https://github.com/anthropics/claude-plugins-community",
+      "t": "2026-07-29",
+      "topics": [],
+      "stars": 326
+    },
+    {
+      "n": "knowledge-work-plugins",
+      "d": "Open source repository of plugins primarily intended for knowledge workers to use in Claude Cowork",
+      "l": "Python",
+      "u": "https://github.com/anthropics/knowledge-work-plugins",
+      "t": "2026-07-29",
+      "topics": [],
+      "stars": 23164
+    },
+    {
+      "n": "cryptography-research-demo",
+      "d": "A public GitHub repository from anthropics.",
+      "l": "C",
+      "u": "https://github.com/anthropics/cryptography-research-demo",
+      "t": "2026-07-29",
+      "topics": [],
+      "stars": 38
+    },
+    {
+      "n": "cargo-nix-plugin",
+      "d": "A Nix plugin that resolves Cargo workspaces natively and allows for crate level builds",
+      "l": "Rust",
+      "u": "https://github.com/anthropics/cargo-nix-plugin",
+      "t": "2026-07-28",
+      "topics": [],
+      "stars": 44
+    },
+    {
+      "n": "anthropic-sdk-python",
+      "d": "A public GitHub repository from anthropics.",
+      "l": "Python",
+      "u": "https://github.com/anthropics/anthropic-sdk-python",
+      "t": "2026-07-28",
+      "topics": [],
+      "stars": 3782
+    },
+    {
+      "n": "anthropic-sdk-csharp",
+      "d": "Access to Anthropic's safety-first language model APIs in C#",
+      "l": "C#",
+      "u": "https://github.com/anthropics/anthropic-sdk-csharp",
+      "t": "2026-07-28",
+      "topics": [],
+      "stars": 312
+    },
+    {
+      "n": "claude-agent-sdk-python",
+      "d": "A public GitHub repository from anthropics.",
+      "l": "Python",
+      "u": "https://github.com/anthropics/claude-agent-sdk-python",
+      "t": "2026-07-25",
+      "topics": [],
+      "stars": 7757
+    },
+    {
+      "n": "jacobian-lens",
+      "d": " Companion code for the global workspace interpretability paper",
+      "l": "Python",
+      "u": "https://github.com/anthropics/jacobian-lens",
+      "t": "2026-07-25",
+      "topics": [],
+      "stars": 1615
+    },
+    {
+      "n": "claude-code-action",
+      "d": "A public GitHub repository from anthropics.",
+      "l": "TypeScript",
+      "u": "https://github.com/anthropics/claude-code-action",
+      "t": "2026-07-25",
+      "topics": [],
+      "stars": 8503
+    },
+    {
+      "n": "claude-code-base-action",
+      "d": "This repo is a mirror of the contents of base-action in https://github.com/anthropics/claude-code-action.",
+      "l": "TypeScript",
+      "u": "https://github.com/anthropics/claude-code-base-action",
+      "t": "2026-07-25",
+      "topics": [],
+      "stars": 928
+    },
+    {
+      "n": "claude-code",
+      "d": "Claude Code is an agentic coding tool that lives in your terminal, understands your codebase, and helps you code faster by executing routine tasks, explaining complex code, and handling git workflows - all through natural language commands.",
+      "l": "Python",
+      "u": "https://github.com/anthropics/claude-code",
+      "h": "https://code.claude.com/docs/en/overview",
+      "t": "2026-07-25",
+      "topics": [],
+      "stars": 139551
+    },
+    {
+      "n": "claude-agent-sdk-typescript",
+      "d": "A public GitHub repository from anthropics.",
+      "l": "Shell",
+      "u": "https://github.com/anthropics/claude-agent-sdk-typescript",
+      "t": "2026-07-25",
+      "topics": [],
+      "stars": 1664
+    },
+    {
+      "n": "anthropic-sdk-go",
+      "d": "Access to Anthropic's safety-first language model APIs via Go",
+      "l": "Go",
+      "u": "https://github.com/anthropics/anthropic-sdk-go",
+      "t": "2026-07-24",
+      "topics": [],
+      "stars": 1162
+    },
+    {
+      "n": "claude-quickstarts",
+      "d": "A collection of projects designed to help developers quickly get started with building deployable applications using the Claude API",
+      "l": "Python",
+      "u": "https://github.com/anthropics/claude-quickstarts",
+      "t": "2026-07-24",
+      "topics": [],
+      "stars": 17337
+    },
+    {
+      "n": "skills",
+      "d": "Public repository for Agent Skills",
+      "l": "Python",
+      "u": "https://github.com/anthropics/skills",
+      "t": "2026-07-24",
+      "topics": [
+        "agent-skills"
+      ],
+      "stars": 165048
+    },
+    {
+      "n": "anthropic-cli",
+      "d": "The CLI for the Claude API",
+      "l": "Go",
+      "u": "https://github.com/anthropics/anthropic-cli",
+      "h": "https://platform.claude.com/docs/en/api/sdks/cli",
+      "t": "2026-07-24",
+      "topics": [
+        "anthropic",
+        "api",
+        "claude",
+        "cli"
+      ],
+      "stars": 602
+    },
+    {
+      "n": "anthropic-sdk-ruby",
+      "d": "A public GitHub repository from anthropics.",
+      "l": "Ruby",
+      "u": "https://github.com/anthropics/anthropic-sdk-ruby",
+      "t": "2026-07-24",
+      "topics": [],
+      "stars": 360
+    },
+    {
+      "n": "anthropic-sdk-php",
+      "d": "Access to Anthropic's safety-first language model APIs in PHP",
+      "l": "PHP",
+      "u": "https://github.com/anthropics/anthropic-sdk-php",
+      "t": "2026-07-24",
+      "topics": [],
+      "stars": 174
+    },
+    {
+      "n": "anthropic-sdk-typescript",
+      "d": "Access to Anthropic's safety-first language model APIs in TypeScript",
+      "l": "TypeScript",
+      "u": "https://github.com/anthropics/anthropic-sdk-typescript",
+      "h": "https://www.npmjs.com/package/@anthropic-ai/sdk",
+      "t": "2026-07-24",
+      "topics": [],
+      "stars": 2062
+    },
+    {
+      "n": "anthropic-sdk-java",
+      "d": "A public GitHub repository from anthropics.",
+      "l": "Kotlin",
+      "u": "https://github.com/anthropics/anthropic-sdk-java",
+      "t": "2026-07-24",
+      "topics": [],
+      "stars": 354
+    },
+    {
+      "n": "ClaudeForFoundationModels",
+      "d": "Claude support for Apple Foundation Models",
+      "l": "Swift",
+      "u": "https://github.com/anthropics/ClaudeForFoundationModels",
+      "t": "2026-07-24",
+      "topics": [],
+      "stars": 267
+    },
+    {
+      "n": "homebrew-tap",
+      "d": "Homebrew formulae for Anthropic tools.",
+      "l": "Ruby",
+      "u": "https://github.com/anthropics/homebrew-tap",
+      "t": "2026-07-24",
+      "topics": [],
+      "stars": 26
+    },
+    {
+      "n": "buffa",
+      "d": "Rust implementation of protobuf with editions support, JSON serialization, and zero-copy views",
+      "l": "Rust",
+      "u": "https://github.com/anthropics/buffa",
+      "t": "2026-07-24",
+      "topics": [],
+      "stars": 851
+    },
+    {
+      "n": "claude-tag-plugins",
+      "d": "A public GitHub repository from anthropics.",
+      "l": "Shell",
+      "u": "https://github.com/anthropics/claude-tag-plugins",
+      "t": "2026-07-23",
+      "topics": [],
+      "stars": 32
+    },
+    {
+      "n": "claude-cookbooks",
+      "d": "A collection of notebooks/recipes showcasing some fun and effective ways of using Claude.",
+      "l": "Jupyter Notebook",
+      "u": "https://github.com/anthropics/claude-cookbooks",
+      "t": "2026-07-23",
+      "topics": [],
+      "stars": 50651
+    },
+    {
+      "n": "claude-for-legal",
+      "d": "A suite of plugins for legal workflows",
+      "l": "Python",
+      "u": "https://github.com/anthropics/claude-for-legal",
+      "t": "2026-07-23",
+      "topics": [],
+      "stars": 8926
+    },
+    {
+      "n": "financial-services",
+      "d": "A public GitHub repository from anthropics.",
+      "l": "Python",
+      "u": "https://github.com/anthropics/financial-services",
+      "t": "2026-07-22",
+      "topics": [],
+      "stars": 33878
+    },
+    {
+      "n": "defending-code-reference-harness",
+      "d": "Skills for threat modeling, scanning, triage, patching, plus an autonomous scanning harness you can /customize",
+      "l": "Python",
+      "u": "https://github.com/anthropics/defending-code-reference-harness",
+      "h": "https://claude.com/blog/using-llms-to-secure-source-code",
+      "t": "2026-07-16",
+      "topics": [
+        "security"
+      ],
+      "stars": 6870
+    },
+    {
+      "n": "healthcare",
+      "d": "A public GitHub repository from anthropics.",
+      "l": "JavaScript",
+      "u": "https://github.com/anthropics/healthcare",
+      "t": "2026-07-16",
+      "topics": [],
+      "stars": 367
+    },
+    {
+      "n": "k12-teacher-skills",
+      "d": "Skills and eval rubrics for K-12 teachers, co-developed with Learning Commons",
+      "l": "Python",
+      "u": "https://github.com/anthropics/k12-teacher-skills",
+      "t": "2026-07-13",
+      "topics": [],
+      "stars": 214
+    },
+    {
+      "n": "code-migration-kit-with-claude-code",
+      "d": "Prompts, templates, and scripts for running large-scale language migrations with Claude Code",
+      "l": "Python",
+      "u": "https://github.com/anthropics/code-migration-kit-with-claude-code",
+      "t": "2026-07-08",
+      "topics": [],
+      "stars": 246
+    },
+    {
+      "n": "launch-your-agent",
+      "d": "Claude Code skills that take a founder from idea to a live Claude Managed Agent: interview, scope a v0, launch in their own account, grade it, iterate, and schedule it",
+      "l": "HTML",
+      "u": "https://github.com/anthropics/launch-your-agent",
+      "t": "2026-07-07",
+      "topics": [],
+      "stars": 880
+    },
+    {
+      "n": "html-effectiveness",
+      "d": "HTML effectiveness examples",
+      "l": "HTML",
+      "u": "https://github.com/anthropics/html-effectiveness",
+      "t": "2026-07-03",
+      "topics": [],
+      "stars": 605
+    },
+    {
+      "n": "cwc-workshops",
+      "d": "A public GitHub repository from anthropics.",
+      "l": "TypeScript",
+      "u": "https://github.com/anthropics/cwc-workshops",
+      "t": "2026-06-26",
+      "topics": [],
+      "stars": 1907
+    },
+    {
+      "n": "claude-ai-mcp",
+      "d": "Report issues related to MCP integration with Claude here.",
+      "l": "Other",
+      "u": "https://github.com/anthropics/claude-ai-mcp",
+      "t": "2026-06-08",
+      "topics": [
+        "anthropic",
+        "claude",
+        "claude-ai",
+        "mcp",
+        "model-context-protocol"
+      ],
+      "stars": 411
+    },
+    {
+      "n": "s5cmd",
+      "d": "A public GitHub repository from anthropics.",
+      "l": "Go",
+      "u": "https://github.com/anthropics/s5cmd",
+      "t": "2026-05-19",
+      "topics": [],
+      "stars": 39
+    },
+    {
+      "n": "scone-bench",
+      "d": "Benchmark for evaluating LLM agents on smart-contract vulnerability discovery and exploitation",
+      "l": "Python",
+      "u": "https://github.com/anthropics/scone-bench",
+      "t": "2026-05-19",
+      "topics": [],
+      "stars": 37
+    },
+    {
+      "n": "cwc-long-running-agents",
+      "d": "A public GitHub repository from anthropics.",
+      "l": "Shell",
+      "u": "https://github.com/anthropics/cwc-long-running-agents",
+      "t": "2026-05-13",
+      "topics": [],
+      "stars": 603
+    },
+    {
+      "n": "life-sciences",
+      "d": "Repo for the Claude Code Marketplace to use with the Claude for Life Sciences Launch. This will continue to host the marketplace.json long-term, but not the actual MCP servers.",
+      "l": "Python",
+      "u": "https://github.com/anthropics/life-sciences",
+      "t": "2026-05-08",
+      "topics": [],
+      "stars": 556
+    },
+    {
+      "n": "headvis",
+      "d": "Head Vis Public Release",
+      "l": "Svelte",
+      "u": "https://github.com/anthropics/headvis",
+      "t": "2026-05-04",
+      "topics": [],
+      "stars": 39
+    },
+    {
+      "n": "claude-desktop-buddy",
+      "d": "Reference and an example for the Bluetooth API for makers in Claude Cowork & Claude Code Desktop",
+      "l": "C++",
+      "u": "https://github.com/anthropics/claude-desktop-buddy",
+      "t": "2026-04-16",
+      "topics": [],
+      "stars": 2487
+    },
+    {
+      "n": "claude-agent-sdk-demos",
+      "d": "Claude Code SDK Demos",
+      "l": "TypeScript",
+      "u": "https://github.com/anthropics/claude-agent-sdk-demos",
+      "h": "https://docs.claude.com/en/docs/claude-code/sdk/sdk-typescript",
+      "t": "2026-03-13",
+      "topics": [],
+      "stars": 2691
+    },
+    {
+      "n": "agent-sdk-workshop",
+      "d": "A public GitHub repository from anthropics.",
+      "l": "Python",
+      "u": "https://github.com/anthropics/agent-sdk-workshop",
+      "t": "2026-03-05",
+      "topics": [],
+      "stars": 50
+    },
+    {
+      "n": "prompt-eng-interactive-tutorial",
+      "d": "Anthropic's Interactive Prompt Engineering Tutorial",
+      "l": "Jupyter Notebook",
+      "u": "https://github.com/anthropics/prompt-eng-interactive-tutorial",
+      "t": "2026-03-01",
+      "topics": [],
+      "stars": 37466
+    },
+    {
+      "n": "claude-code-security-review",
+      "d": "An AI-powered security review GitHub Action using Claude to analyze code changes for security vulnerabilities.",
+      "l": "Python",
+      "u": "https://github.com/anthropics/claude-code-security-review",
+      "t": "2026-02-11",
+      "topics": [],
+      "stars": 5686
+    },
+    {
+      "n": "claudes-c-compiler",
+      "d": "Claude Opus 4.6 wrote a dependency-free C compiler in Rust, with backends targeting x86 (64- and 32-bit), ARM, and RISC-V, capable of compiling a booting Linux kernel.",
+      "l": "Rust",
+      "u": "https://github.com/anthropics/claudes-c-compiler",
+      "t": "2026-02-05",
+      "topics": [],
+      "stars": 2745
+    },
+    {
+      "n": "claude-constitution",
+      "d": "The foundational document describing Claude's values and behavior",
+      "l": "Other",
+      "u": "https://github.com/anthropics/claude-constitution",
+      "t": "2026-01-29",
+      "topics": [],
+      "stars": 115
+    },
+    {
+      "n": "original_performance_takehome",
+      "d": "Anthropic's original performance take-home, now open for you to try!",
+      "l": "Python",
+      "u": "https://github.com/anthropics/original_performance_takehome",
+      "t": "2026-01-22",
+      "topics": [],
+      "stars": 4074
+    }
+  ]
+}

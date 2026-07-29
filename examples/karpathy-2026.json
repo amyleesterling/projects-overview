@@ -1,0 +1,53 @@
+{
+  "owner": "karpathy",
+  "year": 2026,
+  "generatedAt": "2026-07-29T23:46:06.988Z",
+  "source": "https://github.com/karpathy",
+  "repositories": [
+    {
+      "n": "nanochat",
+      "d": "The best ChatGPT that $100 can buy.",
+      "l": "Python",
+      "u": "https://github.com/karpathy/nanochat",
+      "t": "2026-07-04",
+      "topics": [],
+      "stars": 56777
+    },
+    {
+      "n": "karpathy.github.io",
+      "d": "my blog",
+      "l": "CSS",
+      "u": "https://github.com/karpathy/karpathy.github.io",
+      "t": "2026-04-10",
+      "topics": [],
+      "stars": 1828
+    },
+    {
+      "n": "autoresearch",
+      "d": "AI agents running research on single-GPU nanochat training automatically",
+      "l": "Python",
+      "u": "https://github.com/karpathy/autoresearch",
+      "t": "2026-03-26",
+      "topics": [],
+      "stars": 92341
+    },
+    {
+      "n": "jobs",
+      "d": "A research tool for visually exploring Bureau of Labor Statistics Occupational Outlook Handbook data. This is not a report, a paper, or a serious economic publication — it is a development tool for exploring BLS data visually.",
+      "l": "HTML",
+      "u": "https://github.com/karpathy/jobs",
+      "t": "2026-03-16",
+      "topics": [],
+      "stars": 1946
+    },
+    {
+      "n": "rustbpe",
+      "d": "The missing tiktoken training code",
+      "l": "Rust",
+      "u": "https://github.com/karpathy/rustbpe",
+      "t": "2026-01-03",
+      "topics": [],
+      "stars": 503
+    }
+  ]
+}
