@@ -6,7 +6,22 @@ The site organizes projects into thematic rooms, highlights selected work with r
 
 **Live site:** [amy-projects-2026.amysterling.chatgpt.site](https://amy-projects-2026.amysterling.chatgpt.site/)
 
-![Projects Overview social card](public/og-53.png)
+## The repository world
+
+[![Interactive network graph of 53 repositories arranged into seven thematic neighborhoods](public/readme/repository-world-detail.png)](https://amy-projects-2026.amysterling.chatgpt.site/#world)
+
+The network graph turns the repository collection into seven explorable neighborhoods. Weighted relationships connect projects that share ideas, technologies, families, and purpose. Select a node for its field guide, scrub through the year, or follow a guided constellation tour.
+
+## Visualization gallery
+
+<p align="center">
+  <img src="public/readme/neuron-hero.png" width="49%" alt="Interactive particle rendering of a pyramidal neuron in the portfolio hero">
+  <img src="public/readme/brain-mesh.png" width="49%" alt="Interactive Inner Cosmos brain surface mesh beside the EyeWire II featured project">
+</p>
+
+<p align="center"><em>Interactive pyramidal-neuron particles · Inner Cosmos cortical surface mesh</em></p>
+
+[![Repository network controls, timeline, and guided constellation tours](public/readme/repository-world.png)](https://amy-projects-2026.amysterling.chatgpt.site/#world)
 
 ## Run locally
 
