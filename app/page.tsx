@@ -206,7 +206,8 @@ function prettyDate(date: string) {
 
 const repositoryWorldProjects = repos.map((repo) => {
   const category=categoryFor(repo);
-  return {name:repo.n,title:repoTitle(repo),description:repo.d,language:repo.l,url:repo.u,category:category.id,categoryTitle:category.title,commits:commitPulse.find(item=>item.n===repo.n)?.c||0,featured:featuredNames.includes(repo.n)};
+  const pulse=commitPulse.find(item=>item.n===repo.n);
+  return {name:repo.n,title:repoTitle(repo),description:repo.d,language:repo.l,url:repo.u,category:category.id,categoryTitle:category.title,commits:pulse?.c||0,months:pulse?.m||[0,0,0,0,0,0,0],touchedMonth:Number(repo.t.slice(5,7)),featured:featuredNames.includes(repo.n)};
 });
 
 function NeuronSnakePreview() {

@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 export type RepositoryWorldProject = {
   name:string; title:string; description:string; language:string; url:string;
-  category:string; categoryTitle:string; commits:number; featured:boolean;
+  category:string; categoryTitle:string; commits:number; months:number[]; touchedMonth:number; featured:boolean;
 };
 
 type GraphNode = RepositoryWorldProject & { x:number; y:number; vx:number; vy:number; radius:number; community:number };
@@ -18,6 +18,7 @@ const centers:Record<string,[number,number]> = {
   brains:[.25,.28], kids:[.74,.25], earth:[.82,.55], ai:[.63,.76],
   tools:[.36,.75], toys:[.48,.48], ridiculous:[.12,.59],
 };
+const monthNames=["Jan","Feb","Mar","Apr","May","Jun","Jul"];
 const stopwords = new Set("a an and as at built by for from how in into is it just made more no not of on or some than that the their this through to turn up with your".split(" "));
 const semanticAliases:Record<string,string[]> = {
   neuron:["brain","connectome","neural","synapse","neuroglancer","dendrite","retina","flywire","microns"],
@@ -30,6 +31,11 @@ const semanticAliases:Record<string,string[]> = {
 
 function hash(value:string) {
   return [...value].reduce((result,character)=>((result<<5)-result+character.charCodeAt(0))|0,5381)>>>0;
+}
+
+function firstActiveMonth(project:RepositoryWorldProject) {
+  const commitMonth=project.months.findIndex(commits=>commits>0);
+  return commitMonth>=0?commitMonth+1:project.touchedMonth;
 }
 
 function terms(project:RepositoryWorldProject) {
@@ -87,7 +93,17 @@ export default function RepositoryWorld({projects}:{projects:RepositoryWorldProj
   const [active,setActive]=useState("all");
   const [selected,setSelected]=useState<RepositoryWorldProject|null>(null);
   const [infoOpen,setInfoOpen]=useState(false);
+  const [month,setMonth]=useState(7);
+  const [playing,setPlaying]=useState(false);
   const categories=useMemo(()=>[...new Map(projects.map(project=>[project.category,{id:project.category,title:project.categoryTitle}])).values()],[projects]);
+
+  useEffect(()=>{
+    if(!playing)return;
+    const timer=window.setInterval(()=>setMonth(current=>{if(current>=7){setPlaying(false);return 7;}return current+1;}),1050);
+    return()=>window.clearInterval(timer);
+  },[playing]);
+
+  useEffect(()=>{if(selected&&firstActiveMonth(selected)>month)setSelected(null);},[month,selected]);
 
   useEffect(()=>{
     const canvas=canvasRef.current; if(!canvas) return;
@@ -102,7 +118,9 @@ export default function RepositoryWorld({projects}:{projects:RepositoryWorldProj
       width=Math.max(1,rect.width); height=Math.max(1,rect.height); canvas.width=Math.round(width*ratio); canvas.height=Math.round(height*ratio);
       context.setTransform(ratio,0,0,ratio,0,0);
     };
-    const visible=(node:GraphNode)=>active==="all"||node.category===active;
+    const visible=(node:GraphNode)=>(active==="all"||node.category===active)&&firstActiveMonth(node)<=month;
+    const cumulative=(node:GraphNode)=>node.months.slice(0,month).reduce((sum,value)=>sum+value,0);
+    const nodeRadius=(node:GraphNode)=>node.featured?9:5.5+Math.min(4,Math.sqrt(cumulative(node))*.28);
     const projectPoint=(node:GraphNode)=>({x:node.x/1000*width,y:node.y/650*height});
     const tick=()=>{
       if(!reduceMotion) {
@@ -141,14 +159,16 @@ export default function RepositoryWorld({projects}:{projects:RepositoryWorldProj
       });
       nodes.forEach((node,index)=>{
         if(!visible(node))return; const point=projectPoint(node); const color=neighborhoodColors[node.category]||"#69d8ff"; const highlighted=index===hover||index===drag;
-        context.save();context.shadowColor=color;context.shadowBlur=highlighted?22:node.featured?13:7;context.fillStyle=color;context.beginPath();context.arc(point.x,point.y,node.radius+(highlighted?3:0),0,Math.PI*2);context.fill();
-        if(node.featured){context.strokeStyle="rgba(255,255,255,.82)";context.lineWidth=1.2;context.beginPath();context.arc(point.x,point.y,node.radius+5,0,Math.PI*2);context.stroke();}
-        if(highlighted||node.featured){context.fillStyle="rgba(225,247,255,.95)";context.font=`${highlighted?12:10}px ui-monospace, monospace`;context.textAlign="center";context.fillText(node.title,point.x,point.y-node.radius-10);}
+        const radius=nodeRadius(node); const activeNow=node.months[month-1]>0;
+        context.save();context.shadowColor=color;context.shadowBlur=highlighted?22:node.featured?13:7;context.fillStyle=color;context.beginPath();context.arc(point.x,point.y,radius+(highlighted?3:0),0,Math.PI*2);context.fill();
+        if(activeNow){const pulse=radius+7+(Math.sin(performance.now()*.004+index)*.5+.5)*7;context.strokeStyle=`${color}${highlighted?"aa":"58"}`;context.lineWidth=1;context.beginPath();context.arc(point.x,point.y,pulse,0,Math.PI*2);context.stroke();}
+        if(node.featured){context.strokeStyle="rgba(255,255,255,.82)";context.lineWidth=1.2;context.beginPath();context.arc(point.x,point.y,radius+5,0,Math.PI*2);context.stroke();}
+        if(highlighted||node.featured){context.fillStyle="rgba(225,247,255,.95)";context.font=`${highlighted?12:10}px ui-monospace, monospace`;context.textAlign="center";context.fillText(node.title,point.x,point.y-radius-10);}
         context.restore();
       });
     };
     const animate=()=>{tick();draw();frame=inView&&!reduceMotion?requestAnimationFrame(animate):0;};
-    const closest=(x:number,y:number)=>{let result=-1,best=26;nodes.forEach((node,index)=>{if(!visible(node))return;const p=projectPoint(node),distance=Math.hypot(p.x-x,p.y-y);if(distance<best){best=distance;result=index;}});return result;};
+    const closest=(x:number,y:number)=>{let result=-1,best=26;nodes.forEach((node,index)=>{if(!visible(node))return;const p=projectPoint(node),distance=Math.hypot(p.x-x,p.y-y);if(distance<best&&distance<nodeRadius(node)+13){best=distance;result=index;}});return result;};
     const position=(event:PointerEvent)=>{const rect=canvas.getBoundingClientRect();pointer.x=event.clientX-rect.left;pointer.y=event.clientY-rect.top;};
     const move=(event:PointerEvent)=>{position(event);if(drag>=0){moved=true;nodes[drag].x=pointer.x/width*1000;nodes[drag].y=pointer.y/height*650;nodes[drag].vx=0;nodes[drag].vy=0;}hover=closest(pointer.x,pointer.y);canvas.style.cursor=hover>=0?drag>=0?"grabbing":"grab":"crosshair";if(reduceMotion)draw();};
     const down=(event:PointerEvent)=>{position(event);drag=closest(pointer.x,pointer.y);moved=false;if(drag>=0){canvas.setPointerCapture(event.pointerId);canvas.style.cursor="grabbing";}};
@@ -156,11 +176,17 @@ export default function RepositoryWorld({projects}:{projects:RepositoryWorldProj
     const observer=new ResizeObserver(()=>{resize();draw();}); const visibility=new IntersectionObserver(([entry])=>{inView=entry.isIntersecting;if(inView&&!frame)animate();else if(!inView&&frame){cancelAnimationFrame(frame);frame=0;}},{rootMargin:"100px"});
     observer.observe(canvas);visibility.observe(canvas);resize();animate();canvas.addEventListener("pointermove",move);canvas.addEventListener("pointerdown",down);canvas.addEventListener("pointerup",up);canvas.addEventListener("pointerleave",()=>{hover=-1;});
     return()=>{cancelAnimationFrame(frame);observer.disconnect();visibility.disconnect();canvas.removeEventListener("pointermove",move);canvas.removeEventListener("pointerdown",down);canvas.removeEventListener("pointerup",up);};
-  },[active,categories,graph]);
+  },[active,categories,graph,month]);
 
   return <section className="repositoryWorld section" id="world">
     <div className="sectionHeading worldHeading"><div><p className="kicker">52 REPOSITORIES · 7 NEIGHBORHOODS</p><h2>The repository world</h2></div><p>A living map of the projects. Proximity comes from shared ideas, language, project families, and purpose; stronger relationships pull repositories closer together.</p></div>
     <div className="worldControls" aria-label="Repository neighborhoods"><button className={active==="all"?"active":""} onClick={()=>setActive("all")}>Whole world</button>{categories.map(category=><button className={active===category.id?"active":""} onClick={()=>setActive(category.id)} key={category.id}><i style={{background:neighborhoodColors[category.id]}}/>{category.title}</button>)}</div>
+    <div className="worldTimeline">
+      <button type="button" className="timelinePlay" aria-label={playing?"Pause repository timeline":"Play repository timeline"} onClick={()=>{if(playing){setPlaying(false);return;}if(month===7)setMonth(1);setPlaying(true);}}>{playing?"Ⅱ":"▶"}</button>
+      <label><span>2026 / <b>{monthNames[month-1]}</b></span><input type="range" min="1" max="7" step="1" value={month} aria-label={`Repository world through ${monthNames[month-1]} 2026`} onChange={event=>{setPlaying(false);setMonth(Number(event.target.value));}}/><i style={{width:`${(month-1)/6*100}%`}}/></label>
+      <div className="timelineMonths" aria-hidden="true">{monthNames.map((name,index)=><span className={index+1<=month?"reached":""} key={name}>{name}</span>)}</div>
+      <strong>{projects.filter(project=>firstActiveMonth(project)<=month).length}<small> repositories visible</small></strong>
+    </div>
     <div className="worldStage">
       <canvas ref={canvasRef} role="img" aria-label="Interactive network graph of 52 repositories grouped into seven semantic neighborhoods. Drag nodes to rearrange the map and select a repository for details."/>
       <button className="worldInfoButton" type="button" aria-label={infoOpen?"Close community detection information":"How are repository communities detected?"} aria-expanded={infoOpen} aria-controls="world-method" onClick={()=>setInfoOpen(open=>!open)}>{infoOpen?"×":"i"}</button>
@@ -174,8 +200,8 @@ export default function RepositoryWorld({projects}:{projects:RepositoryWorldProj
         </ol>
         <div><span><i className="methodNode"/>Node size = 2026 commits</span><span><i className="methodRing"/>Ring = featured project</span><span><i className="methodLink"/>Line = inferred relationship</span></div>
       </aside>
-      <div className="worldReadout"><span>SEMANTIC SIMILARITY</span><span>WEIGHTED LABEL PROPAGATION</span><span>DRAG · SELECT · EXPLORE</span></div>
+      <div className="worldReadout"><span>WORLD STATE · {monthNames[month-1].toUpperCase()} 2026</span><span>WEIGHTED LABEL PROPAGATION</span><span>DRAG · SELECT · EXPLORE</span></div>
     </div>
-    <div className={`worldSelection ${selected?"visible":""}`} aria-live="polite">{selected?<><span className="worldSelectionDot" style={{background:neighborhoodColors[selected.category]}}/><strong>{selected.title}</strong><span>{selected.description}</span><span>{selected.commits} commits · {selected.language}</span><a href={selected.url} target="_blank" rel="noreferrer">View repository ↗</a></>:<span>Select a node to inspect a repository.</span>}</div>
+    <div className={`worldSelection ${selected?"visible":""}`} aria-live="polite">{selected?<><span className="worldSelectionDot" style={{background:neighborhoodColors[selected.category]}}/><strong>{selected.title}</strong><span>{selected.description}</span><span>{selected.months.slice(0,month).reduce((sum,value)=>sum+value,0)} commits through {monthNames[month-1]} · {selected.language}</span><a href={selected.url} target="_blank" rel="noreferrer">View repository ↗</a></>:<span>Select a node to inspect a repository.</span>}</div>
   </section>;
 }
