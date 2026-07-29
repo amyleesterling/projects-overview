@@ -444,7 +444,7 @@ function NeuronParticleBanner() {
     let height = 0;
     let imageReady = false;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const pointer = { x:-1000, y:-1000, active:false };
+    const pointer = { x:-1000, y:-1000, lastX:-1000, lastY:-1000, vx:0, vy:0, active:false, pressed:false, touch:false };
 
     const sourceImage = new Image();
 
@@ -490,9 +490,24 @@ function NeuronParticleBanner() {
     };
     const move = (event: PointerEvent) => {
       const rect = canvas.getBoundingClientRect();
-      pointer.x = event.clientX - rect.left; pointer.y = event.clientY - rect.top; pointer.active = true;
+      const nextX = event.clientX - rect.left; const nextY = event.clientY - rect.top;
+      pointer.vx = pointer.lastX < -500 ? 0 : nextX - pointer.lastX;
+      pointer.vy = pointer.lastY < -500 ? 0 : nextY - pointer.lastY;
+      pointer.x = nextX; pointer.y = nextY; pointer.lastX = nextX; pointer.lastY = nextY;
+      pointer.touch = event.pointerType === "touch"; pointer.active = !pointer.touch || pointer.pressed;
     };
-    const leave = () => { pointer.active = false; pointer.x = -1000; pointer.y = -1000; };
+    const down = (event: PointerEvent) => {
+      pointer.pressed = true; pointer.touch = event.pointerType === "touch"; pointer.active = true;
+      const rect = canvas.getBoundingClientRect(); pointer.x = event.clientX - rect.left; pointer.y = event.clientY - rect.top;
+      pointer.lastX = pointer.x; pointer.lastY = pointer.y; pointer.vx = 0; pointer.vy = 0;
+      canvas.setPointerCapture(event.pointerId);
+    };
+    const release = (event: PointerEvent) => {
+      pointer.pressed = false; if (pointer.touch) pointer.active = false;
+      pointer.vx = 0; pointer.vy = 0;
+      if (canvas.hasPointerCapture(event.pointerId)) canvas.releasePointerCapture(event.pointerId);
+    };
+    const leave = () => { if (!pointer.pressed) { pointer.active = false; pointer.x = -1000; pointer.y = -1000; pointer.lastX = -1000; pointer.lastY = -1000; } };
     const draw = () => {
       context.clearRect(0, 0, width, height);
       const now = performance.now();
@@ -501,17 +516,19 @@ function NeuronParticleBanner() {
         if (pointer.active && !reduceMotion) {
           const dx = pointer.x - particle.x; const dy = pointer.y - particle.y;
           const distance = Math.hypot(dx, dy) || 1;
-          const radius = Math.min(150, width * .3);
+          const radius = Math.min(230, width * (pointer.touch ? .46 : .4));
           if (distance < radius) {
-            const force = (radius - distance) / radius;
-            const turbulence = (Math.random() - .5) * .9;
-            particle.vx = -(dx / distance) * force * particle.density * .16 + turbulence;
-            particle.vy = -(dy / distance) * force * particle.density * .16 + turbulence;
+            const force = Math.pow((radius - distance) / radius, .72) * (pointer.pressed ? 1.35 : 1);
+            const turbulence = (Math.random() - .5) * 1.75;
+            particle.vx += -(dx / distance) * force * particle.density * .13 + pointer.vx * .075 + turbulence;
+            particle.vy += -(dy / distance) * force * particle.density * .13 + pointer.vy * .075 + turbulence;
+            const speed = Math.hypot(particle.vx, particle.vy);
+            if (speed > 18) { particle.vx = particle.vx / speed * 18; particle.vy = particle.vy / speed * 18; }
           }
         }
-        particle.vx *= .94; particle.vy *= .94;
-        particle.x += particle.vx + (particle.baseX - particle.x) / 8;
-        particle.y += particle.vy + (particle.baseY - particle.y) / 8;
+        particle.vx *= .92; particle.vy *= .92;
+        particle.x += particle.vx + (particle.baseX - particle.x) / 15;
+        particle.y += particle.vy + (particle.baseY - particle.y) / 15;
         const shimmer = .76 + Math.sin(index * .17 + now * .0014) * .16;
         context.fillStyle = `rgba(111,151,255,${shimmer})`;
         context.beginPath(); context.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2); context.fill();
@@ -537,11 +554,11 @@ function NeuronParticleBanner() {
     sourceImage.src = "/featured/pyramidal-neuron.png";
     resize();
     const observer = new ResizeObserver(() => { resize(); if (reduceMotion && imageReady) draw(); }); observer.observe(canvas);
-    canvas.addEventListener("pointermove", move); canvas.addEventListener("pointerleave", leave);
+    canvas.addEventListener("pointermove", move); canvas.addEventListener("pointerdown", down); canvas.addEventListener("pointerup", release); canvas.addEventListener("pointercancel", release); canvas.addEventListener("pointerleave", leave);
     return () => {
       cancelAnimationFrame(animationFrame); observer.disconnect();
       sourceImage.onload = null;
-      canvas.removeEventListener("pointermove", move); canvas.removeEventListener("pointerleave", leave);
+      canvas.removeEventListener("pointermove", move); canvas.removeEventListener("pointerdown", down); canvas.removeEventListener("pointerup", release); canvas.removeEventListener("pointercancel", release); canvas.removeEventListener("pointerleave", leave);
     };
   }, []);
 
