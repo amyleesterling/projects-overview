@@ -1,0 +1,889 @@
+{
+  "owner": "openai",
+  "year": 2026,
+  "generatedAt": "2026-07-29T23:55:18.283Z",
+  "source": "https://github.com/openai",
+  "repositories": [
+    {
+      "n": "codex",
+      "d": "Lightweight coding agent that runs in your terminal",
+      "l": "Rust",
+      "u": "https://github.com/openai/codex",
+      "t": "2026-07-29",
+      "topics": [],
+      "stars": 102412
+    },
+    {
+      "n": "codex-security",
+      "d": "OpenAI's Codex Security CLI and TypeScript SDK for finding, validating, and fixing security vulnerabilities. npm: https://www.npmjs.com/package/@openai/codex-security",
+      "l": "TypeScript",
+      "u": "https://github.com/openai/codex-security",
+      "h": "https://developers.openai.com/codex/security",
+      "t": "2026-07-29",
+      "topics": [
+        "ai-security",
+        "application-security",
+        "cli",
+        "code-scanning",
+        "codex",
+        "codex-security",
+        "cybersecurity",
+        "devsecops",
+        "nodejs",
+        "npm",
+        "openai",
+        "sdk",
+        "security",
+        "typescript",
+        "vulnerability-scanning"
+      ],
+      "stars": 4877
+    },
+    {
+      "n": "fence",
+      "d": "A fence keeps things out, but also in. This project is still in early, and active development.",
+      "l": "Rust",
+      "u": "https://github.com/openai/fence",
+      "t": "2026-07-29",
+      "topics": [
+        "cicd",
+        "github-actions",
+        "security",
+        "supply-chain-security"
+      ],
+      "stars": 123
+    },
+    {
+      "n": "openai-agents-python",
+      "d": "A lightweight, powerful framework for multi-agent workflows",
+      "l": "Python",
+      "u": "https://github.com/openai/openai-agents-python",
+      "h": "https://openai.github.io/openai-agents-python/",
+      "t": "2026-07-29",
+      "topics": [
+        "agents",
+        "ai",
+        "framework",
+        "harness",
+        "llm",
+        "openai",
+        "python"
+      ],
+      "stars": 28274
+    },
+    {
+      "n": "openai-dotnet",
+      "d": "The official .NET library for the OpenAI API",
+      "l": "C#",
+      "u": "https://github.com/openai/openai-dotnet",
+      "h": "https://www.nuget.org/packages/OpenAI",
+      "t": "2026-07-29",
+      "topics": [
+        "csharp",
+        "dotnet",
+        "openai"
+      ],
+      "stars": 2657
+    },
+    {
+      "n": "openai-agents-js",
+      "d": "A lightweight, powerful framework for multi-agent workflows and voice agents",
+      "l": "TypeScript",
+      "u": "https://github.com/openai/openai-agents-js",
+      "h": "https://openai.github.io/openai-agents-js/",
+      "t": "2026-07-29",
+      "topics": [
+        "agents",
+        "openai",
+        "openai-api",
+        "realtime-api",
+        "typescript"
+      ],
+      "stars": 3491
+    },
+    {
+      "n": "tunnel-client",
+      "d": "A public GitHub repository from openai.",
+      "l": "Go",
+      "u": "https://github.com/openai/tunnel-client",
+      "t": "2026-07-29",
+      "topics": [],
+      "stars": 204
+    },
+    {
+      "n": "snap-o",
+      "d": "Lightweight Android capture developer tools for macOS",
+      "l": "Kotlin",
+      "u": "https://github.com/openai/snap-o",
+      "h": "https://openai.github.io/snap-o/",
+      "t": "2026-07-29",
+      "topics": [
+        "android",
+        "developer-tools",
+        "teams"
+      ],
+      "stars": 90
+    },
+    {
+      "n": "openai-cookbook",
+      "d": "Examples and guides for using the OpenAI API",
+      "l": "Jupyter Notebook",
+      "u": "https://github.com/openai/openai-cookbook",
+      "h": "https://cookbook.openai.com",
+      "t": "2026-07-29",
+      "topics": [
+        "chatgpt",
+        "gpt-4",
+        "openai",
+        "openai-api"
+      ],
+      "stars": 74985
+    },
+    {
+      "n": "openai-node",
+      "d": "Official JavaScript / TypeScript library for the OpenAI API",
+      "l": "TypeScript",
+      "u": "https://github.com/openai/openai-node",
+      "h": "https://www.npmjs.com/package/openai",
+      "t": "2026-07-29",
+      "topics": [
+        "nodejs",
+        "openai",
+        "typescript"
+      ],
+      "stars": 11073
+    },
+    {
+      "n": "softnet",
+      "d": "Software networking with isolation for Tart",
+      "l": "Rust",
+      "u": "https://github.com/openai/softnet",
+      "t": "2026-07-29",
+      "topics": [
+        "dhcp",
+        "firewall",
+        "networking",
+        "packet-filter",
+        "security",
+        "tart",
+        "vmnet"
+      ],
+      "stars": 67
+    },
+    {
+      "n": "openai-python",
+      "d": "The official Python library for the OpenAI API",
+      "l": "Python",
+      "u": "https://github.com/openai/openai-python",
+      "h": "https://pypi.org/project/openai/",
+      "t": "2026-07-29",
+      "topics": [
+        "openai",
+        "python"
+      ],
+      "stars": 31262
+    },
+    {
+      "n": "terraform-provider-openai",
+      "d": "The official Terraform provider for OpenAI.",
+      "l": "Go Template",
+      "u": "https://github.com/openai/terraform-provider-openai",
+      "t": "2026-07-29",
+      "topics": [],
+      "stars": 18
+    },
+    {
+      "n": "sites",
+      "d": "Home to TypeScript packages for ChatGPT Sites",
+      "l": "TypeScript",
+      "u": "https://github.com/openai/sites",
+      "t": "2026-07-29",
+      "topics": [],
+      "stars": 6
+    },
+    {
+      "n": "homebrew-tools",
+      "d": "Homebrew for the OpenAI CLI.",
+      "l": "Ruby",
+      "u": "https://github.com/openai/homebrew-tools",
+      "t": "2026-07-28",
+      "topics": [],
+      "stars": 10
+    },
+    {
+      "n": "openai-java",
+      "d": "The official Java library for the OpenAI API",
+      "l": "Kotlin",
+      "u": "https://github.com/openai/openai-java",
+      "t": "2026-07-28",
+      "topics": [],
+      "stars": 1499
+    },
+    {
+      "n": "openai-ruby",
+      "d": "Official Ruby SDK for the OpenAI API",
+      "l": "Ruby",
+      "u": "https://github.com/openai/openai-ruby",
+      "t": "2026-07-28",
+      "topics": [],
+      "stars": 442
+    },
+    {
+      "n": "openai-go",
+      "d": "The official Go library for the OpenAI API",
+      "l": "Go",
+      "u": "https://github.com/openai/openai-go",
+      "t": "2026-07-28",
+      "topics": [],
+      "stars": 3372
+    },
+    {
+      "n": "openai-cli",
+      "d": "Official CLI for the OpenAI API",
+      "l": "Go",
+      "u": "https://github.com/openai/openai-cli",
+      "t": "2026-07-28",
+      "topics": [],
+      "stars": 648
+    },
+    {
+      "n": "openai-openapi",
+      "d": "OpenAPI specification for the OpenAI API",
+      "l": "Other",
+      "u": "https://github.com/openai/openai-openapi",
+      "h": "https://platform.openai.com/docs/api-reference/introduction",
+      "t": "2026-07-28",
+      "topics": [
+        "openai",
+        "openai-api"
+      ],
+      "stars": 2462
+    },
+    {
+      "n": "whisper",
+      "d": "Robust Speech Recognition via Large-Scale Weak Supervision",
+      "l": "Python",
+      "u": "https://github.com/openai/whisper",
+      "t": "2026-07-28",
+      "topics": [],
+      "stars": 106065
+    },
+    {
+      "n": "chatkit-js",
+      "d": "A public GitHub repository from openai.",
+      "l": "TypeScript",
+      "u": "https://github.com/openai/chatkit-js",
+      "h": "https://openai.github.io/chatkit-js/",
+      "t": "2026-07-28",
+      "topics": [],
+      "stars": 1942
+    },
+    {
+      "n": "codex-action",
+      "d": "A public GitHub repository from openai.",
+      "l": "TypeScript",
+      "u": "https://github.com/openai/codex-action",
+      "t": "2026-07-28",
+      "topics": [],
+      "stars": 1145
+    },
+    {
+      "n": "tart-guest-agent",
+      "d": "Guest agent for Tart VMs",
+      "l": "Go",
+      "u": "https://github.com/openai/tart-guest-agent",
+      "t": "2026-07-26",
+      "topics": [],
+      "stars": 27
+    },
+    {
+      "n": "gpt-oss",
+      "d": "gpt-oss-120b and gpt-oss-20b are two open-weight language models by OpenAI",
+      "l": "Python",
+      "u": "https://github.com/openai/gpt-oss",
+      "h": "https://openai.com/open-models",
+      "t": "2026-07-24",
+      "topics": [],
+      "stars": 20271
+    },
+    {
+      "n": "symphony",
+      "d": "Symphony turns project work into isolated, autonomous implementation runs, allowing teams to manage work instead of supervising coding agents.",
+      "l": "Elixir",
+      "u": "https://github.com/openai/symphony",
+      "h": "https://openai.com/index/open-source-codex-orchestration-symphony/",
+      "t": "2026-07-24",
+      "topics": [],
+      "stars": 26304
+    },
+    {
+      "n": "tart",
+      "d": "macOS and Linux VMs on Apple Silicon to use in CI and other automations",
+      "l": "Swift",
+      "u": "https://github.com/openai/tart",
+      "h": "https://tart.run",
+      "t": "2026-07-24",
+      "topics": [
+        "apple-silicon",
+        "automation",
+        "ci",
+        "fair-source",
+        "macos",
+        "tart",
+        "virtualization",
+        "virtualization-framework"
+      ],
+      "stars": 6387
+    },
+    {
+      "n": "build-hours",
+      "d": "Build hours code to share.",
+      "l": "TypeScript",
+      "u": "https://github.com/openai/build-hours",
+      "t": "2026-07-24",
+      "topics": [],
+      "stars": 836
+    },
+    {
+      "n": "orchard",
+      "d": "Orchestrator for running Tart Virtual Machines on a cluster of Apple Silicon devices",
+      "l": "Go",
+      "u": "https://github.com/openai/orchard",
+      "t": "2026-07-23",
+      "topics": [
+        "macos",
+        "orchestration",
+        "virtualization"
+      ],
+      "stars": 479
+    },
+    {
+      "n": "openai-guardrails-python",
+      "d": "OpenAI Guardrails - Python",
+      "l": "Python",
+      "u": "https://github.com/openai/openai-guardrails-python",
+      "h": "https://guardrails.openai.com",
+      "t": "2026-07-21",
+      "topics": [],
+      "stars": 223
+    },
+    {
+      "n": "GABRIEL",
+      "d": "An official OpenAI toolkit for social scientists and data scientists to measure quantitative attributes in text, images, or audio using the GPT API.",
+      "l": "Jupyter Notebook",
+      "u": "https://github.com/openai/GABRIEL",
+      "t": "2026-07-15",
+      "topics": [],
+      "stars": 413
+    },
+    {
+      "n": "redcard",
+      "d": "Eject yourself from work with a little help from Codex.",
+      "l": "Python",
+      "u": "https://github.com/openai/redcard",
+      "t": "2026-07-14",
+      "topics": [],
+      "stars": 39
+    },
+    {
+      "n": "plugins",
+      "d": "OpenAI Plugins",
+      "l": "JavaScript",
+      "u": "https://github.com/openai/plugins",
+      "t": "2026-07-14",
+      "topics": [],
+      "stars": 4807
+    },
+    {
+      "n": "skills",
+      "d": "Skills Catalog for Codex",
+      "l": "Python",
+      "u": "https://github.com/openai/skills",
+      "t": "2026-07-14",
+      "topics": [],
+      "stars": 24317
+    },
+    {
+      "n": "role-specific-plugins",
+      "d": "Role-specific Codex plugin templates",
+      "l": "JavaScript",
+      "u": "https://github.com/openai/role-specific-plugins",
+      "t": "2026-07-13",
+      "topics": [],
+      "stars": 467
+    },
+    {
+      "n": "openai-developers-for-claude",
+      "d": "OpenAI Developers plugin for Claude Code",
+      "l": "JavaScript",
+      "u": "https://github.com/openai/openai-developers-for-claude",
+      "t": "2026-07-13",
+      "topics": [],
+      "stars": 14
+    },
+    {
+      "n": "openai-developers-for-cursor",
+      "d": "OpenAI Developers plugin for Cursor",
+      "l": "JavaScript",
+      "u": "https://github.com/openai/openai-developers-for-cursor",
+      "t": "2026-07-13",
+      "topics": [],
+      "stars": 2
+    },
+    {
+      "n": "cdc-lean",
+      "d": "A public GitHub repository from openai.",
+      "l": "Lean",
+      "u": "https://github.com/openai/cdc-lean",
+      "t": "2026-07-09",
+      "topics": [],
+      "stars": 119
+    },
+    {
+      "n": "birdingpal",
+      "d": "BirdingPal is an ChatGPT-enabled partner for identifying birds.",
+      "l": "Kotlin",
+      "u": "https://github.com/openai/birdingpal",
+      "t": "2026-07-09",
+      "topics": [],
+      "stars": 0
+    },
+    {
+      "n": "codex-plugin-cc",
+      "d": "Use Codex from Claude Code to review code or delegate tasks.",
+      "l": "JavaScript",
+      "u": "https://github.com/openai/codex-plugin-cc",
+      "t": "2026-07-08",
+      "topics": [],
+      "stars": 30379
+    },
+    {
+      "n": "vetu",
+      "d": "Create, publish and virtualize ephemeral Linux VMs with ease",
+      "l": "Go",
+      "u": "https://github.com/openai/vetu",
+      "t": "2026-07-07",
+      "topics": [],
+      "stars": 276
+    },
+    {
+      "n": "planttalk",
+      "d": "Give your houseplants a voice with ChatGPT.",
+      "l": "TypeScript",
+      "u": "https://github.com/openai/planttalk",
+      "t": "2026-06-30",
+      "topics": [],
+      "stars": 295
+    },
+    {
+      "n": "ads-measurement-pixel-gtm-template",
+      "d": "A public GitHub repository from openai.",
+      "l": "Smarty",
+      "u": "https://github.com/openai/ads-measurement-pixel-gtm-template",
+      "t": "2026-06-17",
+      "topics": [],
+      "stars": 1
+    },
+    {
+      "n": "monitorability-evals",
+      "d": "Open-sourced evaluation suite from the Monitoring Monitorability paper",
+      "l": "Python",
+      "u": "https://github.com/openai/monitorability-evals",
+      "t": "2026-06-11",
+      "topics": [],
+      "stars": 88
+    },
+    {
+      "n": "imagegencam",
+      "d": "A digital camera you can build yourself with Codex.",
+      "l": "Python",
+      "u": "https://github.com/openai/imagegencam",
+      "t": "2026-06-08",
+      "topics": [],
+      "stars": 428
+    },
+    {
+      "n": "tiktoken",
+      "d": "tiktoken is a fast BPE tokeniser for use with OpenAI's models.",
+      "l": "Python",
+      "u": "https://github.com/openai/tiktoken",
+      "t": "2026-05-24",
+      "topics": [],
+      "stars": 18870
+    },
+    {
+      "n": "model_spec",
+      "d": "The OpenAI Model Spec",
+      "l": "Other",
+      "u": "https://github.com/openai/model_spec",
+      "h": "https://model-spec.openai.com/",
+      "t": "2026-05-22",
+      "topics": [],
+      "stars": 812
+    },
+    {
+      "n": "openai-mcpkit",
+      "d": "A public GitHub repository from openai.",
+      "l": "Python",
+      "u": "https://github.com/openai/openai-mcpkit",
+      "t": "2026-05-21",
+      "topics": [],
+      "stars": 67
+    },
+    {
+      "n": "apps-sdk-ui",
+      "d": "A public GitHub repository from openai.",
+      "l": "TypeScript",
+      "u": "https://github.com/openai/apps-sdk-ui",
+      "h": "https://openai.github.io/apps-sdk-ui/",
+      "t": "2026-05-20",
+      "topics": [],
+      "stars": 920
+    },
+    {
+      "n": "chatkit-python",
+      "d": "A public GitHub repository from openai.",
+      "l": "Python",
+      "u": "https://github.com/openai/chatkit-python",
+      "h": "https://openai.github.io/chatkit-python/",
+      "t": "2026-05-19",
+      "topics": [],
+      "stars": 386
+    },
+    {
+      "n": "hallucinations-paper-experiments",
+      "d": "Experiments for paper",
+      "l": "Jupyter Notebook",
+      "u": "https://github.com/openai/hallucinations-paper-experiments",
+      "t": "2026-05-15",
+      "topics": [],
+      "stars": 11
+    },
+    {
+      "n": "openai-realtime-meeting-assistant",
+      "d": "Example of using Realtime API as a meeting assistant to manage a Kanban Board",
+      "l": "Go",
+      "u": "https://github.com/openai/openai-realtime-meeting-assistant",
+      "t": "2026-05-11",
+      "topics": [],
+      "stars": 264
+    },
+    {
+      "n": "parameter-golf",
+      "d": "Train the smallest LM you can that fits in 16MB. Best model wins!",
+      "l": "Python",
+      "u": "https://github.com/openai/parameter-golf",
+      "t": "2026-05-04",
+      "topics": [],
+      "stars": 5175
+    },
+    {
+      "n": "codex-universal",
+      "d": "Base docker image used in Codex environments",
+      "l": "Dockerfile",
+      "u": "https://github.com/openai/codex-universal",
+      "t": "2026-05-02",
+      "topics": [],
+      "stars": 992
+    },
+    {
+      "n": "realtime-voice-component",
+      "d": "A public GitHub repository from openai.",
+      "l": "TypeScript",
+      "u": "https://github.com/openai/realtime-voice-component",
+      "t": "2026-04-27",
+      "topics": [],
+      "stars": 878
+    },
+    {
+      "n": "mle-bench",
+      "d": "MLE-bench is a benchmark for measuring how well AI agents perform at machine learning engineering",
+      "l": "Python",
+      "u": "https://github.com/openai/mle-bench",
+      "h": "https://openai.com/index/mle-bench/",
+      "t": "2026-04-24",
+      "topics": [],
+      "stars": 1658
+    },
+    {
+      "n": "simple-evals",
+      "d": "A public GitHub repository from openai.",
+      "l": "Python",
+      "u": "https://github.com/openai/simple-evals",
+      "t": "2026-04-22",
+      "topics": [],
+      "stars": 4587
+    },
+    {
+      "n": "privacy-filter",
+      "d": "OpenAI Privacy Filter",
+      "l": "Python",
+      "u": "https://github.com/openai/privacy-filter",
+      "t": "2026-04-22",
+      "topics": [],
+      "stars": 2593
+    },
+    {
+      "n": "euphony",
+      "d": "Visualize harmony chat data and codex sessions in your browser",
+      "l": "TypeScript",
+      "u": "https://github.com/openai/euphony",
+      "h": "https://openai.github.io/euphony/",
+      "t": "2026-04-22",
+      "topics": [],
+      "stars": 418
+    },
+    {
+      "n": "frontier-evals",
+      "d": "OpenAI Frontier Evals",
+      "l": "Python",
+      "u": "https://github.com/openai/frontier-evals",
+      "t": "2026-04-21",
+      "topics": [],
+      "stars": 1265
+    },
+    {
+      "n": "openai-imagegen-demo",
+      "d": "Next.js Photobooth app built with the OpenAI Image API",
+      "l": "TypeScript",
+      "u": "https://github.com/openai/openai-imagegen-demo",
+      "t": "2026-04-21",
+      "topics": [],
+      "stars": 60
+    },
+    {
+      "n": "swarm",
+      "d": "Educational framework exploring ergonomic, lightweight multi-agent orchestration. Managed by OpenAI Solution team.",
+      "l": "Python",
+      "u": "https://github.com/openai/swarm",
+      "t": "2026-04-15",
+      "topics": [],
+      "stars": 21866
+    },
+    {
+      "n": "transformer-debugger",
+      "d": "A public GitHub repository from openai.",
+      "l": "Python",
+      "u": "https://github.com/openai/transformer-debugger",
+      "t": "2026-04-15",
+      "topics": [],
+      "stars": 4121
+    },
+    {
+      "n": "openai-security-bots",
+      "d": "A public GitHub repository from openai.",
+      "l": "Python",
+      "u": "https://github.com/openai/openai-security-bots",
+      "t": "2026-04-15",
+      "topics": [],
+      "stars": 395
+    },
+    {
+      "n": "openai-apps-sdk-examples",
+      "d": "Example apps for the Apps SDK",
+      "l": "TypeScript",
+      "u": "https://github.com/openai/openai-apps-sdk-examples",
+      "t": "2026-04-15",
+      "topics": [],
+      "stars": 2292
+    },
+    {
+      "n": "evals",
+      "d": "Evals is a framework for evaluating LLMs and LLM systems, and an open-source registry of benchmarks.",
+      "l": "Python",
+      "u": "https://github.com/openai/evals",
+      "t": "2026-04-14",
+      "topics": [],
+      "stars": 19048
+    },
+    {
+      "n": "harmony",
+      "d": "Renderer for the harmony response format to be used with gpt-oss",
+      "l": "Rust",
+      "u": "https://github.com/openai/harmony",
+      "t": "2026-04-08",
+      "topics": [],
+      "stars": 4468
+    },
+    {
+      "n": "openai-cua-sample-app",
+      "d": "Learn how to use CUA (our Computer Using Agent) via the API on multiple computer environments.",
+      "l": "TypeScript",
+      "u": "https://github.com/openai/openai-cua-sample-app",
+      "t": "2026-03-30",
+      "topics": [],
+      "stars": 1756
+    },
+    {
+      "n": "openai-chatkit-starter-app",
+      "d": "Starter app to build with OpenAI ChatKit + Agent Builder",
+      "l": "Python",
+      "u": "https://github.com/openai/openai-chatkit-starter-app",
+      "h": "https://platform.openai.com/docs/guides/chatkit",
+      "t": "2026-03-27",
+      "topics": [
+        "chatkit",
+        "openai",
+        "openai-api"
+      ],
+      "stars": 866
+    },
+    {
+      "n": "openai-chatkit-advanced-samples",
+      "d": "Starter app to build with OpenAI ChatKit SDK",
+      "l": "Other",
+      "u": "https://github.com/openai/openai-chatkit-advanced-samples",
+      "h": "https://platform.openai.com/docs/guides/chatkit",
+      "t": "2026-03-27",
+      "topics": [
+        "chatkit",
+        "openai",
+        "openai-api",
+        "python",
+        "typescript"
+      ],
+      "stars": 642
+    },
+    {
+      "n": "openai-reflect",
+      "d": "Physical AI Assistant that illuminates your life",
+      "l": "C++",
+      "u": "https://github.com/openai/openai-reflect",
+      "t": "2026-03-27",
+      "topics": [],
+      "stars": 193
+    },
+    {
+      "n": "procgen",
+      "d": "Procgen Benchmark: Procedurally-Generated Game-Like Gym-Environments",
+      "l": "C++",
+      "u": "https://github.com/openai/procgen",
+      "h": "https://openai.com/blog/procgen-benchmark/",
+      "t": "2026-03-27",
+      "topics": [],
+      "stars": 1178
+    },
+    {
+      "n": "openai-guardrails-js",
+      "d": "OpenAI Guardrails - TypeScript / JavaScript",
+      "l": "TypeScript",
+      "u": "https://github.com/openai/openai-guardrails-js",
+      "h": "https://guardrails.openai.com",
+      "t": "2026-03-26",
+      "topics": [],
+      "stars": 87
+    },
+    {
+      "n": "gym3",
+      "d": "Vectorized interface for reinforcement learning environments",
+      "l": "Python",
+      "u": "https://github.com/openai/gym3",
+      "t": "2026-03-26",
+      "topics": [],
+      "stars": 149
+    },
+    {
+      "n": "bugbounty-gpt",
+      "d": "A helpful gpt-based triage tool for BugCrowd bugbounty programs.",
+      "l": "Python",
+      "u": "https://github.com/openai/bugbounty-gpt",
+      "t": "2026-03-26",
+      "topics": [],
+      "stars": 55
+    },
+    {
+      "n": "CLIP",
+      "d": "CLIP (Contrastive Language-Image Pretraining),  Predict the most relevant text snippet given an image",
+      "l": "Jupyter Notebook",
+      "u": "https://github.com/openai/CLIP",
+      "t": "2026-03-25",
+      "topics": [
+        "deep-learning",
+        "machine-learning"
+      ],
+      "stars": 34091
+    },
+    {
+      "n": "model_spec_dataset",
+      "d": "A public-domain dataset of prompts and scenarios for evaluating compliance with the OpenAI Model Spec.",
+      "l": "Other",
+      "u": "https://github.com/openai/model_spec_dataset",
+      "t": "2026-03-24",
+      "topics": [],
+      "stars": 9
+    },
+    {
+      "n": "model_spec_evals",
+      "d": "Evaluation harness and tooling for measuring model compliance with the OpenAI Model Spec.",
+      "l": "Python",
+      "u": "https://github.com/openai/model_spec_evals",
+      "t": "2026-03-24",
+      "topics": [],
+      "stars": 10
+    },
+    {
+      "n": "teen-safety-policy-pack",
+      "d": "A public GitHub repository from openai.",
+      "l": "Other",
+      "u": "https://github.com/openai/teen-safety-policy-pack",
+      "t": "2026-03-24",
+      "topics": [],
+      "stars": 24
+    },
+    {
+      "n": "orion-multistep-analysis",
+      "d": "A public GitHub repository from openai.",
+      "l": "Python",
+      "u": "https://github.com/openai/orion-multistep-analysis",
+      "t": "2026-03-16",
+      "topics": [],
+      "stars": 5
+    },
+    {
+      "n": "openai-realtime-solar-system",
+      "d": "Demo showing how to use the OpenAI Realtime API to navigate a 3D scene via tool calling",
+      "l": "TypeScript",
+      "u": "https://github.com/openai/openai-realtime-solar-system",
+      "t": "2026-03-04",
+      "topics": [],
+      "stars": 500
+    },
+    {
+      "n": "openai-fm",
+      "d": "Code for openai.fm, a demo for the OpenAI Speech API",
+      "l": "TypeScript",
+      "u": "https://github.com/openai/openai-fm",
+      "h": "https://openai.fm",
+      "t": "2026-03-03",
+      "topics": [],
+      "stars": 2877
+    },
+    {
+      "n": "gpt-oss-safeguard",
+      "d": "A public GitHub repository from openai.",
+      "l": "Other",
+      "u": "https://github.com/openai/gpt-oss-safeguard",
+      "t": "2026-01-14",
+      "topics": [],
+      "stars": 54
+    },
+    {
+      "n": "openai-knowledge-retrieval",
+      "d": "OS repo for Knowledge Retrieval starter kit",
+      "l": "Python",
+      "u": "https://github.com/openai/openai-knowledge-retrieval",
+      "t": "2026-01-13",
+      "topics": [],
+      "stars": 85
+    },
+    {
+      "n": "openai-realtime-agents",
+      "d": "This is a simple demonstration of more advanced, agentic patterns built on top of the Realtime API.",
+      "l": "TypeScript",
+      "u": "https://github.com/openai/openai-realtime-agents",
+      "t": "2026-01-07",
+      "topics": [],
+      "stars": 6943
+    }
+  ]
+}

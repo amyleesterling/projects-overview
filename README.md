@@ -97,3 +97,5 @@ Unauthenticated GitHub API requests work for small catalogs. For larger accounts
 The importer output intentionally uses the exhibition's compact field names (`n`, `d`, `l`, `u`, `h`, `t`, and `f`), so the repository records can be used without a separate conversion step. The extra `topics` and `stars` fields are safe to leave in place.
 
 Working snapshots generated with this importer are included in [`examples/karpathy-2026.json`](examples/karpathy-2026.json) and [`examples/anthropics-2026.json`](examples/anthropics-2026.json).
+
+The deployed exhibition also includes complete interactive examples for [Anthropic](https://amy-projects-2026.amysterling.chatgpt.site/anthropics) and [OpenAI](https://amy-projects-2026.amysterling.chatgpt.site/openai). The OpenAI snapshot is stored in [`examples/openai-2026.json`](examples/openai-2026.json).

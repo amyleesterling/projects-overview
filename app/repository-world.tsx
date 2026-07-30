@@ -6,6 +6,7 @@ import ProjectVisual from "./project-visual";
 export type RepositoryWorldProject = {
   name:string; title:string; description:string; language:string; url:string; liveUrl?:string; publicationUrl?:string; thumbnail?:string;
   category:string; categoryTitle:string; commits:number; months:number[]; touchedMonth:number; featured:boolean;
+  stars?:number; topics?:string[]; lastTouched?:string;
 };
 
 type GraphNode = RepositoryWorldProject & { x:number; y:number; vx:number; vy:number; radius:number; community:number };
@@ -14,10 +15,14 @@ type GraphEdge = { source:number; target:number; weight:number };
 const neighborhoodColors:Record<string,string> = {
   brains:"#69d8ff", kids:"#54d2c8", earth:"#7eb5ff", ai:"#a99cff",
   tools:"#a8e8ff", toys:"#4ebce9", ridiculous:"#ffd35f",
+  models:"#69d8ff", agents:"#42d3c5", research:"#9b9dff", safety:"#ffd35f",
+  developer:"#8ddcff", multimodal:"#729eff", learning:"#b7c9ff",
 };
 const centers:Record<string,[number,number]> = {
   brains:[.25,.28], kids:[.74,.25], earth:[.82,.55], ai:[.63,.76],
   tools:[.36,.75], toys:[.48,.48], ridiculous:[.12,.59],
+  models:[.22,.26], agents:[.52,.22], research:[.78,.3], safety:[.82,.64],
+  developer:[.53,.76], multimodal:[.22,.68], learning:[.48,.49],
 };
 const monthNames=["Jan","Feb","Mar","Apr","May","Jun","Jul"];
 const constellationTours = [
@@ -45,7 +50,7 @@ function firstActiveMonth(project:RepositoryWorldProject) {
 }
 
 function terms(project:RepositoryWorldProject) {
-  const raw=`${project.name} ${project.title} ${project.description}`.toLowerCase().replace(/[^a-z0-9]+/g," ").split(" ").filter(term=>term.length>2&&!stopwords.has(term));
+  const raw=`${project.name} ${project.title} ${project.description} ${(project.topics||[]).join(" ")}`.toLowerCase().replace(/[^a-z0-9]+/g," ").split(" ").filter(term=>term.length>2&&!stopwords.has(term));
   const result=new Set(raw);
   Object.entries(semanticAliases).forEach(([alias,words])=>{ if(words.some(word=>result.has(word))) result.add(alias); });
   return result;
@@ -88,12 +93,22 @@ function buildGraph(projects:RepositoryWorldProject[]) {
   const nodes:GraphNode[]=projects.map((project,index)=>{
     const seed=hash(project.name); const [cx,cy]=centers[project.category]||[.5,.5];
     const angle=(seed%628)/100; const distance=24+(seed%62);
-    return {...project,x:cx*1000+Math.cos(angle)*distance,y:cy*650+Math.sin(angle)*distance,vx:0,vy:0,radius:project.featured?9:5.5+Math.min(4,Math.sqrt(project.commits)*.28),community:labels[index]};
+    const signal=project.stars===undefined?Math.sqrt(project.commits)*.28:Math.log10(project.stars+1)*1.1;
+    return {...project,x:cx*1000+Math.cos(angle)*distance,y:cy*650+Math.sin(angle)*distance,vx:0,vy:0,radius:project.featured?9:5.5+Math.min(4,signal),community:labels[index]};
   });
   return {nodes,edges};
 }
 
-export default function RepositoryWorld({projects}:{projects:RepositoryWorldProject[]}) {
+type RepositoryWorldProps = {
+  projects:RepositoryWorldProject[];
+  heading?:string;
+  description?:string;
+  kicker?:string;
+  showTours?:boolean;
+  year?:number;
+};
+
+export default function RepositoryWorld({projects,heading="The repository world",description="A living map of the projects. Proximity comes from shared ideas, language, project families, and purpose; stronger relationships pull repositories closer together.",kicker,showTours=true,year=2026}:RepositoryWorldProps) {
   const canvasRef=useRef<HTMLCanvasElement>(null);
   const graph=useMemo(()=>buildGraph(projects),[projects]);
   const [active,setActive]=useState("all");
@@ -150,7 +165,7 @@ export default function RepositoryWorld({projects}:{projects:RepositoryWorldProj
     const visible=(node:GraphNode)=>(active==="all"||node.category===active)&&firstActiveMonth(node)<=month;
     const inTour=(node:GraphNode)=>!tourNames.length||tourNames.includes(node.name);
     const cumulative=(node:GraphNode)=>node.months.slice(0,month).reduce((sum,value)=>sum+value,0);
-    const nodeRadius=(node:GraphNode)=>node.featured?9:5.5+Math.min(4,Math.sqrt(cumulative(node))*.28);
+    const nodeRadius=(node:GraphNode)=>node.featured?9:5.5+Math.min(4,node.stars===undefined?Math.sqrt(cumulative(node))*.28:Math.log10(node.stars+1)*1.1);
     const projectPoint=(node:GraphNode)=>({x:node.x/1000*width,y:node.y/650*height});
     const tick=()=>{
       if(!reduceMotion) {
@@ -217,17 +232,17 @@ export default function RepositoryWorld({projects}:{projects:RepositoryWorldProj
   },[active,categories,easterEgg,graph,month,selectedIndex,tourNames]);
 
   return <section className="repositoryWorld section" id="world">
-    <div className="sectionHeading worldHeading"><div><p className="kicker">{projects.length} REPOSITORIES · 7 NEIGHBORHOODS</p><h2>The repository world</h2></div><p>A living map of the projects. Proximity comes from shared ideas, language, project families, and purpose; stronger relationships pull repositories closer together.</p></div>
+    <div className="sectionHeading worldHeading"><div><p className="kicker">{kicker||`${projects.length} REPOSITORIES · ${categories.length} NEIGHBORHOODS`}</p><h2>{heading}</h2></div><p>{description}</p></div>
     <div className="worldControls" aria-label="Repository neighborhoods"><button className={active==="all"?"active":""} onClick={()=>{setActive("all");stopTour();}}>Whole world</button>{categories.map(category=><button className={active===category.id?"active":""} onClick={()=>selectCategory(category.id)} key={category.id}><i style={{background:neighborhoodColors[category.id]}}/>{category.title}</button>)}</div>
     <div className="worldTimeline">
       <button type="button" className="timelinePlay" aria-label={playing?"Pause repository timeline":"Play repository timeline"} onClick={()=>{if(playing){setPlaying(false);return;}if(month===7)setMonth(1);setPlaying(true);}}>{playing?"Ⅱ":"▶"}</button>
-      <label><span>2026 / <b>{monthNames[month-1]}</b></span><input type="range" min="1" max="7" step="1" value={month} aria-label={`Repository world through ${monthNames[month-1]} 2026`} onChange={event=>{setPlaying(false);setMonth(Number(event.target.value));}}/><i style={{width:`${(month-1)/6*100}%`}}/></label>
+      <label><span>{year} / <b>{monthNames[month-1]}</b></span><input type="range" min="1" max="7" step="1" value={month} aria-label={`Repository world through ${monthNames[month-1]} ${year}`} onChange={event=>{setPlaying(false);setMonth(Number(event.target.value));}}/><i style={{width:`${(month-1)/6*100}%`}}/></label>
       <div className="timelineMonths" aria-hidden="true">{monthNames.map((name,index)=><span className={index+1<=month?"reached":""} key={name}>{name}</span>)}</div>
       <strong>{projects.filter(project=>firstActiveMonth(project)<=month).length}<small> repositories visible</small></strong>
     </div>
-    <div className="constellationTours"><div><span>GUIDED CONSTELLATION TOURS</span><p>Follow a story through the repository world.</p></div>{constellationTours.map(tour=><button type="button" className={activeTour===tour.id?"active":""} onClick={()=>startTour(tour.id)} key={tour.id}><i>{String(tour.names.length).padStart(2,"0")}</i><span>{tour.title}</span></button>)}</div>
+    {showTours&&<div className="constellationTours"><div><span>GUIDED CONSTELLATION TOURS</span><p>Follow a story through the repository world.</p></div>{constellationTours.map(tour=><button type="button" className={activeTour===tour.id?"active":""} onClick={()=>startTour(tour.id)} key={tour.id}><i>{String(tour.names.length).padStart(2,"0")}</i><span>{tour.title}</span></button>)}</div>}
     <div className="worldStage">
-      <canvas ref={canvasRef} role="img" aria-label={`Interactive network graph of ${projects.length} repositories grouped into seven semantic neighborhoods. Drag nodes to rearrange the map and select a repository for details.`}/>
+      <canvas ref={canvasRef} role="img" aria-label={`Interactive network graph of ${projects.length} repositories grouped into ${categories.length} semantic neighborhoods. Drag nodes to rearrange the map and select a repository for details.`}/>
       <button className="worldInfoButton" type="button" aria-label={infoOpen?"Close community detection information":"How are repository communities detected?"} aria-expanded={infoOpen} aria-controls="world-method" onClick={()=>setInfoOpen(open=>!open)}>{infoOpen?"×":"i"}</button>
       <aside className={`worldMethod ${infoOpen?"visible":""}`} id="world-method" aria-hidden={!infoOpen}>
         <p>HOW THIS WORLD ORGANIZES ITSELF</p>
@@ -237,15 +252,15 @@ export default function RepositoryWorld({projects}:{projects:RepositoryWorldProj
           <li><b>Detect.</b><span>Repositories repeatedly adopt the strongest neighboring community through weighted label propagation. The seven editorial categories provide only a light prior.</span></li>
           <li><b>Settle.</b><span>Related projects attract, all projects repel, and neighborhood gravity keeps the world readable as the graph moves.</span></li>
         </ol>
-        <div><span><i className="methodNode"/>Node size = 2026 commits</span><span><i className="methodRing"/>Ring = featured project</span><span><i className="methodLink"/>Line = inferred relationship</span></div>
+        <div><span><i className="methodNode"/>Node size = {projects.some(project=>project.stars!==undefined)?"GitHub stars":`${year} commits`}</span><span><i className="methodRing"/>Ring = featured project</span><span><i className="methodLink"/>Line = inferred relationship</span></div>
       </aside>
       {currentTour&&tourNames.length>0&&<div className="tourHud"><p>GUIDED CONSTELLATION · {String(tourStep+1).padStart(2,"0")} / {String(tourNames.length).padStart(2,"0")}</p><h3>{currentTour.title}</h3><span>{currentTour.description}</span><strong>{selected?.title}</strong><div><button type="button" disabled={tourStep===0} onClick={()=>setTourStep(step=>Math.max(0,step-1))}>← Back</button><button type="button" onClick={()=>{if(tourStep>=tourNames.length-1)stopTour();else setTourStep(step=>step+1);}}>{tourStep>=tourNames.length-1?"Finish":"Next →"}</button><button type="button" onClick={stopTour}>Exit</button></div></div>}
       <aside className={`worldDrawer ${selected?"visible":""}`} aria-hidden={!selected}>
-        {selected&&<><button className="drawerClose" type="button" aria-label="Close repository details" onClick={()=>{setSelected(null);stopTour();}}>×</button><div className="drawerVisual">{selected.thumbnail?<img src={selected.thumbnail} alt=""/>:<ProjectVisual name={selected.name} category={selected.category} compact/>}</div><p className="drawerKicker"><i style={{background:neighborhoodColors[selected.category]}}/>{selected.categoryTitle} · {selected.language}</p><h3>{selected.title}</h3><p className="drawerDescription">{selected.description}</p><div className="drawerActivity"><div><span>2026 ACTIVITY</span><strong>{selected.months.slice(0,month).reduce((sum,value)=>sum+value,0)} commits</strong></div><div className="drawerBars">{selected.months.map((value,index)=><i key={monthNames[index]} title={`${monthNames[index]}: ${value} commits`} className={index<month?"visible":""} style={{height:`${Math.max(3,value/Math.max(...selected.months,1)*100)}%`}}><span>{monthNames[index]}</span></i>)}</div></div>{related.length>0&&<div className="drawerRelated"><span>STRONGEST RELATIONSHIPS</span>{related.map(project=><button type="button" key={project.name} onClick={()=>chooseProject(project)}><i style={{background:neighborhoodColors[project.category]}}/>{project.title}<b>→</b></button>)}</div>}<div className="drawerLinks">{selected.liveUrl&&<a href={selected.liveUrl} target="_blank" rel="noreferrer">Open project ↗</a>}{selected.publicationUrl&&<a href={selected.publicationUrl} target="_blank" rel="noreferrer">Read paper ↗</a>}<a href={selected.url} target="_blank" rel="noreferrer">View code ↗</a></div></>}
+        {selected&&<><button className="drawerClose" type="button" aria-label="Close repository details" onClick={()=>{setSelected(null);stopTour();}}>×</button><div className="drawerVisual">{selected.thumbnail?<img src={selected.thumbnail} alt=""/>:<ProjectVisual name={selected.name} category={selected.category} compact/>}</div><p className="drawerKicker"><i style={{background:neighborhoodColors[selected.category]}}/>{selected.categoryTitle} · {selected.language}</p><h3>{selected.title}</h3><p className="drawerDescription">{selected.description}</p>{selected.stars!==undefined?<div className="drawerActivity orgSignal"><div><span>PUBLIC SIGNAL</span><strong>{selected.stars.toLocaleString()} stars</strong></div><p>Last pushed {selected.lastTouched||"this year"}</p>{selected.topics&&selected.topics.length>0&&<div className="drawerTopics">{selected.topics.slice(0,6).map(topic=><span key={topic}>{topic}</span>)}</div>}</div>:<div className="drawerActivity"><div><span>{year} ACTIVITY</span><strong>{selected.months.slice(0,month).reduce((sum,value)=>sum+value,0)} commits</strong></div><div className="drawerBars">{selected.months.map((value,index)=><i key={monthNames[index]} title={`${monthNames[index]}: ${value} commits`} className={index<month?"visible":""} style={{height:`${Math.max(3,value/Math.max(...selected.months,1)*100)}%`}}><span>{monthNames[index]}</span></i>)}</div></div>}{related.length>0&&<div className="drawerRelated"><span>STRONGEST RELATIONSHIPS</span>{related.map(project=><button type="button" key={project.name} onClick={()=>chooseProject(project)}><i style={{background:neighborhoodColors[project.category]}}/>{project.title}<b>→</b></button>)}</div>}<div className="drawerLinks">{selected.liveUrl&&<a href={selected.liveUrl} target="_blank" rel="noreferrer">Open project ↗</a>}{selected.publicationUrl&&<a href={selected.publicationUrl} target="_blank" rel="noreferrer">Read paper ↗</a>}<a href={selected.url} target="_blank" rel="noreferrer">View code ↗</a></div></>}
       </aside>
       {easterEgg&&<div className="worldEasterEgg" aria-live="polite"><strong>THE DEPARTMENT HAS SEIZED THE GRAPH</strong><span>compliance is optional</span></div>}
-      <div className="worldReadout"><span>WORLD STATE · {monthNames[month-1].toUpperCase()} 2026</span><span>WEIGHTED LABEL PROPAGATION</span><span>DRAG · SELECT · EXPLORE</span></div>
+      <div className="worldReadout"><span>WORLD STATE · {monthNames[month-1].toUpperCase()} {year}</span><span>WEIGHTED LABEL PROPAGATION</span><span>DRAG · SELECT · EXPLORE</span></div>
     </div>
-    <div className="worldSelection" aria-live="polite"><span>{selected?`${selected.title} selected.`:"Select a node to open its field guide, or take a constellation tour."}</span></div>
+    <div className="worldSelection" aria-live="polite"><span>{selected?`${selected.title} selected.`:showTours?"Select a node to open its field guide, or take a constellation tour.":"Select a node to open its repository field guide."}</span></div>
   </section>;
 }
