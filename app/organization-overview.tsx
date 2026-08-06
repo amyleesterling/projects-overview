@@ -67,7 +67,7 @@ function projectsFor(catalog:OrganizationCatalog):RepositoryWorldProject[] {
       category,
       categoryTitle:communityTitles[category],
       commits:0,
-      months:[0,0,0,0,0,0,0],
+      months:[0,0,0,0,0,0,0,0],
       touchedMonth:Number(repo.t.slice(5,7)),
       featured:featured.has(repo.n),
       stars:repo.stars||0,

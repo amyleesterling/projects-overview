@@ -24,9 +24,11 @@ const centers:Record<string,[number,number]> = {
   models:[.22,.26], agents:[.52,.22], research:[.78,.3], safety:[.82,.64],
   developer:[.53,.76], multimodal:[.22,.68], learning:[.48,.49],
 };
-const monthNames=["Jan","Feb","Mar","Apr","May","Jun","Jul"];
+const monthNames=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug"];
+const monthCount=monthNames.length;
 const constellationTours = [
   {id:"connectome",title:"The Connectome Arc",description:"From mapping single neurons to making whole connectomes visible.",names:["ca3","drosophila_datause_2026","flywire-neuron-gallery","eyewire-ii","inner_cosmos"]},
+  {id:"rendered",title:"Five Nervous Systems",description:"A year spent rendering real reconstructions: fly, mouse retina, mouse cortex, mouse hippocampus, human.",names:["banc-explorer","retina","microns","ca3","human-brain"]},
   {id:"kids",title:"Small Creative Directors",description:"Projects built with very opinionated young collaborators.",names:["kids-who-vibecode","sophie-shark-game","cocos-mythic-meadow","coras-mermaid","moontoast"]},
   {id:"ridiculous",title:"A Brief History of Ridiculousness",description:"A tour through useful uselessness and unnecessary excellence.",names:["philogelos","fabled-jokes","Department_of_Ridiculous","ridiculous","theLastWebsite","thefartsite"]},
 ];
@@ -114,7 +116,7 @@ export default function RepositoryWorld({projects,heading="The repository world"
   const [active,setActive]=useState("all");
   const [selected,setSelected]=useState<RepositoryWorldProject|null>(null);
   const [infoOpen,setInfoOpen]=useState(false);
-  const [month,setMonth]=useState(7);
+  const [month,setMonth]=useState(monthCount);
   const [playing,setPlaying]=useState(false);
   const [activeTour,setActiveTour]=useState<string|null>(null);
   const [tourStep,setTourStep]=useState(0);
@@ -129,8 +131,8 @@ export default function RepositoryWorld({projects,heading="The repository world"
     return graph.edges.filter(edge=>edge.source===selectedIndex||edge.target===selectedIndex).sort((a,b)=>b.weight-a.weight).slice(0,4).map(edge=>graph.nodes[edge.source===selectedIndex?edge.target:edge.source]);
   },[graph,selectedIndex]);
 
-  const chooseProject=(project:RepositoryWorldProject)=>{setActive("all");setMonth(7);setSelected(project);setInfoOpen(false);};
-  const startTour=(id:string)=>{const tour=constellationTours.find(item=>item.id===id);if(!tour)return;setActive("all");setMonth(7);setPlaying(false);setInfoOpen(false);setActiveTour(id);setTourStep(0);const first=projects.find(project=>project.name===tour.names[0]);if(first)setSelected(first);};
+  const chooseProject=(project:RepositoryWorldProject)=>{setActive("all");setMonth(monthCount);setSelected(project);setInfoOpen(false);};
+  const startTour=(id:string)=>{const tour=constellationTours.find(item=>item.id===id);if(!tour)return;setActive("all");setMonth(monthCount);setPlaying(false);setInfoOpen(false);setActiveTour(id);setTourStep(0);const first=projects.find(project=>project.name===tour.names[0]);if(first)setSelected(first);};
   const stopTour=()=>{setActiveTour(null);setTourStep(0);};
   const selectCategory=(id:string)=>{
     setActive(id);stopTour();
@@ -141,7 +143,7 @@ export default function RepositoryWorld({projects,heading="The repository world"
 
   useEffect(()=>{
     if(!playing)return;
-    const timer=window.setInterval(()=>setMonth(current=>{if(current>=7){setPlaying(false);return 7;}return current+1;}),1050);
+    const timer=window.setInterval(()=>setMonth(current=>{if(current>=monthCount){setPlaying(false);return monthCount;}return current+1;}),1050);
     return()=>window.clearInterval(timer);
   },[playing]);
 
@@ -236,7 +238,7 @@ export default function RepositoryWorld({projects,heading="The repository world"
     <div className="worldControls" aria-label="Repository neighborhoods"><button className={active==="all"?"active":""} onClick={()=>{setActive("all");stopTour();}}>Whole world</button>{categories.map(category=><button className={active===category.id?"active":""} onClick={()=>selectCategory(category.id)} key={category.id}><i style={{background:neighborhoodColors[category.id]}}/>{category.title}</button>)}</div>
     <div className="worldTimeline">
       <button type="button" className="timelinePlay" aria-label={playing?"Pause repository timeline":"Play repository timeline"} onClick={()=>{if(playing){setPlaying(false);return;}if(month===7)setMonth(1);setPlaying(true);}}>{playing?"Ⅱ":"▶"}</button>
-      <label><span>{year} / <b>{monthNames[month-1]}</b></span><input type="range" min="1" max="7" step="1" value={month} aria-label={`Repository world through ${monthNames[month-1]} ${year}`} onChange={event=>{setPlaying(false);setMonth(Number(event.target.value));}}/><i style={{width:`${(month-1)/6*100}%`}}/></label>
+      <label><span>{year} / <b>{monthNames[month-1]}</b></span><input type="range" min="1" max={monthCount} step="1" value={month} aria-label={`Repository world through ${monthNames[month-1]} ${year}`} onChange={event=>{setPlaying(false);setMonth(Number(event.target.value));}}/><i style={{width:`${(month-1)/(monthCount-1)*100}%`}}/></label>
       <div className="timelineMonths" aria-hidden="true">{monthNames.map((name,index)=><span className={index+1<=month?"reached":""} key={name}>{name}</span>)}</div>
       <strong>{projects.filter(project=>firstActiveMonth(project)<=month).length}<small> repositories visible</small></strong>
     </div>

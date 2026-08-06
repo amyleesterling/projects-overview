@@ -8,7 +8,7 @@ The site organizes projects into thematic rooms, highlights selected work with r
 
 ## The repository world
 
-[![Interactive network graph of 53 repositories arranged into seven thematic neighborhoods](public/readme/repository-world-detail.png)](https://amy-projects-2026.amysterling.chatgpt.site/#world)
+[![Interactive network graph of 68 repositories arranged into seven thematic neighborhoods](public/readme/repository-world-detail.png)](https://amy-projects-2026.amysterling.chatgpt.site/#world)
 
 The network graph turns the repository collection into seven explorable neighborhoods. Weighted relationships connect projects that share ideas, technologies, families, and purpose. Select a node for its field guide, scrub through the year, or follow a guided constellation tour.
 
