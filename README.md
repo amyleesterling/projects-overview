@@ -1,6 +1,6 @@
 # Projects Overview
 
-An interactive exhibition of Amy Sterling's public GitHub repositories touched in 2026.
+An interactive exhibition of Amy Sterling's GitHub repositories. The catalog contains 107 projects as of September 7, 2026, including forks, older projects, and private repository listings. Private code still requires GitHub access.
 
 The site organizes projects into thematic rooms, highlights selected work with real project imagery, visualizes public commit activity, and maps the repositories as an explorable network of related ideas.
 
@@ -8,7 +8,7 @@ The site organizes projects into thematic rooms, highlights selected work with r
 
 ## The repository world
 
-[![Interactive network graph of 68 repositories arranged into seven thematic neighborhoods](public/readme/repository-world-detail.png)](https://amy-projects-2026.amysterling.chatgpt.site/#world)
+[![Interactive network graph of 107 repositories arranged into seven thematic neighborhoods](public/readme/repository-world-detail.png)](https://amy-projects-2026.amysterling.chatgpt.site/#world)
 
 The network graph turns the repository collection into seven explorable neighborhoods. Weighted relationships connect projects that share ideas, technologies, families, and purpose. Select a node for its field guide, scrub through the year, or follow a guided constellation tour.
 
