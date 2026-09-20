@@ -8,5 +8,5 @@ export const metadata:Metadata = {
 };
 
 export default function OpenAIPage() {
-  return <OrganizationOverview catalog={catalog} displayName="OpenAI" peer={{label:"Anthropic world",href:"/anthropics"}}/>;
+  return <OrganizationOverview catalog={catalog} displayName="OpenAI" peer={{label:"Anthropic world",href:"/anthropics/"}}/>;
 }

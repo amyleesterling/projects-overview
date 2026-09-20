@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { publicPath } from "./site";
 
 export default function InnerCosmosPreview() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -63,7 +64,7 @@ export default function InnerCosmosPreview() {
     scene.add(moteCloud);
 
     let cortex:THREE.Group|null=null;
-    new GLTFLoader().load("/meshes/human-brain.glb",(gltf)=>{
+    new GLTFLoader().load(publicPath("/meshes/human-brain.glb"),(gltf)=>{
       cortex=new THREE.Group();
       gltf.scene.traverse((object)=>{
         if (!(object instanceof THREE.Mesh)) return;

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { publicPath } from "./site";
 import RepositoryWorld, { type RepositoryWorldProject } from "./repository-world";
 
 type ImportedRepository = {
@@ -54,6 +54,7 @@ function titleFor(name:string) {
 }
 
 function projectsFor(catalog:OrganizationCatalog):RepositoryWorldProject[] {
+  const throughMonth=new Date(catalog.generatedAt).getUTCMonth()+1;
   const featured=new Set([...catalog.repositories].sort((a,b)=>(b.stars||0)-(a.stars||0)).slice(0,7).map(repo=>repo.n));
   return catalog.repositories.map(repo=>{
     const category=communityFor(repo);
@@ -67,12 +68,13 @@ function projectsFor(catalog:OrganizationCatalog):RepositoryWorldProject[] {
       category,
       categoryTitle:communityTitles[category],
       commits:0,
-      months:[0,0,0,0,0,0,0,0],
+      months:Array.from({length:throughMonth},()=>0),
+      activityKnown:false,
       touchedMonth:Number(repo.t.slice(5,7)),
       featured:featured.has(repo.n),
       stars:repo.stars||0,
       topics:repo.topics||[],
-      lastTouched:new Intl.DateTimeFormat("en-US",{month:"short",day:"numeric",year:"numeric"}).format(new Date(`${repo.t}T12:00:00Z`)),
+      lastTouched:new Intl.DateTimeFormat("en-US",{month:"short",day:"numeric",year:"numeric",timeZone:"UTC"}).format(new Date(`${repo.t}T12:00:00Z`)),
     };
   });
 }
@@ -80,22 +82,29 @@ function projectsFor(catalog:OrganizationCatalog):RepositoryWorldProject[] {
 export default function OrganizationOverview({catalog,displayName,peer}:{catalog:OrganizationCatalog;displayName:string;peer:{label:string;href:string}}) {
   const projects=projectsFor(catalog);
   const top=[...catalog.repositories].sort((a,b)=>(b.stars||0)-(a.stars||0)).slice(0,8);
-  const year=catalog.year||new Date().getUTCFullYear();
+  const capture=new Date(catalog.generatedAt);
+  const year=catalog.year||capture.getUTCFullYear();
+  const snapshotDate=new Intl.DateTimeFormat("en-US",{month:"long",day:"numeric",year:"numeric",timeZone:"UTC"}).format(capture);
+  const stars=catalog.repositories.reduce((sum,repo)=>sum+(repo.stars||0),0);
+  const languages=new Set(catalog.repositories.map(repo=>repo.l).filter(language=>language!=="Other")).size;
 
   return <main className="orgPage">
     <nav className="topbar orgTopbar" aria-label={`${displayName} repository navigation`}>
-      <Link className="wordmark" href="/"><span>AS</span> Projects Overview</Link>
-      <div className="navlinks"><a href="#world">Explore graph</a><Link href={peer.href}>{peer.label}</Link><a className="navButton" href={catalog.source} target="_blank" rel="noreferrer">GitHub ↗</a></div>
+      <a className="wordmark" href={publicPath("/")}><span>AS</span> Projects Overview</a>
+      <div className="navlinks"><a href="#world">Explore graph</a><a href={publicPath(peer.href)}>{peer.label}</a><a className="navButton" href={catalog.source} target="_blank" rel="noreferrer">GitHub ↗</a></div>
     </nav>
 
     <header className="orgHero">
       <div><p className="eyebrow"><span className="liveDot"/>PUBLIC GITHUB CONSTELLATION · {year}</p><h1>{displayName}<br/><em>repository world.</em></h1></div>
-      <div className="orgHeroCopy"><strong>{projects.length}</strong><span>repositories touched this year</span><p>Public projects arranged into automatically inferred neighborhoods. Drag the nodes, scrub through the year, and open any repository for its field guide.</p></div>
+      <div className="orgHeroCopy"><strong>{projects.length}</strong><span>repositories pushed in {year}</span><p>Public projects arranged into automatically inferred neighborhoods. Drag the nodes and open any repository for its field guide.</p><p className="orgSnapshot">Updated <time dateTime={catalog.generatedAt}>{snapshotDate}</time></p></div>
     </header>
+
+    <div className="orgStats" aria-label={`${displayName} snapshot statistics`}><span><strong>{stars.toLocaleString("en-US")}</strong> GitHub stars</span><span><strong>{languages}</strong> languages</span><p>Public, non-fork, non-archived repositories. Stars are snapshot totals; the timeline filters by each repository’s latest push, not commit history.</p></div>
 
     <RepositoryWorld
       projects={projects}
       year={year}
+      throughMonth={capture.getUTCMonth()+1}
       showTours={false}
       kicker={`${projects.length} PUBLIC REPOSITORIES · AUTOMATIC COMMUNITY DETECTION`}
       heading={`${displayName} repository world`}
@@ -107,6 +116,6 @@ export default function OrganizationOverview({catalog,displayName,peer}:{catalog
       <div className="orgRepoGrid">{top.map((repo,index)=><a href={repo.u} target="_blank" rel="noreferrer" key={repo.n}><i>{String(index+1).padStart(2,"0")}</i><div><span>{repo.l}</span><h3>{titleFor(repo.n)}</h3><p>{repo.d}</p></div><strong>{(repo.stars||0).toLocaleString()} ★</strong></a>)}</div>
     </section>
 
-    <footer className="orgFooter"><Link href="/">← Amy Sterling’s Projects Overview</Link><span>PUBLIC METADATA · GITHUB · {year}</span><a href={catalog.source} target="_blank" rel="noreferrer">{catalog.owner} on GitHub ↗</a></footer>
+    <footer className="orgFooter"><a href={publicPath("/")}>← Amy Sterling’s Projects Overview</a><span>PUBLIC METADATA · GITHUB · {year}</span><a href={catalog.source} target="_blank" rel="noreferrer">{catalog.owner} on GitHub ↗</a></footer>
   </main>;
 }

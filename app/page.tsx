@@ -5,6 +5,7 @@ import ProjectVisual from "./project-visual";
 import InnerCosmosPreview from "./inner-cosmos-preview";
 import RepositoryWorld from "./repository-world";
 import catalog from "./data/catalog.json";
+import { publicPath } from "./site";
 
 type Repo = { n: string; title?: string; d: string; l: string; u: string; h?: string; p?: string; t: string; f?: boolean; private?: boolean };
 
@@ -14,10 +15,10 @@ const snapshotDate = new Intl.DateTimeFormat("en-US", { month: "long", day: "num
 const featuredNames = ["ca3", "inner_cosmos", "eyewire-ii", "flywire-neuron-gallery", "neuron-game"];
 const featuredImages: Record<string, { src: string; alt: string }> = {
   "ca3": { src:"https://amyleesterling.github.io/ca3/images/00_banner.jpg", alt:"A dense rendering of CA3 pyramidal cells, interneurons, and mossy fiber axons" },
-  "inner_cosmos": { src:"/featured/inner-cosmos.png", alt:"Inner Cosmos landing page surrounded by real reconstructed neurons" },
-  "eyewire-ii": { src:"/featured/eyewire-ii.png", alt:"EyeWire II neural access and identity verification screen" },
-  "flywire-neuron-gallery": { src:"/featured/flywire-neuron-gallery.webp", alt:"A full Drosophila brain reconstructed from thousands of color-coded neurons" },
-  "neuron-game": { src:"/featured/neuron-game.png", alt:"Neuron Snake game title screen on a dark scientific grid" },
+  "inner_cosmos": { src:publicPath("/featured/inner-cosmos.png"), alt:"Inner Cosmos landing page surrounded by real reconstructed neurons" },
+  "eyewire-ii": { src:publicPath("/featured/eyewire-ii.png"), alt:"EyeWire II neural access and identity verification screen" },
+  "flywire-neuron-gallery": { src:publicPath("/featured/flywire-neuron-gallery.webp"), alt:"A full Drosophila brain reconstructed from thousands of color-coded neurons" },
+  "neuron-game": { src:publicPath("/featured/neuron-game.png"), alt:"Neuron Snake game title screen on a dark scientific grid" },
 };
 const pulseMonths = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].slice(0, new Date(catalog.updatedAt).getUTCMonth() + 1);
 const commitPulse = catalog.activity;
@@ -477,7 +478,7 @@ function NeuronParticleBanner() {
     };
 
     sourceImage.onload = () => { imageReady = true; resize(); draw(); };
-    sourceImage.src = "/featured/pyramidal-neuron.png";
+    sourceImage.src = publicPath("/featured/pyramidal-neuron.png");
     resize();
     const observer = new ResizeObserver(() => { resize(); if (reduceMotion && imageReady) draw(); }); observer.observe(canvas);
     canvas.addEventListener("pointermove", move); canvas.addEventListener("pointerdown", down); canvas.addEventListener("pointerup", release); canvas.addEventListener("pointercancel", release); canvas.addEventListener("pointerleave", leave);
@@ -521,7 +522,7 @@ export default function Home() {
     <main>
       <nav className="topbar" aria-label="Primary navigation">
         <a className="wordmark" href="#top"><span>AS</span> Amy Sterling / Lab Notes</a>
-        <div className="navlinks"><a href="#featured">Selected</a><a href="#archive">All projects</a><a href="#published">Published</a><a href="/anthropics">AI worlds</a><a className="navButton" href="https://github.com/amyleesterling" target="_blank" rel="noreferrer">GitHub ↗</a></div>
+        <div className="navlinks"><a href="#featured">Selected</a><a href="#archive">All projects</a><a href="#published">Published</a><a href={publicPath("/anthropics/")}>AI worlds</a><a className="navButton" href="https://github.com/amyleesterling" target="_blank" rel="noreferrer">GitHub ↗</a></div>
       </nav>
 
       <header className="hero" id="top">

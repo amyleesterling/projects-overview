@@ -331,3 +331,17 @@ body { font-size:1rem; line-height:1.5; }
 
 .categoryFilters sup { position:static; vertical-align:baseline; margin-left:6px; opacity:1; }
 .repositoryWorld .sectionHeading>p { color:#a1bbc9; }
+.orgHeroCopy p { font-size:1rem; color:#a1bbc9; }
+.orgHeroCopy .orgSnapshot { font-size:.875rem; color:#b3d7e7; }
+.orgStats { display:flex; align-items:center; flex-wrap:wrap; gap:24px 40px; padding:28px 7vw; border-bottom:1px solid rgba(105,216,255,.16); color:#a1bbc9; }
+.orgStats>span { font-size:1rem; }
+.orgStats strong { display:block; color:#e8f9ff; font:500 1.75rem/1.4 var(--font-mono); }
+.orgStats p { flex:1 1 300px; max-width:680px; margin:0 0 0 auto; font-size:.875rem; line-height:1.6; }
+.orgFooter a { font-size:1rem; letter-spacing:normal; }
+@media (max-width:600px) {
+  .topbar { height:auto; min-height:68px; flex-wrap:wrap; gap:16px; padding-top:16px; padding-bottom:16px; }
+  .wordmark,.orgTopbar .wordmark,.orgTopbar .navButton { font-size:1rem; }
+  .navlinks { width:100%; flex-wrap:wrap; justify-content:flex-start; gap:14px 20px; }
+  .navlinks>a:not(.navButton) { display:inline-flex; }
+  .section { scroll-margin-top:170px; }
+}
