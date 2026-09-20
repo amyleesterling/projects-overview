@@ -1,11 +1,8 @@
 import assert from "node:assert/strict";
-import { access, readFile, readdir } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-const developmentPreviewMeta =
-  /<meta(?=[^>]*\bname=["']codex-preview["'])(?=[^>]*\bcontent=["']development["'])[^>]*>/i;
-const templateRoot = new URL("../", import.meta.url);
-const previewRoot = new URL("../app/_sites-preview/", import.meta.url);
+const catalog = JSON.parse(await readFile(new URL("../app/data/catalog.json", import.meta.url), "utf8"));
 
 async function render() {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
@@ -28,64 +25,30 @@ async function render() {
   );
 }
 
-test("server-renders the starter loading skeleton", async () => {
+
+test("server-renders the current exhibition, catalog and snapshot date", async () => {
   const response = await render();
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
-
   const html = await response.text();
-  assert.match(html, developmentPreviewMeta);
-  assert.match(html, /<title>Your site is taking shape<\/title>/i);
-  assert.match(html, /Building your site/);
-  assert.match(html, /Your site is taking shape/);
-  assert.match(
-    html,
-    /Your first version will appear here automatically when it’s ready\./,
-  );
-  assert.doesNotMatch(html, /Codex/);
-  assert.match(html, /react-loading-skeleton/);
-  assert.match(html, /role="status"/);
+  const date = new Intl.DateTimeFormat("en-US", {month:"long",day:"numeric",year:"numeric",timeZone:"UTC"}).format(new Date(catalog.updatedAt));
+  assert.ok(html.includes("Amy Sterling — 2026 Project Index"));
+  assert.ok(html.includes(date), "snapshot date appears in rendered page");
+  assert.ok(html.includes(catalog.repositories.length + " projects across the collection"));
+  for (const repo of catalog.repositories) assert.ok(html.includes(repo.u), repo.n + " is rendered");
+  assert.ok(!html.includes("Your site is taking shape"));
+  assert.ok(!html.includes("January–August 2026"));
+  assert.ok(html.includes('max="' + (new Date(catalog.updatedAt).getUTCMonth() + 1) + '"'), "timeline ends at snapshot month");
 });
 
-test("keeps the loading skeleton scoped and disposable", async () => {
-  const [preview, css, page, layout, packageJson, files] = await Promise.all([
-    readFile(new URL("SkeletonPreview.tsx", previewRoot), "utf8"),
-    readFile(new URL("preview.css", previewRoot), "utf8"),
-    readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../package.json", import.meta.url), "utf8"),
-    readdir(previewRoot),
-  ]);
-
-  assert.deepEqual(files.sort(), ["SkeletonPreview.tsx", "preview.css"]);
-  assert.match(preview, /from "react-loading-skeleton"/);
-  assert.match(preview, /baseColor="#eceae7"/);
-  assert.match(preview, /highlightColor="#f9f8f6"/);
-  assert.match(preview, /duration=\{2\.8\}/);
-  assert.match(preview, /sites-skeleton-search-placeholder/);
-  assert.match(packageJson, /"react-loading-skeleton": "3\.5\.0"/);
-
-  const shellIndex = preview.indexOf('className="sites-skeleton-shell"');
-  const statusIndex = preview.indexOf('className="sites-skeleton-status"');
-  assert.ok(shellIndex >= 0 && statusIndex > shellIndex);
-  assert.match(css, /position:\s*fixed/);
-  assert.match(css, /inset:\s*0/);
-  assert.match(css, /opacity:\s*0\.52/);
-  assert.match(css, /prefers-reduced-motion:\s*reduce/);
-  assert.doesNotMatch(css, /#020617|canvas|pets|progress/i);
-  assert.doesNotMatch(
-    preview,
-    /loading-spinner|status-mark|status-progress|canvas|cookie|random/i,
-  );
-
-  assert.match(page, /export const metadata:\s*Metadata/);
-  assert.match(page, /"codex-preview": "development"/);
-  assert.match(page, /<SkeletonPreview \/>/);
-  assert.match(layout, /title:\s*"Starter Project"/);
-  assert.doesNotMatch(layout, /codex-preview|_sites-preview|themeColor|\bViewport\b/);
-  assert.doesNotMatch(css, /(^|\s)(html|body)\s*\{/m);
-
-  await assert.rejects(
-    access(new URL("public/_sites-preview", templateRoot)),
-  );
+test("public activity covers the catalog without leaking private histories", () => {
+  const names = new Set(catalog.repositories.map(repo => repo.n));
+  assert.equal(names.size, catalog.repositories.length);
+  const publicNames = catalog.repositories.filter(repo => !repo.private).map(repo => repo.n).sort();
+  assert.deepEqual(catalog.activity.map(repo => repo.n).sort(), publicNames);
+  for (const repo of catalog.activity) {
+    assert.equal(repo.m.length, new Date(catalog.updatedAt).getUTCMonth() + 1);
+    assert.ok(repo.m.every(count => Number.isInteger(count) && count >= 0));
+    assert.equal(repo.c, repo.m.reduce((sum, count) => sum + count, 0));
+  }
 });

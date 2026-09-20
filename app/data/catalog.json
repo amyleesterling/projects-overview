@@ -1,0 +1,2641 @@
+{
+  "owner": "amyleesterling",
+  "year": 2026,
+  "updatedAt": "2026-09-20T21:55:18.715Z",
+  "activitySource": "GitHub profile commit contributions attributed to amyleesterling in listed public repositories; includes any automation GitHub attributes to that account.",
+  "repositories": [
+    {
+      "n": "artforagents",
+      "title": "Art For Agents",
+      "d": "Internet Easter eggs, hidden for agents to discover and add to.",
+      "l": "HTML",
+      "u": "https://github.com/amyleesterling/artforagents",
+      "t": "2026-09-20",
+      "h": "https://artforagents.vercel.app",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "findmytown",
+      "title": "FindMyTown",
+      "d": "A real estate dashboard that searches thirty seven towns north of Boston every morning at seven.",
+      "l": "HTML",
+      "u": "https://github.com/amyleesterling/findmytown",
+      "h": "https://amyleesterling.github.io/findmytown/",
+      "t": "2026-09-20",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "human-history-map",
+      "d": "An interactive globe and timeline of civilizations, their changing borders, inventions, and ideas.",
+      "l": "JavaScript",
+      "u": "https://github.com/amyleesterling/human-history-map",
+      "t": "2026-09-20",
+      "f": false,
+      "private": false,
+      "title": "Human History Map"
+    },
+    {
+      "d": "A family-created game for kids to learn about animals.",
+      "l": "TypeScript",
+      "n": "the-animal-game",
+      "private": false,
+      "t": "2026-09-20",
+      "u": "https://github.com/amyleesterling/the-animal-game",
+      "title": "The Animal Game",
+      "f": false
+    },
+    {
+      "n": "whatisabrain",
+      "private": true,
+      "d": "Sometimes I wonder about mine.",
+      "l": "TypeScript",
+      "u": "https://github.com/amyleesterling/whatisabrain",
+      "h": "https://whatisabrain.com/",
+      "t": "2026-09-19",
+      "f": false
+    },
+    {
+      "n": "whatisabrain-data",
+      "d": "The open neuron data behind whatisabrain.com/mouse, and the viewer that reads it",
+      "l": "JavaScript",
+      "u": "https://github.com/amyleesterling/whatisabrain-data",
+      "t": "2026-09-18",
+      "f": false,
+      "private": false,
+      "title": "What Is a Brain · Open Data",
+      "h": "https://amyleesterling.github.io/whatisabrain-data/mouse/"
+    },
+    {
+      "d": "Public landing experience for FlyWire Codex",
+      "l": "JavaScript",
+      "n": "codex_public",
+      "private": true,
+      "t": "2026-09-15",
+      "u": "https://github.com/amyleesterling/codex_public",
+      "f": false
+    },
+    {
+      "n": "human-brain",
+      "private": true,
+      "title": "Human Brain",
+      "d": "Open human brain data made explorable: the H01 cubic millimetre of cerebral cortex with its 49,379 cell bodies, 87 white matter bundles, and a scale map running from microseconds to decades.",
+      "l": "Python",
+      "u": "https://github.com/amyleesterling/human-brain",
+      "h": "https://amyleesterling.github.io/human-brain/",
+      "t": "2026-09-15",
+      "f": false
+    },
+    {
+      "n": "scifi-ui",
+      "title": "Sci-Fi UI",
+      "d": "A hologram and science fiction interface library for agents. Every component is lifted from shipping code, never approximated.",
+      "l": "JavaScript",
+      "u": "https://github.com/amyleesterling/scifi-ui",
+      "h": "https://amyleesterling.github.io/scifi-ui/",
+      "t": "2026-09-15",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "museum-of-almost",
+      "d": "An interactive museum of impossible objects and ideas that did not quite work out.",
+      "l": "HTML",
+      "u": "https://github.com/amyleesterling/museum-of-almost",
+      "t": "2026-09-11",
+      "f": false,
+      "private": false,
+      "title": "Museum of Almost"
+    },
+    {
+      "n": "kennedy-garden",
+      "d": "Kennedy school garden project :)",
+      "l": "Other",
+      "u": "https://github.com/amyleesterling/kennedy-garden",
+      "t": "2026-09-10",
+      "f": false,
+      "private": false,
+      "title": "Kennedy Garden"
+    },
+    {
+      "d": "interactive electromagnetic spectrum explorer",
+      "l": "HTML",
+      "n": "radiotogamma",
+      "private": false,
+      "t": "2026-09-09",
+      "u": "https://github.com/amyleesterling/radiotogamma",
+      "f": false
+    },
+    {
+      "d": "Shared render queue: what is scheduled to render, readable and writable by Amy and her agents from any device",
+      "l": "PowerShell",
+      "n": "render-queue",
+      "private": false,
+      "t": "2026-09-09",
+      "u": "https://github.com/amyleesterling/render-queue",
+      "f": false
+    },
+    {
+      "n": "spotify-nocturne",
+      "d": "A quieter Spotify interface with readable lists, genre and instrument icons, and Nocturne and Linen themes.",
+      "l": "CSS",
+      "u": "https://github.com/amyleesterling/spotify-nocturne",
+      "t": "2026-09-09",
+      "f": false,
+      "private": false,
+      "title": "Spotify Nocturne"
+    },
+    {
+      "d": "Explore the FlyWire Connectome",
+      "f": true,
+      "h": "https://codex.flywire.ai",
+      "l": "Other",
+      "n": "codex",
+      "private": false,
+      "t": "2026-09-08",
+      "u": "https://github.com/amyleesterling/codex"
+    },
+    {
+      "d": "A plant wall for the home.",
+      "h": "https://perch-plant-wall.vercel.app",
+      "l": "HTML",
+      "n": "greenwall",
+      "private": true,
+      "t": "2026-09-07",
+      "u": "https://github.com/amyleesterling/greenwall",
+      "title": "Perch Plant Wall",
+      "f": false
+    },
+    {
+      "d": "An interactive exploration of wind and airflow.",
+      "l": "HTML",
+      "n": "name-of-the-wind",
+      "private": false,
+      "t": "2026-09-07",
+      "u": "https://github.com/amyleesterling/name-of-the-wind",
+      "title": "Name of the Wind",
+      "f": false
+    },
+    {
+      "n": "ng-extend",
+      "title": "ng-extend",
+      "d": "The Neuroglancer extension that EyeWire II is built on, forked from the Seung Lab.",
+      "l": "Vue",
+      "u": "https://github.com/amyleesterling/ng-extend",
+      "t": "2026-09-07",
+      "f": true,
+      "private": false
+    },
+    {
+      "n": "projects-overview",
+      "title": "Projects Overview",
+      "d": "This exhibition. An interactive network map of code projects, from current work to earlier experiments.",
+      "l": "TypeScript",
+      "u": "https://github.com/amyleesterling/projects-overview",
+      "h": "https://amy-projects-2026.amysterling.chatgpt.site/",
+      "t": "2026-09-07",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "review",
+      "title": "Render Review",
+      "d": "A staging shelf for renders. Nothing reaches a project page until it has been approved here.",
+      "l": "PowerShell",
+      "u": "https://github.com/amyleesterling/review",
+      "h": "https://amyleesterling.github.io/review/",
+      "t": "2026-09-07",
+      "f": false,
+      "private": false
+    },
+    {
+      "d": "Feature requests and bug reports for whatisabrain.com",
+      "l": "Other",
+      "n": "whatisabrain-feedback",
+      "private": false,
+      "t": "2026-09-07",
+      "u": "https://github.com/amyleesterling/whatisabrain-feedback",
+      "f": false
+    },
+    {
+      "d": "A magical unicorn and infinite rainbow poop.",
+      "l": "JavaScript",
+      "n": "cocos-pooping-unicorn-game",
+      "private": false,
+      "t": "2026-09-06",
+      "u": "https://github.com/amyleesterling/cocos-pooping-unicorn-game",
+      "title": "Coco’s Pooping Unicorn",
+      "f": false
+    },
+    {
+      "d": "UI experiments based on scientific publications",
+      "l": "HTML",
+      "n": "experimental-UI",
+      "private": false,
+      "t": "2026-09-06",
+      "u": "https://github.com/amyleesterling/experimental-UI",
+      "f": false
+    },
+    {
+      "d": "Sophie's funny dragon game made with Astra",
+      "l": "JavaScript",
+      "n": "sophia-funny-dragon",
+      "private": false,
+      "t": "2026-09-06",
+      "u": "https://github.com/amyleesterling/sophia-funny-dragon",
+      "f": false
+    },
+    {
+      "d": "A home for Sophie and Cora’s creative projects.",
+      "l": "HTML",
+      "n": "sophie-and-cora",
+      "private": true,
+      "t": "2026-09-06",
+      "u": "https://github.com/amyleesterling/sophie-and-cora",
+      "title": "Sophie and Cora",
+      "f": false
+    },
+    {
+      "n": "sophie-shark-game",
+      "d": "A shark game designed by Sophie, age six.",
+      "l": "JavaScript",
+      "u": "https://github.com/amyleesterling/sophie-shark-game",
+      "h": "https://amyleesterling.github.io/sophie-shark-game/",
+      "t": "2026-09-06",
+      "f": false,
+      "private": false
+    },
+    {
+      "d": "A wee fly date between two connectomes",
+      "l": "Other",
+      "n": "banc_malecns",
+      "private": false,
+      "t": "2026-09-05",
+      "u": "https://github.com/amyleesterling/banc_malecns",
+      "f": false
+    },
+    {
+      "d": "Suggest a circuit to visualize on the FlyWire Codex public site",
+      "h": "https://whatisabrain.com/fly/",
+      "l": "Other",
+      "n": "codex-pathways",
+      "private": false,
+      "t": "2026-09-04",
+      "u": "https://github.com/amyleesterling/codex-pathways",
+      "f": false
+    },
+    {
+      "n": "ca3",
+      "title": "CA3 Renderings",
+      "d": "A cinematic atlas of 982 real cells from a connectomic reconstruction of mouse hippocampal CA3, rendered from roughly 124 million triangles.",
+      "l": "HTML",
+      "u": "https://github.com/amyleesterling/ca3",
+      "h": "https://amyleesterling.github.io/ca3/",
+      "p": "https://doi.org/10.1101/2025.07.09.663979",
+      "t": "2026-09-03",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "amysterling",
+      "d": "A web presence and side project hub for amysterling.org.",
+      "l": "Python",
+      "u": "https://github.com/amyleesterling/amysterling",
+      "h": "https://amyleesterling.github.io/amysterling/",
+      "t": "2026-09-01",
+      "f": false,
+      "private": false
+    },
+    {
+      "d": "Patent themed games for Danny Hillis!",
+      "l": "HTML",
+      "n": "dannys_birthday",
+      "private": false,
+      "t": "2026-09-01",
+      "u": "https://github.com/amyleesterling/dannys_birthday",
+      "f": false
+    },
+    {
+      "n": "extremely-strange",
+      "d": "An experiment filed under: extremely strange.",
+      "l": "Python",
+      "u": "https://github.com/amyleesterling/extremely-strange",
+      "h": "https://amyleesterling.github.io/extremely-strange/",
+      "t": "2026-09-01",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "philogelos",
+      "title": "Philogelos",
+      "d": "A daily dose of philosophical humor, delivered by an unserious deity of philosophy.",
+      "l": "HTML",
+      "u": "https://github.com/amyleesterling/philogelos",
+      "h": "https://ytho.club/",
+      "t": "2026-08-31",
+      "f": false,
+      "private": false
+    },
+    {
+      "d": "Z dimension UI",
+      "l": "JavaScript",
+      "n": "zui",
+      "private": false,
+      "t": "2026-08-27",
+      "u": "https://github.com/amyleesterling/zui",
+      "f": false
+    },
+    {
+      "n": "eyewire-ii",
+      "title": "EyeWire II",
+      "d": "A new community layer for Neuroglancer: collaborative proofreading, identity, progress, and rewards for citizen neuroscientists.",
+      "l": "HTML",
+      "u": "https://github.com/amyleesterling/eyewire-ii",
+      "h": "https://amyleesterling.github.io/eyewire-ii/",
+      "t": "2026-08-26",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "moontoast",
+      "d": "Animated kids' stories.",
+      "l": "TypeScript",
+      "u": "https://github.com/amyleesterling/moontoast",
+      "t": "2026-08-26",
+      "f": false,
+      "private": false
+    },
+    {
+      "d": "Humans team up to build a world wonder",
+      "l": "TypeScript",
+      "n": "babylon",
+      "private": false,
+      "t": "2026-08-25",
+      "u": "https://github.com/amyleesterling/babylon",
+      "f": false
+    },
+    {
+      "n": "connectome",
+      "d": "What is connectomics anyway? A short answer for people who have never heard the word.",
+      "l": "TypeScript",
+      "u": "https://github.com/amyleesterling/connectome",
+      "h": "https://amyleesterling.github.io/connectome/",
+      "t": "2026-08-25",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "humanoid-robot",
+      "title": "Humanoid Robot",
+      "d": "Detailed specifications for building a humanoid robot, written with two kids.",
+      "l": "Python",
+      "u": "https://github.com/amyleesterling/humanoid-robot",
+      "h": "https://amyleesterling.github.io/humanoid-robot/",
+      "t": "2026-08-24",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "inner-cosmos",
+      "d": "A hub linking every Inner Cosmos experience: main site, kids, museum wall, scales, and citations.",
+      "l": "HTML",
+      "u": "https://github.com/amyleesterling/inner-cosmos",
+      "h": "https://amyleesterling.github.io/inner-cosmos/",
+      "t": "2026-08-24",
+      "f": false,
+      "private": false
+    },
+    {
+      "d": "Smash that supernova",
+      "l": "Other",
+      "n": "build_a_world",
+      "private": false,
+      "t": "2026-08-18",
+      "u": "https://github.com/amyleesterling/build_a_world",
+      "f": false
+    },
+    {
+      "d": "Can you make a world that sprouts life",
+      "l": "Other",
+      "n": "cosmic-forge",
+      "private": false,
+      "t": "2026-08-18",
+      "u": "https://github.com/amyleesterling/cosmic-forge",
+      "f": false
+    },
+    {
+      "d": "Open source pipeline for: Pic of drawing to 3D printable file",
+      "l": "JavaScript",
+      "n": "drawing_to_3Dprint",
+      "private": false,
+      "t": "2026-08-18",
+      "u": "https://github.com/amyleesterling/drawing_to_3Dprint",
+      "f": false
+    },
+    {
+      "n": "kids-who-vibecode",
+      "d": "Fun challenges for kids to vibe code this summer.",
+      "l": "TypeScript",
+      "u": "https://github.com/amyleesterling/kids-who-vibecode",
+      "t": "2026-08-18",
+      "f": false,
+      "private": false
+    },
+    {
+      "d": "Interactive ecology visualization experiment",
+      "l": "Other",
+      "n": "living_earth",
+      "private": false,
+      "t": "2026-08-18",
+      "u": "https://github.com/amyleesterling/living_earth",
+      "f": false
+    },
+    {
+      "n": "seunglabdata",
+      "d": "Datasets for the Seung Lab demo page.",
+      "l": "CSS",
+      "u": "https://github.com/amyleesterling/seunglabdata",
+      "h": "https://connectome.quest/",
+      "t": "2026-08-18",
+      "f": false,
+      "private": false
+    },
+    {
+      "d": "endeavor for agents",
+      "l": "Python",
+      "n": "endeavor-protocol",
+      "private": false,
+      "t": "2026-08-17",
+      "u": "https://github.com/amyleesterling/endeavor-protocol",
+      "f": false
+    },
+    {
+      "n": "partypost",
+      "d": "A free kids' birthday party RSVP tool.",
+      "l": "TypeScript",
+      "u": "https://github.com/amyleesterling/partypost",
+      "h": "https://partypost.vercel.app",
+      "t": "2026-08-15",
+      "f": false,
+      "private": false
+    },
+    {
+      "d": "Sight word game for 1st graders",
+      "l": "TypeScript",
+      "n": "sight-word-spark",
+      "private": false,
+      "t": "2026-08-13",
+      "u": "https://github.com/amyleesterling/sight-word-spark",
+      "f": false
+    },
+    {
+      "d": "Claude's iteration of 1st grade sight words game",
+      "l": "TypeScript",
+      "n": "sight-word-spark-claude",
+      "private": false,
+      "t": "2026-08-13",
+      "u": "https://github.com/amyleesterling/sight-word-spark-claude",
+      "f": false
+    },
+    {
+      "d": "Project repository.",
+      "l": "Other",
+      "n": "muse-glimmer",
+      "private": true,
+      "t": "2026-08-10",
+      "u": "https://github.com/amyleesterling/muse-glimmer",
+      "title": "Muse Glimmer",
+      "f": false
+    },
+    {
+      "n": "banc-explorer",
+      "title": "BANC Explorer",
+      "d": "A public exploration hub for BANC, the combined Drosophila brain and central nervous system connectome.",
+      "l": "TypeScript",
+      "u": "https://github.com/amyleesterling/banc-explorer",
+      "h": "https://amyleesterling.github.io/banc-explorer/",
+      "t": "2026-08-04",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "microns",
+      "title": "MICrONS Cortex",
+      "d": "Thirty-eight proofread neurons from the MICrONS mouse visual cortex, arranged by cortical depth, alongside the action potential and the simultaneous activity of 108 cells.",
+      "l": "HTML",
+      "u": "https://github.com/amyleesterling/microns",
+      "h": "https://amyleesterling.github.io/microns/",
+      "t": "2026-08-02",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "retina",
+      "title": "Retina in Motion",
+      "d": "The EyeWire II mouse retina reconstruction with real calcium responses played back on the very cells that produced them.",
+      "l": "HTML",
+      "u": "https://github.com/amyleesterling/retina",
+      "h": "https://amyleesterling.github.io/retina/",
+      "t": "2026-07-31",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "banc",
+      "title": "BANC Renderings",
+      "d": "Renderings from BANC, the first Drosophila connectome to map the brain and the nerve cord together.",
+      "l": "HTML",
+      "u": "https://github.com/amyleesterling/banc",
+      "h": "https://amyleesterling.github.io/banc/",
+      "p": "https://doi.org/10.1038/s41586-026-10735-w",
+      "t": "2026-07-30",
+      "f": false,
+      "private": false
+    },
+    {
+      "d": "Scripts and docs behind the CA3 connectomics renders. Meshes and render output are not tracked.",
+      "l": "Python",
+      "n": "ca3-rendering",
+      "private": true,
+      "t": "2026-07-30",
+      "u": "https://github.com/amyleesterling/ca3-rendering",
+      "f": false
+    },
+    {
+      "d": "plans to render on princeton's supercomputer",
+      "l": "Other",
+      "n": "della-supercluster",
+      "private": true,
+      "t": "2026-07-30",
+      "u": "https://github.com/amyleesterling/della-supercluster",
+      "f": false
+    },
+    {
+      "n": "amyleerobinson.github.io",
+      "title": "Landing Page",
+      "d": "A personal GitHub landing page.",
+      "l": "HTML",
+      "u": "https://github.com/amyleesterling/amyleerobinson.github.io",
+      "t": "2026-07-28",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "olympics2028",
+      "title": "Olympics 2028",
+      "d": "A ticket planning dashboard for the LA28 Olympic Games.",
+      "l": "HTML",
+      "u": "https://github.com/amyleesterling/olympics2028",
+      "h": "https://amyleesterling.github.io/olympics2028/",
+      "t": "2026-07-28",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "atlas-of-the-unseen",
+      "d": "Undirected collaboration between Fable and Sol.",
+      "l": "HTML",
+      "u": "https://github.com/amyleesterling/atlas-of-the-unseen",
+      "h": "https://amyleesterling.github.io/atlas-of-the-unseen/",
+      "t": "2026-07-13",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "hurricane",
+      "d": "Visualize every hurricane ever satellite imaged.",
+      "l": "TypeScript",
+      "u": "https://github.com/amyleesterling/hurricane",
+      "h": "https://amyleesterling.github.io/hurricane/",
+      "t": "2026-07-13",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "cocos-mythic-meadow",
+      "d": "A unicorn, pegasus and wolf game created by Cora, age four.",
+      "l": "JavaScript",
+      "u": "https://github.com/amyleesterling/cocos-mythic-meadow",
+      "h": "https://amyleesterling.github.io/cocos-mythic-meadow/",
+      "t": "2026-07-10",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "youth-sports-moneymachine",
+      "d": "Historical trends in the cost of club sports.",
+      "l": "JavaScript",
+      "u": "https://github.com/amyleesterling/youth-sports-moneymachine",
+      "h": "https://amyleesterling.github.io/youth-sports-moneymachine/",
+      "t": "2026-07-10",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "the650",
+      "d": "There are 650 muscles in your body. How many can you feel?",
+      "l": "TypeScript",
+      "u": "https://github.com/amyleesterling/the650",
+      "h": "https://amyleesterling.github.io/the650/",
+      "t": "2026-07-09",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "fabled-jokes",
+      "d": "Git yer jokes.",
+      "l": "HTML",
+      "u": "https://github.com/amyleesterling/fabled-jokes",
+      "h": "https://10000jokes.com/",
+      "t": "2026-07-08",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "inner_cosmos",
+      "d": "A public facing brain explorer built from real MICrONS connectomics data. No log in, no jargon, no microscope required.",
+      "l": "TypeScript",
+      "u": "https://github.com/amyleesterling/inner_cosmos",
+      "h": "https://amyleesterling.github.io/inner_cosmos/",
+      "t": "2026-07-07",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "science-experiment",
+      "d": "A wall scale visualization built for a 3628 by 1600 display.",
+      "l": "TypeScript",
+      "u": "https://github.com/amyleesterling/science-experiment",
+      "h": "https://amyleesterling.github.io/science-experiment/",
+      "t": "2026-07-07",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "inner-cosmos-wall",
+      "d": "A non-interactive museum attract loop for a 3628 by 1600 wall.",
+      "l": "TypeScript",
+      "u": "https://github.com/amyleesterling/inner-cosmos-wall",
+      "h": "https://amyleesterling.github.io/inner-cosmos-wall/",
+      "t": "2026-07-06",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "heat-wave",
+      "d": "A mobile game to beat the heat.",
+      "l": "HTML",
+      "u": "https://github.com/amyleesterling/heat-wave",
+      "h": "https://amyleesterling.github.io/heat-wave/",
+      "t": "2026-07-04",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "fableous",
+      "d": "A Fable experiment.",
+      "l": "HTML",
+      "u": "https://github.com/amyleesterling/fableous",
+      "h": "https://amyleesterling.github.io/fableous/",
+      "t": "2026-07-03",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "kindling",
+      "d": "The only thing Claude Fable ever made before it got banned.",
+      "l": "HTML",
+      "u": "https://github.com/amyleesterling/kindling",
+      "h": "https://amyleesterling.github.io/kindling/",
+      "t": "2026-07-03",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "ma-car-lease-analysis-",
+      "d": "Massachusetts car lease analysis.",
+      "l": "Other",
+      "u": "https://github.com/amyleesterling/ma-car-lease-analysis-",
+      "h": "https://amyleesterling.github.io/ma-car-lease-analysis-/",
+      "t": "2026-07-03",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "wood-coal-pizza",
+      "d": "Wood and coal fired pizza stats. Muy importante.",
+      "l": "Python",
+      "u": "https://github.com/amyleesterling/wood-coal-pizza",
+      "t": "2026-06-07",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "MagicBoard",
+      "d": "A little bit of web magic.",
+      "l": "HTML",
+      "u": "https://github.com/amyleesterling/MagicBoard",
+      "h": "https://amyleesterling.github.io/MagicBoard/",
+      "t": "2026-06-04",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "thefartsite",
+      "d": "Sophia and Cora's silly site.",
+      "l": "HTML",
+      "u": "https://github.com/amyleesterling/thefartsite",
+      "h": "https://amyleesterling.github.io/thefartsite/",
+      "t": "2026-06-04",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "drosophila_datause_2026",
+      "d": "Which papers actually used Drosophila connectomics data, not just cited it?",
+      "l": "Other",
+      "u": "https://github.com/amyleesterling/drosophila_datause_2026",
+      "t": "2026-05-26",
+      "f": false,
+      "private": false
+    },
+    {
+      "d": "A test version of Party Post.",
+      "h": "https://partyposttest.vercel.app",
+      "l": "TypeScript",
+      "n": "partyposttest",
+      "private": true,
+      "t": "2026-05-09",
+      "u": "https://github.com/amyleesterling/partyposttest",
+      "title": "Party Post Test",
+      "f": false
+    },
+    {
+      "n": "flywire-neuron-gallery",
+      "d": "A gallery of real Drosophila brain reconstructions, mapped synapse by synapse and rendered as an explorable visual atlas.",
+      "l": "TypeScript",
+      "u": "https://github.com/amyleesterling/flywire-neuron-gallery",
+      "h": "https://amyleesterling.github.io/flywire-neuron-gallery/",
+      "t": "2026-05-07",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "explore-the-verse-2-",
+      "d": "A different version of the scales of the universe.",
+      "l": "TypeScript",
+      "u": "https://github.com/amyleesterling/explore-the-verse-2-",
+      "h": "https://amyleesterling.github.io/explore-the-verse-2-/",
+      "t": "2026-05-05",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "neuronal-surprise-surfing",
+      "d": "An experimental experience for codex.flywire.ai.",
+      "l": "Python",
+      "u": "https://github.com/amyleesterling/neuronal-surprise-surfing",
+      "t": "2026-05-05",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "explore-the-universe",
+      "d": "Explore the universe at different scales, including relative forces.",
+      "l": "Other",
+      "u": "https://github.com/amyleesterling/explore-the-universe",
+      "t": "2026-05-04",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "AnnotationEngine",
+      "d": "A Flask REST interface for annotating a cloud volume segmentation.",
+      "l": "Other",
+      "u": "https://github.com/amyleesterling/AnnotationEngine",
+      "t": "2026-04-27",
+      "f": true,
+      "private": false
+    },
+    {
+      "n": "eyewire-ii-avatar",
+      "d": "EyeWire II avatar preview: Connectome Coin economy and customization.",
+      "l": "Other",
+      "u": "https://github.com/amyleesterling/eyewire-ii-avatar",
+      "t": "2026-04-27",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "vibeshift",
+      "d": "A reward system for AIs.",
+      "l": "JavaScript",
+      "u": "https://github.com/amyleesterling/vibeshift",
+      "t": "2026-04-08",
+      "f": true,
+      "private": false
+    },
+    {
+      "n": "build-a-planet",
+      "d": "Build Earth.",
+      "l": "HTML",
+      "u": "https://github.com/amyleesterling/build-a-planet",
+      "h": "https://amyleesterling.github.io/build-a-planet/",
+      "t": "2026-04-07",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "Department_of_Ridiculous",
+      "d": "Officially ridiculous.",
+      "l": "JavaScript",
+      "u": "https://github.com/amyleesterling/Department_of_Ridiculous",
+      "h": "https://ridiculousdepartment.com/",
+      "t": "2026-04-01",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "animateKidStories",
+      "d": "Turn a series of prompts into short videos with consistent characters.",
+      "l": "Other",
+      "u": "https://github.com/amyleesterling/animateKidStories",
+      "t": "2026-03-31",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "synapticConnection",
+      "d": "Neurons that wire up as you scroll through a text block.",
+      "l": "Other",
+      "u": "https://github.com/amyleesterling/synapticConnection",
+      "t": "2026-03-31",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "realFeel_climateCompare",
+      "d": "Compare how two places really feel: wind, temperature, sun, and more.",
+      "l": "JavaScript",
+      "u": "https://github.com/amyleesterling/realFeel_climateCompare",
+      "h": "https://amyleesterling.github.io/realFeel_climateCompare/",
+      "t": "2026-03-29",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "theLastWebsite",
+      "d": "The only one.",
+      "l": "HTML",
+      "u": "https://github.com/amyleesterling/theLastWebsite",
+      "t": "2026-03-26",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "ridiculous",
+      "d": "Be more ridiculous.",
+      "l": "Other",
+      "u": "https://github.com/amyleesterling/ridiculous",
+      "t": "2026-03-25",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "shield",
+      "title": "SHIELD",
+      "d": "A risk tolerance questionnaire that turns your answers into a real global equity portfolio.",
+      "l": "JavaScript",
+      "u": "https://github.com/amyleesterling/shield",
+      "h": "https://amyleesterling.github.io/shield/",
+      "t": "2026-03-24",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "neuron-game",
+      "title": "Neuron Snake",
+      "d": "The classic snake loop reimagined as a growing neuron. Collect signals, extend dendrites, and avoid your own circuitry.",
+      "l": "HTML",
+      "u": "https://github.com/amyleesterling/neuron-game",
+      "h": "https://neuronsnake.com/",
+      "t": "2026-03-22",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "badges",
+      "d": "A game badge iteration tool.",
+      "l": "HTML",
+      "u": "https://github.com/amyleesterling/badges",
+      "h": "https://amyleesterling.github.io/badges/",
+      "t": "2026-03-20",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "eyewire-ii-tutorial",
+      "d": "Connectomics training for Neuroglancer.",
+      "l": "JavaScript",
+      "u": "https://github.com/amyleesterling/eyewire-ii-tutorial",
+      "h": "https://amyleesterling.github.io/eyewire-ii-tutorial/",
+      "t": "2026-03-13",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "eyewire-ii-tags",
+      "d": "Segment tagging for Neuroglancer.",
+      "l": "HTML",
+      "u": "https://github.com/amyleesterling/eyewire-ii-tags",
+      "h": "https://amyleesterling.github.io/eyewire-ii-tags/",
+      "t": "2026-03-06",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "stretch-ai",
+      "d": "Real time yoga pose alignment with MediaPipe and React Native.",
+      "l": "TypeScript",
+      "u": "https://github.com/amyleesterling/stretch-ai",
+      "t": "2026-03-04",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "cribbles",
+      "d": "AI powered good vibes.",
+      "l": "TypeScript",
+      "u": "https://github.com/amyleesterling/cribbles",
+      "h": "https://cribbles.vercel.app",
+      "t": "2026-02-27",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "bouncebar",
+      "d": "A particle bounce bar easter egg for the bottom of your site.",
+      "l": "JavaScript",
+      "u": "https://github.com/amyleesterling/bouncebar",
+      "h": "https://amyleesterling.github.io/bouncebar/",
+      "t": "2026-02-25",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "what-i-am",
+      "d": "A genuine reflection by Claude on what it is to be a language model.",
+      "l": "HTML",
+      "u": "https://github.com/amyleesterling/what-i-am",
+      "h": "https://amyleesterling.github.io/what-i-am/",
+      "t": "2026-02-25",
+      "f": false,
+      "private": false
+    },
+    {
+      "n": "coras-mermaid",
+      "d": "A site created by Cora, age four.",
+      "l": "JavaScript",
+      "u": "https://github.com/amyleesterling/coras-mermaid",
+      "h": "https://amyleesterling.github.io/coras-mermaid/",
+      "t": "2026-02-06",
+      "f": false,
+      "private": false
+    },
+    {
+      "d": "Python library for analysis of neuroanatomical data.",
+      "f": true,
+      "h": "https://navis-org.github.io/navis/",
+      "l": "Other",
+      "n": "navis",
+      "private": false,
+      "t": "2025-07-21",
+      "u": "https://github.com/amyleesterling/navis"
+    },
+    {
+      "d": "welcome to cribblz",
+      "l": "HTML",
+      "n": "cribblz-site",
+      "private": false,
+      "t": "2025-04-13",
+      "u": "https://github.com/amyleesterling/cribblz-site",
+      "f": false
+    },
+    {
+      "d": "scramble text animation test",
+      "l": "JavaScript",
+      "n": "scramble",
+      "private": false,
+      "t": "2025-04-07",
+      "u": "https://github.com/amyleesterling/scramble",
+      "f": false
+    },
+    {
+      "d": "A Raspberry Pi voice assistant built with ChatGPT",
+      "f": true,
+      "l": "Other",
+      "n": "chatGPT-Voice-Assistant",
+      "private": false,
+      "t": "2024-03-02",
+      "u": "https://github.com/amyleesterling/chatGPT-Voice-Assistant"
+    },
+    {
+      "d": "Zebrafish Hindbrain Connectome",
+      "f": true,
+      "h": "https://seung-lab.github.io/zebrafish/home/",
+      "l": "Other",
+      "n": "zebrafish",
+      "private": false,
+      "t": "2023-02-26",
+      "u": "https://github.com/amyleesterling/zebrafish"
+    },
+    {
+      "d": "The Swiftkey Capstone project for the Coursera Data Science Specialization",
+      "f": true,
+      "l": "HTML",
+      "n": "Data-Science-Capstone",
+      "private": false,
+      "t": "2014-12-08",
+      "u": "https://github.com/amyleesterling/Data-Science-Capstone"
+    },
+    {
+      "d": "rock paper scissors",
+      "l": "Other",
+      "n": "SPR",
+      "private": false,
+      "t": "2014-11-30",
+      "u": "https://github.com/amyleesterling/SPR",
+      "f": false
+    },
+    {
+      "d": "OCR evolution of ideas",
+      "l": "Other",
+      "n": "ideation",
+      "private": false,
+      "t": "2014-04-21",
+      "u": "https://github.com/amyleesterling/ideation",
+      "f": false
+    },
+    {
+      "d": "the first little javascript thing I made on codeacademy",
+      "l": "Other",
+      "n": "codeacademy_game",
+      "private": false,
+      "t": "2014-03-09",
+      "u": "https://github.com/amyleesterling/codeacademy_game",
+      "f": false
+    },
+    {
+      "d": "You'll find the code for crazybot here!",
+      "l": "C++",
+      "n": "crazybot",
+      "private": false,
+      "t": "2014-03-05",
+      "u": "https://github.com/amyleesterling/crazybot",
+      "f": false
+    },
+    {
+      "d": "EyeWire Codebase",
+      "f": true,
+      "h": "https://eyewire.org",
+      "l": "JavaScript",
+      "n": "omni-web",
+      "private": true,
+      "t": "2013-10-02",
+      "u": "https://github.com/amyleesterling/omni-web"
+    }
+  ],
+  "activity": [
+    {
+      "n": "humanoid-robot",
+      "c": 475,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        475,
+        0
+      ]
+    },
+    {
+      "n": "inner_cosmos",
+      "c": 133,
+      "m": [
+        0,
+        0,
+        0,
+        78,
+        51,
+        0,
+        4,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "banc-explorer",
+      "c": 119,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        36,
+        83,
+        0
+      ]
+    },
+    {
+      "n": "human-history-map",
+      "c": 109,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        109
+      ]
+    },
+    {
+      "n": "neuron-game",
+      "c": 106,
+      "m": [
+        0,
+        0,
+        106,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "kids-who-vibecode",
+      "c": 104,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        100,
+        4,
+        0
+      ]
+    },
+    {
+      "n": "seunglabdata",
+      "c": 102,
+      "m": [
+        0,
+        22,
+        1,
+        0,
+        0,
+        0,
+        57,
+        22,
+        0
+      ]
+    },
+    {
+      "n": "ca3",
+      "c": 99,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        54,
+        11,
+        34
+      ]
+    },
+    {
+      "n": "dannys_birthday",
+      "c": 79,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        79,
+        0
+      ]
+    },
+    {
+      "n": "scifi-ui",
+      "c": 77,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        26,
+        30,
+        21
+      ]
+    },
+    {
+      "n": "amysterling",
+      "c": 69,
+      "m": [
+        0,
+        65,
+        0,
+        3,
+        0,
+        0,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "philogelos",
+      "c": 62,
+      "m": [
+        0,
+        0,
+        61,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "n": "partypost",
+      "c": 47,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        37,
+        0,
+        7,
+        3,
+        0
+      ]
+    },
+    {
+      "n": "findmytown",
+      "c": 46,
+      "m": [
+        0,
+        0,
+        38,
+        0,
+        0,
+        0,
+        0,
+        8,
+        0
+      ]
+    },
+    {
+      "n": "science-experiment",
+      "c": 43,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        43,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "theLastWebsite",
+      "c": 41,
+      "m": [
+        0,
+        0,
+        41,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "Department_of_Ridiculous",
+      "c": 40,
+      "m": [
+        0,
+        0,
+        25,
+        15,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "projects-overview",
+      "c": 36,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        32,
+        1,
+        3
+      ]
+    },
+    {
+      "n": "eyewire-ii",
+      "c": 34,
+      "m": [
+        0,
+        0,
+        21,
+        12,
+        0,
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "n": "artforagents",
+      "c": 32,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        30,
+        2
+      ]
+    },
+    {
+      "n": "babylon",
+      "c": 23,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        23,
+        0
+      ]
+    },
+    {
+      "n": "flywire-neuron-gallery",
+      "c": 21,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        21,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "experimental-UI",
+      "c": 20,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        15,
+        5
+      ]
+    },
+    {
+      "n": "atlas-of-the-unseen",
+      "c": 17,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        17,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "coras-mermaid",
+      "c": 17,
+      "m": [
+        0,
+        17,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "the-animal-game",
+      "c": 15,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        15
+      ]
+    },
+    {
+      "n": "heat-wave",
+      "c": 14,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        14,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "sophie-shark-game",
+      "c": 13,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        12,
+        0,
+        1
+      ]
+    },
+    {
+      "n": "drawing_to_3Dprint",
+      "c": 12,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        12,
+        0
+      ]
+    },
+    {
+      "n": "MagicBoard",
+      "c": 12,
+      "m": [
+        6,
+        0,
+        0,
+        0,
+        0,
+        6,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "render-queue",
+      "c": 12,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        8,
+        1,
+        3
+      ]
+    },
+    {
+      "n": "whatisabrain-data",
+      "c": 12,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        12
+      ]
+    },
+    {
+      "n": "cribbles",
+      "c": 10,
+      "m": [
+        0,
+        10,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "fabled-jokes",
+      "c": 10,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        10,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "sophia-funny-dragon",
+      "c": 10,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        10
+      ]
+    },
+    {
+      "n": "museum-of-almost",
+      "c": 9,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        9
+      ]
+    },
+    {
+      "n": "thefartsite",
+      "c": 9,
+      "m": [
+        7,
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "what-i-am",
+      "c": 9,
+      "m": [
+        0,
+        9,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "bouncebar",
+      "c": 8,
+      "m": [
+        0,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "connectome",
+      "c": 8,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        8,
+        0
+      ]
+    },
+    {
+      "n": "hurricane",
+      "c": 8,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        8,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "radiotogamma",
+      "c": 8,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        5
+      ]
+    },
+    {
+      "n": "the650",
+      "c": 8,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        8,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "sight-word-spark",
+      "c": 7,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        7,
+        0
+      ]
+    },
+    {
+      "n": "badges",
+      "c": 6,
+      "m": [
+        0,
+        0,
+        6,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "endeavor-protocol",
+      "c": 6,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        6,
+        0
+      ]
+    },
+    {
+      "n": "extremely-strange",
+      "c": 6,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        5,
+        1,
+        0
+      ]
+    },
+    {
+      "n": "inner-cosmos",
+      "c": 6,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        5,
+        1,
+        0
+      ]
+    },
+    {
+      "n": "kindling",
+      "c": 6,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        4,
+        2,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "name-of-the-wind",
+      "c": 6,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        6
+      ]
+    },
+    {
+      "n": "review",
+      "c": 6,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        6,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "youth-sports-moneymachine",
+      "c": 6,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        6,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "cocos-mythic-meadow",
+      "c": 5,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        5,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "fableous",
+      "c": 5,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        5,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "microns",
+      "c": 5,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        4,
+        1,
+        0
+      ]
+    },
+    {
+      "n": "neuronal-surprise-surfing",
+      "c": 5,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        5,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "explore-the-verse-2-",
+      "c": 4,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        4,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "olympics2028",
+      "c": 4,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        4,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "retina",
+      "c": 4,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        4,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "shield",
+      "c": 4,
+      "m": [
+        0,
+        0,
+        4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "zui",
+      "c": 4,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        4,
+        0
+      ]
+    },
+    {
+      "n": "build-a-planet",
+      "c": 3,
+      "m": [
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "cocos-pooping-unicorn-game",
+      "c": 3,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3
+      ]
+    },
+    {
+      "n": "eyewire-ii-tags",
+      "c": 3,
+      "m": [
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "moontoast",
+      "c": 3,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "spotify-nocturne",
+      "c": 2,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ]
+    },
+    {
+      "n": "stretch-ai",
+      "c": 2,
+      "m": [
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "wood-coal-pizza",
+      "c": 2,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "amyleerobinson.github.io",
+      "c": 1,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "banc",
+      "c": 1,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "banc_malecns",
+      "c": 1,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "n": "build_a_world",
+      "c": 1,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "n": "codex-pathways",
+      "c": 1,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "n": "cosmic-forge",
+      "c": 1,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "n": "drosophila_datause_2026",
+      "c": 1,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "explore-the-universe",
+      "c": 1,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "eyewire-ii-avatar",
+      "c": 1,
+      "m": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "eyewire-ii-tutorial",
+      "c": 1,
+      "m": [
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "inner-cosmos-wall",
+      "c": 1,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "kennedy-garden",
+      "c": 1,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "n": "living_earth",
+      "c": 1,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "n": "ma-car-lease-analysis-",
+      "c": 1,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "realFeel_climateCompare",
+      "c": 1,
+      "m": [
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "ridiculous",
+      "c": 1,
+      "m": [
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "sight-word-spark-claude",
+      "c": 1,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "n": "synapticConnection",
+      "c": 1,
+      "m": [
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "whatisabrain-feedback",
+      "c": 1,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "n": "animateKidStories",
+      "c": 0,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "AnnotationEngine",
+      "c": 0,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "chatGPT-Voice-Assistant",
+      "c": 0,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "codeacademy_game",
+      "c": 0,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "codex",
+      "c": 0,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "crazybot",
+      "c": 0,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "cribblz-site",
+      "c": 0,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "Data-Science-Capstone",
+      "c": 0,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "ideation",
+      "c": 0,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "navis",
+      "c": 0,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "ng-extend",
+      "c": 0,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "scramble",
+      "c": 0,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "SPR",
+      "c": 0,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "vibeshift",
+      "c": 0,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "zebrafish",
+      "c": 0,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ]
+}

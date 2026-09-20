@@ -25,7 +25,6 @@ const centers:Record<string,[number,number]> = {
   developer:[.53,.76], multimodal:[.22,.68], learning:[.48,.49],
 };
 const monthNames=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-const monthCount=monthNames.length;
 const constellationTours = [
   {id:"connectome",title:"The Connectome Arc",description:"From mapping single neurons to making whole connectomes visible.",names:["ca3","drosophila_datause_2026","flywire-neuron-gallery","eyewire-ii","inner_cosmos"]},
   {id:"rendered",title:"Five Nervous Systems",description:"A year spent rendering real reconstructions: fly, mouse retina, mouse cortex, mouse hippocampus, human.",names:["banc-explorer","retina","microns","ca3","human-brain"]},
@@ -107,10 +106,11 @@ type RepositoryWorldProps = {
   description?:string;
   kicker?:string;
   showTours?:boolean;
-  year?:number;
+  year?:number; throughMonth?:number;
 };
 
-export default function RepositoryWorld({projects,heading="The repository world",description="A living map of the projects. Proximity comes from shared ideas, language, project families, and purpose; stronger relationships pull repositories closer together.",kicker,showTours=true,year=2026}:RepositoryWorldProps) {
+export default function RepositoryWorld({projects,heading="The repository world",description="A living map of the projects. Proximity comes from shared ideas, language, project families, and purpose; stronger relationships pull repositories closer together.",kicker,showTours=true,year=2026,throughMonth=12}:RepositoryWorldProps) {
+  const monthCount = Math.max(1, Math.min(12, throughMonth));
   const canvasRef=useRef<HTMLCanvasElement>(null);
   const graph=useMemo(()=>buildGraph(projects),[projects]);
   const [active,setActive]=useState("all");
@@ -145,7 +145,7 @@ export default function RepositoryWorld({projects,heading="The repository world"
     if(!playing)return;
     const timer=window.setInterval(()=>setMonth(current=>{if(current>=monthCount){setPlaying(false);return monthCount;}return current+1;}),1050);
     return()=>window.clearInterval(timer);
-  },[playing]);
+  },[playing,monthCount]);
 
   useEffect(()=>{if(selected&&firstActiveMonth(selected)>month)setSelected(null);},[month,selected]);
   useEffect(()=>{if(!easterEgg)return;const timer=window.setTimeout(()=>setEasterEgg(false),9000);return()=>window.clearTimeout(timer);},[easterEgg]);
@@ -199,7 +199,7 @@ export default function RepositoryWorld({projects,heading="The repository world"
         const rx=Math.max(85,...points.map(p=>Math.abs(p.x-cx)+48)),ry=Math.max(58,...points.map(p=>Math.abs(p.y-cy)+35));
         const gradient=context.createRadialGradient(cx,cy,0,cx,cy,Math.max(rx,ry)); gradient.addColorStop(0,`${neighborhoodColors[category.id]}18`);gradient.addColorStop(1,`${neighborhoodColors[category.id]}00`);
         context.fillStyle=gradient;context.beginPath();context.ellipse(cx,cy,rx,ry,-.08,0,Math.PI*2);context.fill();
-        context.fillStyle="rgba(177,226,244,.3)";context.font="600 10px ui-monospace, monospace";context.letterSpacing="1px";context.fillText(category.title.toUpperCase(),cx-rx+18,cy-ry+22);
+        context.fillStyle="rgba(177,226,244,.8)";context.font="600 12px ui-monospace, monospace";context.letterSpacing="1px";context.fillText(category.title.toUpperCase(),cx-rx+18,cy-ry+22);
       });
       graph.edges.forEach(edge=>{
         const a=nodes[edge.source],b=nodes[edge.target]; if(!visible(a)||!visible(b))return; const p1=projectPoint(a),p2=projectPoint(b);
@@ -217,7 +217,7 @@ export default function RepositoryWorld({projects,heading="The repository world"
         if(chosen){context.strokeStyle="rgba(226,249,255,.95)";context.lineWidth=1.5;context.beginPath();context.arc(point.x,point.y,radius+10+Math.sin(performance.now()*.005)*2,0,Math.PI*2);context.stroke();}
         if(activeNow){const pulse=radius+7+(Math.sin(performance.now()*.004+index)*.5+.5)*7;context.strokeStyle=`${color}${highlighted?"aa":"58"}`;context.lineWidth=1;context.beginPath();context.arc(point.x,point.y,pulse,0,Math.PI*2);context.stroke();}
         if(node.featured){context.strokeStyle="rgba(255,255,255,.82)";context.lineWidth=1.2;context.beginPath();context.arc(point.x,point.y,radius+5,0,Math.PI*2);context.stroke();}
-        if(highlighted||node.featured){context.fillStyle="rgba(225,247,255,.95)";context.font=`${highlighted?12:10}px ui-monospace, monospace`;context.textAlign="center";context.fillText(node.title,point.x,point.y-radius-10);}
+        if(highlighted||node.featured){context.fillStyle="rgba(225,247,255,.95)";context.font=`${highlighted?14:12}px ui-monospace, monospace`;context.textAlign="center";context.fillText(node.title,point.x,point.y-radius-10);}
         if(easterEgg){const eye=radius*.48+2;context.shadowBlur=0;context.fillStyle="#f4fbff";[-1,1].forEach(side=>{context.beginPath();context.arc(point.x+side*eye*.72,point.y-eye*.35,eye,0,Math.PI*2);context.fill();context.fillStyle="#071421";context.beginPath();context.arc(point.x+side*eye*.72+Math.sin(performance.now()*.003+index)*eye*.25,point.y-eye*.25,eye*.38,0,Math.PI*2);context.fill();context.fillStyle="#f4fbff";});}
         context.restore();
       });
@@ -237,9 +237,9 @@ export default function RepositoryWorld({projects,heading="The repository world"
     <div className="sectionHeading worldHeading"><div><p className="kicker">{kicker||`${projects.length} REPOSITORIES · ${categories.length} NEIGHBORHOODS`}</p><h2>{heading}</h2></div><p>{description}</p></div>
     <div className="worldControls" aria-label="Repository neighborhoods"><button className={active==="all"?"active":""} onClick={()=>{setActive("all");stopTour();}}>Whole world</button>{categories.map(category=><button className={active===category.id?"active":""} onClick={()=>selectCategory(category.id)} key={category.id}><i style={{background:neighborhoodColors[category.id]}}/>{category.title}</button>)}</div>
     <div className="worldTimeline">
-      <button type="button" className="timelinePlay" aria-label={playing?"Pause repository timeline":"Play repository timeline"} onClick={()=>{if(playing){setPlaying(false);return;}if(month===7)setMonth(1);setPlaying(true);}}>{playing?"Ⅱ":"▶"}</button>
-      <label><span>{year} / <b>{monthNames[month-1]}</b></span><input type="range" min="1" max={monthCount} step="1" value={month} aria-label={`Repository world through ${monthNames[month-1]} ${year}`} onChange={event=>{setPlaying(false);setMonth(Number(event.target.value));}}/><i style={{width:`${(month-1)/(monthCount-1)*100}%`}}/></label>
-      <div className="timelineMonths" aria-hidden="true">{monthNames.map((name,index)=><span className={index+1<=month?"reached":""} key={name}>{name}</span>)}</div>
+      <button type="button" className="timelinePlay" aria-label={playing?"Pause repository timeline":"Play repository timeline"} onClick={()=>{if(playing){setPlaying(false);return;}if(month===monthCount)setMonth(1);setPlaying(true);}}>{playing?"Ⅱ":"▶"}</button>
+      <label><span>{year} / <b>{monthNames[month-1]}</b></span><input type="range" min="1" max={monthCount} step="1" value={month} aria-label={`Repository world through ${monthNames[month-1]} ${year}`} onChange={event=>{setPlaying(false);setMonth(Number(event.target.value));}}/><i style={{width:`${(month-1)/Math.max(1,monthCount-1)*100}%`}}/></label>
+      <div className="timelineMonths" aria-hidden="true">{monthNames.slice(0,monthCount).map((name,index)=><span className={index+1<=month?"reached":""} key={name}>{name}</span>)}</div>
       <strong>{projects.filter(project=>firstActiveMonth(project)<=month).length}<small> repositories visible</small></strong>
     </div>
     {showTours&&<div className="constellationTours"><div><span>GUIDED CONSTELLATION TOURS</span><p>Follow a story through the repository world.</p></div>{constellationTours.map(tour=><button type="button" className={activeTour===tour.id?"active":""} onClick={()=>startTour(tour.id)} key={tour.id}><i>{String(tour.names.length).padStart(2,"0")}</i><span>{tour.title}</span></button>)}</div>}

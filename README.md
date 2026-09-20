@@ -1,6 +1,6 @@
 # Projects Overview
 
-An interactive exhibition of Amy Sterling's GitHub repositories. The catalog contains 107 projects as of September 7, 2026, including forks, older projects, and private repository listings. Private code still requires GitHub access.
+An interactive exhibition of Amy Sterling's GitHub repositories. The catalog contains 112 projects as of September 20, 2026, including forks, older projects, and private repository listings. Private code still requires GitHub access.
 
 The site organizes projects into thematic rooms, highlights selected work with real project imagery, visualizes public commit activity, and maps the repositories as an explorable network of related ideas.
 
@@ -8,7 +8,7 @@ The site organizes projects into thematic rooms, highlights selected work with r
 
 ## The repository world
 
-[![Interactive network graph of 107 repositories arranged into seven thematic neighborhoods](public/readme/repository-world-detail.png)](https://amy-projects-2026.amysterling.chatgpt.site/#world)
+[![Interactive network graph of the repository collection arranged into seven thematic neighborhoods](public/readme/repository-world-detail.png)](https://amy-projects-2026.amysterling.chatgpt.site/#world)
 
 The network graph turns the repository collection into seven explorable neighborhoods. Weighted relationships connect projects that share ideas, technologies, families, and purpose. Select a node for its field guide, scrub through the year, or follow a guided constellation tour.
 
@@ -46,13 +46,29 @@ The project uses React, TypeScript, Three.js, and [Vinext](https://github.com/cl
 
 ## Project structure
 
-- `app/page.tsx` contains the repository catalog, categories, featured projects, and activity data.
+- `app/data/catalog.json` contains the dated repository catalog and public contribution snapshot.
+- `app/page.tsx` contains the categories, featured projects, and exhibition interface.
 - `app/repository-world.tsx` implements the interactive repository graph, detail drawer, timeline, and guided constellation tours.
 - `app/project-visual.tsx` generates repository-specific illustrations.
 - `app/neuron-particle-banner.tsx` contains the interactive pyramidal-neuron visualization.
 - `public/` contains featured imagery and sharing assets.
 
-Repository information reflects public GitHub activity captured during 2026 and can be updated as new projects arrive.
+## Refresh Amy’s catalog
+
+With the GitHub CLI installed and authenticated, run:
+
+```bash
+npm run refresh:catalog
+npm test
+```
+
+The refresh reads all public repositories (including forks and older projects), refreshes metadata for private listings already in the catalog, and saves the snapshot only after every request succeeds. It never discovers new private projects or saves private contribution histories. Curated descriptions, titles, live links and paper links are preserved. Review new entries and assign them to a room in `categoryNames` in `app/page.tsx`; otherwise they appear under Internet Toys & Prototypes.
+
+The September 20 snapshot contains 102 public repositories and 10 existing private listings. Its activity chart counts 2,270 public commits attributed to @amyleesterling by GitHub from January 1 through the capture time. This uses GitHub profile contribution rules, not all commits on all branches or commits by all collaborators. Automation is included when GitHub attributes it to this account. Historical counts can change as GitHub attribution or repository visibility changes. Private listings show their last-pushed date instead of a commit count.
+
+The displayed project count, refresh date, metadata and timeline endpoint are derived from the snapshot. The current year must be reviewed before running the refresh in a new year.
+
+The README screenshots show earlier captures of the exhibition; they are visual examples, not a current inventory.
 
 ## Use your own GitHub universe
 
@@ -81,7 +97,7 @@ Unauthenticated GitHub API requests work for small catalogs. For larger accounts
 ### Plug the import into the exhibition
 
 1. Run the importer and review its generated JSON. Descriptions, homepages, languages, topics, stars, and last-pushed dates come directly from public GitHub metadata.
-2. In `app/page.tsx`, import the generated file and replace the curated `repos` array:
+2. In `app/page.tsx`, import the generated file and replace the `catalog.repositories` assignment:
 
    ```tsx
    import catalog from "../imports/YOUR_GITHUB_NAME-2026.json";
@@ -91,7 +107,7 @@ Unauthenticated GitHub API requests work for small catalogs. For larger accounts
 
 3. Update `categoryNames` in `app/page.tsx` to arrange repository names into the seven neighborhoods. Names not assigned to a neighborhood automatically land in **Internet Toys & Prototypes**.
 4. Choose highlights in `featuredNames`, and add real screenshots or image URLs to `featuredImages`.
-5. Replace or clear the hand-curated `commitPulse` data. The importer deliberately does not scrape commit histories because doing so requires many additional API requests.
+5. Replace or clear the `commitPulse` assignment from Amy’s snapshot. The importer deliberately does not scrape commit histories because doing so requires many additional API requests.
 6. Update the personal copy, publication list, social image, and site metadata, then run `npm run build`.
 
 The importer output intentionally uses the exhibition's compact field names (`n`, `d`, `l`, `u`, `h`, `t`, and `f`), so the repository records can be used without a separate conversion step. The extra `topics` and `stars` fields are safe to leave in place.
