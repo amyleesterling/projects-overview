@@ -1,8 +1,9 @@
 {
   "owner": "amyleesterling",
   "year": 2026,
-  "updatedAt": "2026-09-20T21:55:18.715Z",
-  "activitySource": "GitHub profile commit contributions attributed to amyleesterling in listed public repositories; includes any automation GitHub attributes to that account.",
+  "updatedAt": "2026-09-20T22:18:06.057Z",
+  "visibilityScope": "all-owned",
+  "activitySource": "Commits authored by amyleesterling on each owned repository's default branch, grouped by UTC committer month; includes public and private repositories and automation authored by this account.",
   "repositories": [
     {
       "n": "artforagents",
@@ -37,6 +38,17 @@
       "title": "Human History Map"
     },
     {
+      "n": "projects-overview",
+      "title": "Projects Overview",
+      "d": "This exhibition. An interactive network map of code projects, from current work to earlier experiments.",
+      "l": "TypeScript",
+      "u": "https://github.com/amyleesterling/projects-overview",
+      "h": "https://amy-projects-2026.amysterling.chatgpt.site/",
+      "t": "2026-09-20",
+      "f": false,
+      "private": false
+    },
+    {
       "d": "A family-created game for kids to learn about animals.",
       "l": "TypeScript",
       "n": "the-animal-game",
@@ -55,6 +67,15 @@
       "h": "https://whatisabrain.com/",
       "t": "2026-09-19",
       "f": false
+    },
+    {
+      "n": "PartyPilof",
+      "d": "muse experiment on Facebook",
+      "l": "Other",
+      "u": "https://github.com/amyleesterling/PartyPilof",
+      "t": "2026-09-18",
+      "f": false,
+      "private": true
     },
     {
       "n": "whatisabrain-data",
@@ -185,17 +206,6 @@
       "u": "https://github.com/amyleesterling/ng-extend",
       "t": "2026-09-07",
       "f": true,
-      "private": false
-    },
-    {
-      "n": "projects-overview",
-      "title": "Projects Overview",
-      "d": "This exhibition. An interactive network map of code projects, from current work to earlier experiments.",
-      "l": "TypeScript",
-      "u": "https://github.com/amyleesterling/projects-overview",
-      "h": "https://amy-projects-2026.amysterling.chatgpt.site/",
-      "t": "2026-09-07",
-      "f": false,
       "private": false
     },
     {
@@ -1123,14 +1133,29 @@
       ]
     },
     {
-      "n": "inner_cosmos",
-      "c": 133,
+      "n": "whatisabrain",
+      "c": 190,
       "m": [
         0,
         0,
         0,
-        78,
-        51,
+        0,
+        0,
+        0,
+        43,
+        18,
+        129
+      ]
+    },
+    {
+      "n": "inner_cosmos",
+      "c": 132,
+      "m": [
+        0,
+        0,
+        0,
+        64,
+        64,
         0,
         4,
         0,
@@ -1147,14 +1172,14 @@
         0,
         0,
         0,
-        36,
-        83,
+        34,
+        85,
         0
       ]
     },
     {
       "n": "human-history-map",
-      "c": 109,
+      "c": 113,
       "m": [
         0,
         0,
@@ -1164,7 +1189,22 @@
         0,
         0,
         0,
-        109
+        113
+      ]
+    },
+    {
+      "n": "human-brain",
+      "c": 109,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        22,
+        85,
+        2
       ]
     },
     {
@@ -1183,8 +1223,23 @@
       ]
     },
     {
+      "n": "seunglabdata",
+      "c": 106,
+      "m": [
+        0,
+        24,
+        1,
+        0,
+        0,
+        0,
+        59,
+        22,
+        0
+      ]
+    },
+    {
       "n": "kids-who-vibecode",
-      "c": 104,
+      "c": 103,
       "m": [
         0,
         0,
@@ -1193,28 +1248,13 @@
         0,
         0,
         100,
-        4,
-        0
-      ]
-    },
-    {
-      "n": "seunglabdata",
-      "c": 102,
-      "m": [
-        0,
-        22,
-        1,
-        0,
-        0,
-        0,
-        57,
-        22,
+        3,
         0
       ]
     },
     {
       "n": "ca3",
-      "c": 99,
+      "c": 100,
       "m": [
         0,
         0,
@@ -1222,14 +1262,14 @@
         0,
         0,
         0,
-        54,
+        55,
         11,
         34
       ]
     },
     {
       "n": "dannys_birthday",
-      "c": 79,
+      "c": 83,
       "m": [
         0,
         0,
@@ -1238,13 +1278,13 @@
         0,
         0,
         0,
-        79,
-        0
+        81,
+        2
       ]
     },
     {
       "n": "scifi-ui",
-      "c": 77,
+      "c": 78,
       "m": [
         0,
         0,
@@ -1252,53 +1292,83 @@
         0,
         0,
         0,
-        26,
-        30,
-        21
+        21,
+        34,
+        23
+      ]
+    },
+    {
+      "n": "philogelos",
+      "c": 69,
+      "m": [
+        0,
+        0,
+        68,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
       ]
     },
     {
       "n": "amysterling",
-      "c": 69,
+      "c": 67,
       "m": [
         0,
-        65,
+        63,
         0,
         3,
         0,
         0,
         1,
         0,
-        0
-      ]
-    },
-    {
-      "n": "philogelos",
-      "c": 62,
-      "m": [
-        0,
-        0,
-        61,
-        0,
-        0,
-        0,
-        0,
-        1,
         0
       ]
     },
     {
       "n": "partypost",
-      "c": 47,
+      "c": 67,
       "m": [
         0,
         0,
         0,
         0,
-        37,
+        57,
         0,
         7,
         3,
+        0
+      ]
+    },
+    {
+      "n": "codex_public",
+      "c": 60,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        60
+      ]
+    },
+    {
+      "n": "theLastWebsite",
+      "c": 49,
+      "m": [
+        0,
+        0,
+        49,
+        0,
+        0,
+        0,
+        0,
+        0,
         0
       ]
     },
@@ -1319,7 +1389,7 @@
     },
     {
       "n": "science-experiment",
-      "c": 43,
+      "c": 42,
       "m": [
         0,
         0,
@@ -1327,22 +1397,7 @@
         0,
         0,
         0,
-        43,
-        0,
-        0
-      ]
-    },
-    {
-      "n": "theLastWebsite",
-      "c": 41,
-      "m": [
-        0,
-        0,
-        41,
-        0,
-        0,
-        0,
-        0,
+        42,
         0,
         0
       ]
@@ -1353,8 +1408,8 @@
       "m": [
         0,
         0,
-        25,
-        15,
+        24,
+        16,
         0,
         0,
         0,
@@ -1364,7 +1419,7 @@
     },
     {
       "n": "projects-overview",
-      "c": 36,
+      "c": 37,
       "m": [
         0,
         0,
@@ -1374,7 +1429,7 @@
         0,
         32,
         1,
-        3
+        4
       ]
     },
     {
@@ -1408,6 +1463,36 @@
       ]
     },
     {
+      "n": "vibeshift",
+      "c": 27,
+      "m": [
+        0,
+        0,
+        0,
+        27,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "flywire-neuron-gallery",
+      "c": 25,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        25,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
       "n": "babylon",
       "c": 23,
       "m": [
@@ -1423,23 +1508,8 @@
       ]
     },
     {
-      "n": "flywire-neuron-gallery",
-      "c": 21,
-      "m": [
-        0,
-        0,
-        0,
-        0,
-        21,
-        0,
-        0,
-        0,
-        0
-      ]
-    },
-    {
       "n": "experimental-UI",
-      "c": 20,
+      "c": 22,
       "m": [
         0,
         0,
@@ -1449,7 +1519,22 @@
         0,
         0,
         15,
-        5
+        7
+      ]
+    },
+    {
+      "n": "greenwall",
+      "c": 18,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        18
       ]
     },
     {
@@ -1483,8 +1568,8 @@
       ]
     },
     {
-      "n": "the-animal-game",
-      "c": 15,
+      "n": "drawing_to_3Dprint",
+      "c": 14,
       "m": [
         0,
         0,
@@ -1493,8 +1578,8 @@
         0,
         0,
         0,
-        0,
-        15
+        14,
+        0
       ]
     },
     {
@@ -1508,6 +1593,21 @@
         0,
         0,
         14,
+        0,
+        0
+      ]
+    },
+    {
+      "n": "MagicBoard",
+      "c": 13,
+      "m": [
+        6,
+        0,
+        0,
+        0,
+        0,
+        7,
+        0,
         0,
         0
       ]
@@ -1528,10 +1628,9 @@
       ]
     },
     {
-      "n": "drawing_to_3Dprint",
+      "n": "ca3-rendering",
       "c": 12,
       "m": [
-        0,
         0,
         0,
         0,
@@ -1539,20 +1638,6 @@
         0,
         0,
         12,
-        0
-      ]
-    },
-    {
-      "n": "MagicBoard",
-      "c": 12,
-      "m": [
-        6,
-        0,
-        0,
-        0,
-        0,
-        6,
-        0,
         0,
         0
       ]
@@ -1633,6 +1718,21 @@
       ]
     },
     {
+      "n": "sophie-and-cora",
+      "c": 10,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        10
+      ]
+    },
+    {
       "n": "museum-of-almost",
       "c": 9,
       "m": [
@@ -1689,21 +1789,6 @@
         0,
         0,
         0,
-        0
-      ]
-    },
-    {
-      "n": "connectome",
-      "c": 8,
-      "m": [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        8,
         0
       ]
     },
@@ -1779,6 +1864,21 @@
         0,
         0,
         0,
+        0
+      ]
+    },
+    {
+      "n": "connectome",
+      "c": 6,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        6,
         0
       ]
     },
@@ -1867,9 +1967,24 @@
         0,
         0,
         0,
-        6,
-        0,
+        4,
+        2,
         0
+      ]
+    },
+    {
+      "n": "the-animal-game",
+      "c": 6,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        6
       ]
     },
     {
@@ -2083,6 +2198,21 @@
       ]
     },
     {
+      "n": "partyposttest",
+      "c": 2,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
       "n": "spotify-nocturne",
       "c": 2,
       "m": [
@@ -2218,6 +2348,21 @@
       ]
     },
     {
+      "n": "della-supercluster",
+      "c": 1,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0
+      ]
+    },
+    {
       "n": "drosophila_datause_2026",
       "c": 1,
       "m": [
@@ -2335,6 +2480,51 @@
         1,
         0,
         0
+      ]
+    },
+    {
+      "n": "muse-glimmer",
+      "c": 1,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "n": "ng-extend",
+      "c": 1,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "n": "PartyPilof",
+      "c": 1,
+      "m": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
       ]
     },
     {
@@ -2563,7 +2753,7 @@
       ]
     },
     {
-      "n": "ng-extend",
+      "n": "omni-web",
       "c": 0,
       "m": [
         0,
@@ -2594,21 +2784,6 @@
     },
     {
       "n": "SPR",
-      "c": 0,
-      "m": [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ]
-    },
-    {
-      "n": "vibeshift",
       "c": 0,
       "m": [
         0,

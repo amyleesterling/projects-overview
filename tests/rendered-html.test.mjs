@@ -37,15 +37,19 @@ test("server-renders the current exhibition, catalog and snapshot date", async (
   assert.ok(html.includes(catalog.repositories.length + " projects across the collection"));
   for (const repo of catalog.repositories) assert.ok(html.includes(repo.u), repo.n + " is rendered");
   assert.ok(!html.includes("Your site is taking shape"));
+  assert.equal((html.match(/Private repository\. Open repository\./g) || []).length, catalog.repositories.filter(repo => repo.private).length, "private repositories appear in the activity chart");
+  assert.ok(!html.includes("Private activity is excluded"));
   assert.ok(!html.includes("January–August 2026"));
   assert.ok(html.includes('max="' + (new Date(catalog.updatedAt).getUTCMonth() + 1) + '"'), "timeline ends at snapshot month");
 });
 
-test("public activity covers the catalog without leaking private histories", () => {
+test("activity covers every public and private repository with consistent monthly totals", () => {
   const names = new Set(catalog.repositories.map(repo => repo.n));
   assert.equal(names.size, catalog.repositories.length);
-  const publicNames = catalog.repositories.filter(repo => !repo.private).map(repo => repo.n).sort();
-  assert.deepEqual(catalog.activity.map(repo => repo.n).sort(), publicNames);
+  assert.equal(catalog.visibilityScope, "all-owned");
+  assert.deepEqual(catalog.activity.map(repo => repo.n).sort(), [...names].sort());
+  const privateNames = new Set(catalog.repositories.filter(repo => repo.private).map(repo => repo.n));
+  assert.ok(catalog.activity.some(repo => privateNames.has(repo.n) && repo.c > 0), "private commit counts are included");
   for (const repo of catalog.activity) {
     assert.equal(repo.m.length, new Date(catalog.updatedAt).getUTCMonth() + 1);
     assert.ok(repo.m.every(count => Number.isInteger(count) && count >= 0));

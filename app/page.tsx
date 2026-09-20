@@ -21,7 +21,10 @@ const featuredImages: Record<string, { src: string; alt: string }> = {
 };
 const pulseMonths = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].slice(0, new Date(catalog.updatedAt).getUTCMonth() + 1);
 const commitPulse = catalog.activity;
-const totalPublicCommits = commitPulse.reduce((total, repo) => total + repo.c, 0);
+const totalCommits = commitPulse.reduce((total, repo) => total + repo.c, 0);
+const privateRepos = repos.filter(repo => repo.private);
+const privateNames = new Set(privateRepos.map(repo => repo.n));
+const privateCommits = commitPulse.filter(repo => privateNames.has(repo.n)).reduce((total, repo) => total + repo.c, 0);
 const maxRepoCommits = Math.max(...commitPulse.map((repo) => repo.c));
 const langClass: Record<string,string> = {HTML:"html",TypeScript:"ts",JavaScript:"js",Python:"py",CSS:"css",Other:"other"};
 
@@ -108,7 +111,7 @@ const categoryNames: Record<CategoryId, string[]> = {
   brains:["whatisabrain-data","omni-web","zebrafish","navis","ca3-rendering","della-supercluster","codex_public","codex","codex-pathways","whatisabrain-feedback","banc_malecns","ca3","human-brain","microns","retina","banc","banc-explorer","connectome","inner-cosmos","seunglabdata","the650","whatisabrain","science-experiment","inner_cosmos","inner-cosmos-wall","drosophila_datause_2026","flywire-neuron-gallery","neuronal-surprise-surfing","eyewire-ii","ng-extend","AnnotationEngine","eyewire-ii-avatar","synapticConnection","neuron-game","eyewire-ii-tutorial","eyewire-ii-tags"],
   kids:["kennedy-garden","sight-word-spark","sight-word-spark-claude","drawing_to_3Dprint","sophie-and-cora","the-animal-game","cocos-pooping-unicorn-game","sophia-funny-dragon","kids-who-vibecode","humanoid-robot","sophie-shark-game","cocos-mythic-meadow","heat-wave","MagicBoard","thefartsite","moontoast","animateKidStories","coras-mermaid"],
   earth:["human-history-map","build_a_world","cosmic-forge","living_earth","babylon","radiotogamma","name-of-the-wind","hurricane","youth-sports-moneymachine","ma-car-lease-analysis-","wood-coal-pizza","explore-the-universe","explore-the-verse-2-","build-a-planet","realFeel_climateCompare"],
-  ai:["chatGPT-Voice-Assistant","endeavor-protocol","muse-glimmer","atlas-of-the-unseen","artforagents","scifi-ui","extremely-strange","fableous","kindling","vibeshift","what-i-am","cribbles"],
+  ai:["PartyPilof","chatGPT-Voice-Assistant","endeavor-protocol","muse-glimmer","atlas-of-the-unseen","artforagents","scifi-ui","extremely-strange","fableous","kindling","vibeshift","what-i-am","cribbles"],
   tools:["spotify-nocturne","render-queue","partyposttest","greenwall","Data-Science-Capstone","ideation","crazybot","partypost","findmytown","review","olympics2028","projects-overview","amysterling","stretch-ai"],
   ridiculous:["museum-of-almost","philogelos","fabled-jokes","Department_of_Ridiculous","ridiculous","theLastWebsite"],
   toys:["codeacademy_game","SPR","scramble","cribblz-site","experimental-UI","zui","dannys_birthday"],
@@ -531,26 +534,26 @@ export default function Home() {
         <NeuronParticleBanner />
       </header>
 
-      <section className="pulse" aria-label="2026 public commit activity by repository">
-        <div className="pulseIntro"><span>THE CODE PULSE · 2026</span><strong>{repos.length} projects in the collection.</strong><p><b>{totalPublicCommits}</b> public commits attributed to @amyleesterling by GitHub, January 1–{snapshotDate}. Private activity is excluded; automation counts when GitHub credits it to this account.</p></div>
+      <section className="pulse" aria-label="2026 commit activity across public and private repositories">
+        <div className="pulseIntro"><span>THE CODE PULSE · 2026</span><strong>{repos.length} projects: {repos.length - privateRepos.length} public, {privateRepos.length} private.</strong><p><b>{totalCommits.toLocaleString("en-US")}</b> commits by @amyleesterling on the default branches, January 1–{snapshotDate}. <b>{privateCommits.toLocaleString("en-US")}</b> are from private repositories. Automation is included when authored by this account.</p></div>
         <div className="pulseChart">
-          <div className="commitBars" aria-label="One bar per public repository, ordered by commit count">
+          <div className="commitBars" aria-label="One bar per repository, public and private, ordered by commit count">
             {commitPulse.map((item) => {
               const repo = repos.find((candidate) => candidate.n === item.n);
               const title = repo ? repoTitle(repo) : item.n;
               const barHeight = item.c ? Math.max(6, Math.log1p(item.c) / Math.log1p(maxRepoCommits) * 100) : 2;
               const monthMax = Math.max(...item.m, 1);
-              return <a className={`commitBarItem ${item.c === 0 ? "quietRepo" : ""}`} href={repo?.u || `https://github.com/amyleesterling/${item.n}`} target="_blank" rel="noreferrer" key={item.n} aria-label={`${title}: ${item.c} public commits in 2026. Open repository.`}>
+              return <a className={`commitBarItem ${item.c === 0 ? "quietRepo" : ""}`} href={repo?.u || `https://github.com/amyleesterling/${item.n}`} target="_blank" rel="noreferrer" key={item.n} aria-label={`${title}: ${item.c} authored commits in 2026. ${repo?.private ? "Private" : "Public"} repository. Open repository.`}>
                 <span className="commitBar" style={{"--bar-height":`${barHeight.toFixed(3)}%`} as CSSProperties}/>
                 <span className="commitTooltip">
                   <span className="tooltipTop"><b>{title}</b><em>{item.c} {item.c === 1 ? "commit" : "commits"}</em></span>
                   <span className="monthBreakdown">{item.m.map((count, index) => <span className="monthColumn" key={pulseMonths[index]}><i style={{"--month-height":`${count ? Math.max(8, count / monthMax * 100) : 2}%`} as CSSProperties}/><small>{pulseMonths[index]}</small><strong>{count}</strong></span>)}</span>
-                  <span className="tooltipHint">View repository ↗</span>
+                  <span className="tooltipHint">{repo?.private ? "Private repository · " : ""}View repository ↗</span>
                 </span>
               </a>;
             })}
           </div>
-          <div className="pulseLegend"><span><i/>Each line is one repository</span><span>Hover to see commits by month</span><span>GitHub contributions · through {snapshotDate}</span></div>
+          <div className="pulseLegend"><span><i/>Each line is one repository</span><span>Hover to see commits by month</span><span>Public + private commits · through {snapshotDate}</span></div>
         </div>
       </section>
 
@@ -606,7 +609,7 @@ export default function Home() {
         </div>
       </section>
 
-      <footer><div><span className="footerMark">AS</span><p>Repository catalog updated {snapshotDate}.<br/>Public activity refreshed through {snapshotDate}.</p></div><p className="footerQuote">Building at the speed of<br/><em>curiosity.</em></p><a href="#top">Back to top ↑</a></footer>
+      <footer><div><span className="footerMark">AS</span><p>Repository catalog updated {snapshotDate}.<br/>Public and private activity refreshed through {snapshotDate}.</p></div><p className="footerQuote">Building at the speed of<br/><em>curiosity.</em></p><a href="#top">Back to top ↑</a></footer>
     </main>
   );
 }

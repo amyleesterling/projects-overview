@@ -1,8 +1,8 @@
 # Projects Overview
 
-An interactive exhibition of Amy Sterling's GitHub repositories. The catalog contains 112 projects as of September 20, 2026, including forks, older projects, and private repository listings. Private code still requires GitHub access.
+An interactive exhibition of Amy Sterling's GitHub repositories. The catalog contains 113 projects as of September 20, 2026, including forks, older projects, and private repository listings. Private code still requires GitHub access.
 
-The site organizes projects into thematic rooms, highlights selected work with real project imagery, visualizes public commit activity, and maps the repositories as an explorable network of related ideas.
+The site organizes projects into thematic rooms, highlights selected work with real project imagery, visualizes commit activity across public and private repositories, and maps the repositories as an explorable network of related ideas.
 
 **Live site:** [amy-projects-2026.amysterling.chatgpt.site](https://amy-projects-2026.amysterling.chatgpt.site/)
 
@@ -46,7 +46,7 @@ The project uses React, TypeScript, Three.js, and [Vinext](https://github.com/cl
 
 ## Project structure
 
-- `app/data/catalog.json` contains the dated repository catalog and public contribution snapshot.
+- `app/data/catalog.json` contains the dated repository catalog and commit activity snapshot.
 - `app/page.tsx` contains the categories, featured projects, and exhibition interface.
 - `app/repository-world.tsx` implements the interactive repository graph, detail drawer, timeline, and guided constellation tours.
 - `app/project-visual.tsx` generates repository-specific illustrations.
@@ -62,9 +62,11 @@ npm run refresh:catalog
 npm test
 ```
 
-The refresh reads all public repositories (including forks and older projects), refreshes metadata for private listings already in the catalog, and saves the snapshot only after every request succeeds. It never discovers new private projects or saves private contribution histories. Curated descriptions, titles, live links and paper links are preserved. Review new entries and assign them to a room in `categoryNames` in `app/page.tsx`; otherwise they appear under Internet Toys & Prototypes.
+The refresh uses the authenticated owner’s inventory, including public and private repositories, forks, and older projects. Amy has authorized publishing their metadata and aggregate activity stats. It verifies the signed-in account and saves only after every request succeeds. Curated descriptions, titles, live links and paper links are preserved. Review new entries and assign them to a room in `categoryNames` in `app/page.tsx`; otherwise they appear under Internet Toys & Prototypes.
 
-The September 20 snapshot contains 102 public repositories and 10 existing private listings. Its activity chart counts 2,270 public commits attributed to @amyleesterling by GitHub from January 1 through the capture time. This uses GitHub profile contribution rules, not all commits on all branches or commits by all collaborators. Automation is included when GitHub attributes it to this account. Historical counts can change as GitHub attribution or repository visibility changes. Private listings show their last-pushed date instead of a commit count.
+The September 20 snapshot contains 102 public repositories and 11 private repositories, with 2,745 commits, including 404 from private repositories. Each project’s activity counts commits authored by @amyleesterling on its default branch, grouped by UTC committer month from January 1 through the capture time. This uses the same definition for public and private projects; it differs from GitHub’s profile contribution rules and excludes other authors and unmerged branches. Automation counts when authored by this account. See the [GitHub commits API](https://docs.github.com/en/rest/commits/commits#list-commits) for author and branch filtering.
+
+Only repository metadata and monthly totals are published. Commit messages, file contents, diffs, and author email addresses are never written to the snapshot. Private code links still require GitHub access; private projects now have the same activity chart and timeline as public projects.
 
 The displayed project count, refresh date, metadata and timeline endpoint are derived from the snapshot. The current year must be reviewed before running the refresh in a new year.
 

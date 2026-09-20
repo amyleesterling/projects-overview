@@ -16,16 +16,18 @@ async function github(...args) {
   return result;
 }
 
-// Public endpoint only. Never discover or publish new private repositories.
-const pages = await github(`users/${owner}/repos?per_page=100&sort=pushed`, "--paginate", "--slurp");
-const publicRepos = pages.flat();
-if (!publicRepos.length || publicRepos.some(repo => repo.private)) throw new Error("Invalid public repository response.");
+// Amy authorized publishing owned private repository metadata and aggregate stats.
+// Verify the account so refreshing can never import another signed-in user's repos.
+const account = await github("user", "--jq", "{login}");
+if (account.login.toLowerCase() !== owner.toLowerCase()) throw new Error(`Authenticate gh as ${owner} before refreshing.`);
+const pages = await github("user/repos?affiliation=owner&visibility=all&per_page=100&sort=pushed", "--paginate", "--slurp");
+const ownedRepos = pages.flat().filter(repo => repo.owner.login.toLowerCase() === owner.toLowerCase());
+if (!ownedRepos.length) throw new Error("No owned repositories returned.");
 const existing = new Map(previous.repositories.map(repo => [repo.n, repo]));
-const live = new Map(publicRepos.map(repo => [repo.name, repo]));
-// Refresh only private listings already explicitly present in the exhibition.
+const live = new Map(ownedRepos.map(repo => [repo.name, repo]));
 // If a listing disappears, stop for review instead of silently deleting it.
 for (const repo of previous.repositories) {
-  if (!live.has(repo.n)) live.set(repo.n, await github(`repos/${owner}/${repo.n}`));
+  if (!live.has(repo.n)) throw new Error(`Repository missing from authenticated inventory: ${repo.n}. Review access or removal before saving.`);
 }
 const repositories = [...live.values()].map(repo => {
   const curated = existing.get(repo.name);
@@ -42,39 +44,50 @@ const repositories = [...live.values()].map(repo => {
   };
 }).sort((a, b) => b.t.localeCompare(a.t) || a.n.localeCompare(b.n));
 
-// GitHub's profile contribution definition: commits attributed to this account,
-// not every commit in a repository. Monthly windows fit the daily connection.
+// Use the same authenticated metric for public and private repositories.
+// GitHub's profile contribution feed hides per-repository private counts.
+// Only retrieve commit IDs and UTC committer dates; never save commit contents.
 const monthCount = now.getUTCMonth() + 1;
-const activity = new Map(repositories.filter(repo => !repo.private).map(repo => [repo.n, { n: repo.n, c: 0, m: Array(monthCount).fill(0) }]));
-for (let month = 0; month < monthCount; month++) {
-  const from = new Date(Date.UTC(year, month, 1)).toISOString();
-  const to = new Date(Math.min(now.getTime(), Date.UTC(year, month + 1, 1) - 1)).toISOString();
-  const response = await github("graphql", "-f", `query=query($owner: String!, $from: DateTime!, $to: DateTime!) {
-    user(login: $owner) { contributionsCollection(from: $from, to: $to) {
-      commitContributionsByRepository(maxRepositories: 100) {
-        repository { name isPrivate owner { login } }
-        contributions(first: 100) { nodes { commitCount } pageInfo { hasNextPage } }
-      }
-    } }
-  }`, "-f", `owner=${owner}`, "-f", `from=${from}`, "-f", `to=${to}`);
-  const contributions = response.data.user.contributionsCollection.commitContributionsByRepository;
-  if (contributions.length >= 100) throw new Error("Monthly repository limit reached; review coverage before saving.");
-  for (const entry of contributions) {
-    if (entry.repository.isPrivate || entry.repository.owner.login.toLowerCase() !== owner.toLowerCase()) continue;
-    const item = activity.get(entry.repository.name);
-    if (!item) continue;
-    if (entry.contributions.pageInfo.hasNextPage) throw new Error("Incomplete contribution history.");
-    item.m[month] = entry.contributions.nodes.reduce((sum, day) => sum + day.commitCount, 0);
-    item.c += item.m[month];
+const from = new Date(Date.UTC(year, 0, 1)).toISOString();
+const activity = [];
+async function collectActivity(repo) {
+  const item = { n: repo.n, c: 0, m: Array(monthCount).fill(0) };
+  const seen = new Set();
+  const params = new URLSearchParams({ author: owner, sha: live.get(repo.n).default_branch, since: from, until: now.toISOString(), per_page: "100" });
+  for (let page = 1; ; page++) {
+    let commits;
+    try {
+      commits = await github(`repos/${owner}/${encodeURIComponent(repo.n)}/commits?${params}&page=${page}`, "--jq", "map({sha, date: .commit.committer.date})");
+    } catch (error) {
+      // GitHub's explicitly empty-repository response is a verified zero.
+      // Permissions, rate limits and all other failures must abort the snapshot.
+      if (/Git Repository is empty/i.test(error.stderr || "")) break;
+      throw error;
+    }
+    for (const commit of commits) {
+      const date = new Date(commit.date);
+      if (!Number.isFinite(date.getTime())) throw new Error(`Invalid commit date in ${repo.n}`);
+      if (seen.has(commit.sha) || date < new Date(from) || date > now) continue;
+      seen.add(commit.sha);
+      item.m[date.getUTCMonth()]++;
+      item.c++;
+    }
+    if (commits.length < 100) break;
   }
-  console.log(`Read ${year}-${String(month + 1).padStart(2, "0")} public contributions.`);
+  return item;
 }
-// Write only after all requests succeed. Private contribution data is never saved.
+// A small batch keeps the refresh practical without flooding GitHub.
+for (let offset = 0; offset < repositories.length; offset += 4) {
+  activity.push(...await Promise.all(repositories.slice(offset, offset + 4).map(collectActivity)));
+  console.log(`Read activity for ${activity.length}/${repositories.length} repositories.`);
+}
+// Write only after all requests succeed. Save monthly totals, never commit details.
 const snapshot = {
   owner, year, updatedAt: now.toISOString(),
-  activitySource: "GitHub profile commit contributions attributed to amyleesterling in listed public repositories; includes any automation GitHub attributes to that account.",
+  visibilityScope: "all-owned",
+  activitySource: `Commits authored by ${owner} on each owned repository's default branch, grouped by UTC committer month; includes public and private repositories and automation authored by this account.`,
   repositories,
-  activity: [...activity.values()].sort((a, b) => b.c - a.c || a.n.localeCompare(b.n)),
+  activity: activity.sort((a, b) => b.c - a.c || a.n.localeCompare(b.n)),
 };
 await writeFile(catalogUrl, JSON.stringify(snapshot, null, 2) + "\n");
-console.log(`Saved ${repositories.length} projects (${activity.size} public), ${snapshot.activity.reduce((sum, repo) => sum + repo.c, 0)} attributed public commits.`);
+console.log(`Saved ${repositories.length} projects (${repositories.filter(repo => repo.private).length} private), ${snapshot.activity.reduce((sum, repo) => sum + repo.c, 0)} authored commits.`);
