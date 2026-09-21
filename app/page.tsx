@@ -4,169 +4,28 @@ import { useEffect, useMemo, useRef, useState, type CSSProperties, type PointerE
 import ProjectVisual from "./project-visual";
 import InnerCosmosPreview from "./inner-cosmos-preview";
 import RepositoryWorld from "./repository-world";
+import catalog from "./data/catalog.json";
+import { publicPath } from "./site";
 
 type Repo = { n: string; title?: string; d: string; l: string; u: string; h?: string; p?: string; t: string; f?: boolean; private?: boolean };
 
-const repos: Repo[] = [
-  {"d":"Shared render queue: what is scheduled to render, readable and writable by Amy and her agents from any device","l":"PowerShell","n":"render-queue","private":false,"t":"2026-09-07","u":"https://github.com/amyleesterling/render-queue"},
-  {"d":"interactive electromagnetic spectrum explorer","l":"HTML","n":"radiotogamma","private":false,"t":"2026-09-07","u":"https://github.com/amyleesterling/radiotogamma"},
-  {"d":"A plant wall for the home.","h":"https://perch-plant-wall.vercel.app","l":"HTML","n":"greenwall","private":true,"t":"2026-09-07","u":"https://github.com/amyleesterling/greenwall","title":"Perch Plant Wall"},
-  {"d":"Feature requests and bug reports for whatisabrain.com","l":"Other","n":"whatisabrain-feedback","private":false,"t":"2026-09-07","u":"https://github.com/amyleesterling/whatisabrain-feedback"},
-  {"d":"An interactive exploration of wind and airflow.","l":"HTML","n":"name-of-the-wind","private":false,"t":"2026-09-07","u":"https://github.com/amyleesterling/name-of-the-wind","title":"Name of the Wind"},
-  {"d":"UI experiments based on scientific publications","l":"HTML","n":"experimental-UI","private":false,"t":"2026-09-06","u":"https://github.com/amyleesterling/experimental-UI"},
-  {"d":"A home for Sophie and Cora’s creative projects.","l":"HTML","n":"sophie-and-cora","private":true,"t":"2026-09-06","u":"https://github.com/amyleesterling/sophie-and-cora","title":"Sophie and Cora"},
-  {"d":"A family-created game for kids to learn about animals.","l":"Other","n":"the-animal-game","private":false,"t":"2026-09-06","u":"https://github.com/amyleesterling/the-animal-game","title":"The Animal Game"},
-  {"d":"A magical unicorn and infinite rainbow poop.","l":"JavaScript","n":"cocos-pooping-unicorn-game","private":false,"t":"2026-09-06","u":"https://github.com/amyleesterling/cocos-pooping-unicorn-game","title":"Coco’s Pooping Unicorn"},
-  {"d":"Sophie's funny dragon game made with Astra","l":"JavaScript","n":"sophia-funny-dragon","private":false,"t":"2026-09-06","u":"https://github.com/amyleesterling/sophia-funny-dragon"},
-  {"d":"Public landing experience for FlyWire Codex","l":"JavaScript","n":"codex_public","private":true,"t":"2026-09-05","u":"https://github.com/amyleesterling/codex_public"},
-  {"d":"A wee fly date between two connectomes","l":"Other","n":"banc_malecns","private":false,"t":"2026-09-05","u":"https://github.com/amyleesterling/banc_malecns"},
-  {"d":"Explore the FlyWire Connectome","f":true,"h":"https://codex.flywire.ai","l":"Other","n":"codex","private":false,"t":"2026-09-04","u":"https://github.com/amyleesterling/codex"},
-  {"d":"Suggest a circuit to visualize on the FlyWire Codex public site","h":"https://whatisabrain.com/fly/","l":"Other","n":"codex-pathways","private":false,"t":"2026-09-04","u":"https://github.com/amyleesterling/codex-pathways"},
-  {"d":"Patent themed games for Danny Hillis!","l":"HTML","n":"dannys_birthday","private":false,"t":"2026-09-01","u":"https://github.com/amyleesterling/dannys_birthday"},
-  {"d":"Z dimension UI","l":"JavaScript","n":"zui","private":false,"t":"2026-08-27","u":"https://github.com/amyleesterling/zui"},
-  {"d":"Humans team up to build a world wonder","l":"TypeScript","n":"babylon","private":false,"t":"2026-08-25","u":"https://github.com/amyleesterling/babylon"},
-  {"d":"Open source pipeline for: Pic of drawing to 3D printable file","l":"JavaScript","n":"drawing_to_3Dprint","private":false,"t":"2026-08-18","u":"https://github.com/amyleesterling/drawing_to_3Dprint"},
-  {"d":"Smash that supernova","l":"Other","n":"build_a_world","private":false,"t":"2026-08-18","u":"https://github.com/amyleesterling/build_a_world"},
-  {"d":"Can you make a world that sprouts life","l":"Other","n":"cosmic-forge","private":false,"t":"2026-08-18","u":"https://github.com/amyleesterling/cosmic-forge"},
-  {"d":"Interactive ecology visualization experiment","l":"Other","n":"living_earth","private":false,"t":"2026-08-18","u":"https://github.com/amyleesterling/living_earth"},
-  {"d":"endeavor for agents","l":"Python","n":"endeavor-protocol","private":false,"t":"2026-08-17","u":"https://github.com/amyleesterling/endeavor-protocol"},
-  {"d":"Sight word game for 1st graders","l":"TypeScript","n":"sight-word-spark","private":false,"t":"2026-08-13","u":"https://github.com/amyleesterling/sight-word-spark"},
-  {"d":"Claude's iteration of 1st grade sight words game","l":"TypeScript","n":"sight-word-spark-claude","private":false,"t":"2026-08-13","u":"https://github.com/amyleesterling/sight-word-spark-claude"},
-  {"d":"Project repository.","l":"Other","n":"muse-glimmer","private":true,"t":"2026-08-10","u":"https://github.com/amyleesterling/muse-glimmer","title":"Muse Glimmer"},
-  {"d":"Scripts and docs behind the CA3 connectomics renders. Meshes and render output are not tracked.","l":"Python","n":"ca3-rendering","private":true,"t":"2026-07-30","u":"https://github.com/amyleesterling/ca3-rendering"},
-  {"d":"plans to render on princeton's supercomputer","l":"Other","n":"della-supercluster","private":true,"t":"2026-07-30","u":"https://github.com/amyleesterling/della-supercluster"},
-  {"d":"A test version of Party Post.","h":"https://partyposttest.vercel.app","l":"TypeScript","n":"partyposttest","private":true,"t":"2026-05-09","u":"https://github.com/amyleesterling/partyposttest","title":"Party Post Test"},
-  {"d":"Python library for analysis of neuroanatomical data.","f":true,"h":"https://navis-org.github.io/navis/","l":"Other","n":"navis","private":false,"t":"2025-07-21","u":"https://github.com/amyleesterling/navis"},
-  {"d":"welcome to cribblz","l":"HTML","n":"cribblz-site","private":false,"t":"2025-04-13","u":"https://github.com/amyleesterling/cribblz-site"},
-  {"d":"scramble text animation test","l":"JavaScript","n":"scramble","private":false,"t":"2025-04-07","u":"https://github.com/amyleesterling/scramble"},
-  {"d":"A Raspberry Pi voice assistant built with ChatGPT","f":true,"l":"Other","n":"chatGPT-Voice-Assistant","private":false,"t":"2024-03-02","u":"https://github.com/amyleesterling/chatGPT-Voice-Assistant"},
-  {"d":"Zebrafish Hindbrain Connectome","f":true,"h":"https://seung-lab.github.io/zebrafish/home/","l":"Other","n":"zebrafish","private":false,"t":"2023-02-26","u":"https://github.com/amyleesterling/zebrafish"},
-  {"d":"The Swiftkey Capstone project for the Coursera Data Science Specialization","f":true,"l":"HTML","n":"Data-Science-Capstone","private":false,"t":"2014-12-08","u":"https://github.com/amyleesterling/Data-Science-Capstone"},
-  {"d":"rock paper scissors","l":"Other","n":"SPR","private":false,"t":"2014-11-30","u":"https://github.com/amyleesterling/SPR"},
-  {"d":"OCR evolution of ideas","l":"Other","n":"ideation","private":false,"t":"2014-04-21","u":"https://github.com/amyleesterling/ideation"},
-  {"d":"the first little javascript thing I made on codeacademy","l":"Other","n":"codeacademy_game","private":false,"t":"2014-03-09","u":"https://github.com/amyleesterling/codeacademy_game"},
-  {"d":"You'll find the code for crazybot here!","l":"C++","n":"crazybot","private":false,"t":"2014-03-05","u":"https://github.com/amyleesterling/crazybot"},
-  {"d":"EyeWire Codebase","f":true,"h":"https://eyewire.org","l":"JavaScript","n":"omni-web","private":true,"t":"2013-10-02","u":"https://github.com/amyleesterling/omni-web"},
-
-  {n:"humanoid-robot",title:"Humanoid Robot",d:"Detailed specifications for building a humanoid robot, written with two kids.",l:"Python",u:"https://github.com/amyleesterling/humanoid-robot",h:"https://amyleesterling.github.io/humanoid-robot/",t:"2026-08-06"},
-  {n:"artforagents",title:"Art For Agents",d:"Internet Easter eggs, hidden for agents to discover and add to.",l:"HTML",u:"https://github.com/amyleesterling/artforagents",t:"2026-08-06"},
-  {n:"philogelos",title:"Philogelos",d:"A daily dose of philosophical humor, delivered by an unserious deity of philosophy.",l:"HTML",u:"https://github.com/amyleesterling/philogelos",h:"https://ytho.club/",t:"2026-08-06"},
-  {n:"kids-who-vibecode",d:"Fun challenges for kids to vibe code this summer.",l:"TypeScript",u:"https://github.com/amyleesterling/kids-who-vibecode",t:"2026-08-06"},
-  {n:"connectome",d:"What is connectomics anyway? A short answer for people who have never heard the word.",l:"TypeScript",u:"https://github.com/amyleesterling/connectome",h:"https://amyleesterling.github.io/connectome/",t:"2026-08-06"},
-  {n:"findmytown",title:"FindMyTown",d:"A real estate dashboard that searches thirty seven towns north of Boston every morning at seven.",l:"HTML",u:"https://github.com/amyleesterling/findmytown",h:"https://amyleesterling.github.io/findmytown/",t:"2026-08-06"},
-  {n:"whatisabrain",private:true,d:"Sometimes I wonder about mine.",l:"TypeScript",u:"https://github.com/amyleesterling/whatisabrain",h:"https://whatisabrain.com/",t:"2026-08-06"},
-  {n:"scifi-ui",title:"Sci-Fi UI",d:"A hologram and science fiction interface library for agents. Every component is lifted from shipping code, never approximated.",l:"CSS",u:"https://github.com/amyleesterling/scifi-ui",h:"https://amyleesterling.github.io/scifi-ui/",t:"2026-08-05"},
-  {n:"human-brain",private:true,title:"Human Brain",d:"Open human brain data made explorable: the H01 cubic millimetre of cerebral cortex with its 49,379 cell bodies, 87 white matter bundles, and a scale map running from microseconds to decades.",l:"Python",u:"https://github.com/amyleesterling/human-brain",h:"https://amyleesterling.github.io/human-brain/",t:"2026-08-05"},
-  {n:"review",title:"Render Review",d:"A staging shelf for renders. Nothing reaches a project page until it has been approved here.",l:"Other",u:"https://github.com/amyleesterling/review",h:"https://amyleesterling.github.io/review/",t:"2026-08-04"},
-  {n:"banc-explorer",title:"BANC Explorer",d:"A public exploration hub for BANC, the combined Drosophila brain and central nervous system connectome.",l:"TypeScript",u:"https://github.com/amyleesterling/banc-explorer",h:"https://amyleesterling.github.io/banc-explorer/",t:"2026-08-04"},
-  {n:"extremely-strange",d:"An experiment filed under: extremely strange.",l:"Python",u:"https://github.com/amyleesterling/extremely-strange",h:"https://amyleesterling.github.io/extremely-strange/",t:"2026-08-03"},
-  {n:"ca3",title:"CA3 Renderings",d:"A cinematic atlas of 982 real cells from a connectomic reconstruction of mouse hippocampal CA3, rendered from roughly 124 million triangles.",l:"HTML",u:"https://github.com/amyleesterling/ca3",h:"https://amyleesterling.github.io/ca3/",p:"https://doi.org/10.1101/2025.07.09.663979",t:"2026-08-03"},
-  {n:"microns",title:"MICrONS Cortex",d:"Thirty-eight proofread neurons from the MICrONS mouse visual cortex, arranged by cortical depth, alongside the action potential and the simultaneous activity of 108 cells.",l:"HTML",u:"https://github.com/amyleesterling/microns",h:"https://amyleesterling.github.io/microns/",t:"2026-08-02"},
-  {n:"amysterling",d:"A web presence and side project hub for amysterling.org.",l:"Python",u:"https://github.com/amyleesterling/amysterling",h:"https://amyleesterling.github.io/amysterling/",t:"2026-08-01"},
-  {n:"retina",title:"Retina in Motion",d:"The EyeWire II mouse retina reconstruction with real calcium responses played back on the very cells that produced them.",l:"HTML",u:"https://github.com/amyleesterling/retina",h:"https://amyleesterling.github.io/retina/",t:"2026-07-31"},
-  {n:"banc",title:"BANC Renderings",d:"Renderings from BANC, the first Drosophila connectome to map the brain and the nerve cord together.",l:"HTML",u:"https://github.com/amyleesterling/banc",h:"https://amyleesterling.github.io/banc/",p:"https://doi.org/10.1038/s41586-026-10735-w",t:"2026-07-30"},
-  {n:"projects-overview",title:"Projects Overview",d:"This exhibition. An interactive network map of every public repository touched this year.",l:"TypeScript",u:"https://github.com/amyleesterling/projects-overview",h:"https://amy-projects-2026.amysterling.chatgpt.site/",t:"2026-07-30"},
-  {n:"olympics2028",title:"Olympics 2028",d:"A ticket planning dashboard for the LA28 Olympic Games.",l:"HTML",u:"https://github.com/amyleesterling/olympics2028",h:"https://amyleesterling.github.io/olympics2028/",t:"2026-07-28"},
-  {n:"amyleerobinson.github.io",title:"Landing Page",d:"A personal GitHub landing page.",l:"HTML",u:"https://github.com/amyleesterling/amyleerobinson.github.io",t:"2026-07-28"},
-  {n:"inner-cosmos",d:"A hub linking every Inner Cosmos experience: main site, kids, museum wall, scales, and citations.",l:"HTML",u:"https://github.com/amyleesterling/inner-cosmos",h:"https://amyleesterling.github.io/inner-cosmos/",t:"2026-07-23"},
-  {n:"ng-extend",title:"ng-extend",d:"The Neuroglancer extension that EyeWire II is built on, forked from the Seung Lab.",l:"Other",u:"https://github.com/amyleesterling/ng-extend",t:"2026-07-20",f:true},
-  {n:"partypost",d:"A free kids' birthday party RSVP tool.",l:"TypeScript",u:"https://github.com/amyleesterling/partypost",h:"https://partypost.vercel.app",t:"2026-07-20"},
-  {n:"sophie-shark-game",d:"A shark game designed by Sophie, age six.",l:"JavaScript",u:"https://github.com/amyleesterling/sophie-shark-game",h:"https://amyleesterling.github.io/sophie-shark-game/",t:"2026-07-14"},
-  {n:"hurricane",d:"Visualize every hurricane ever satellite imaged.",l:"TypeScript",u:"https://github.com/amyleesterling/hurricane",h:"https://amyleesterling.github.io/hurricane/",t:"2026-07-13"},
-  {n:"atlas-of-the-unseen",d:"Undirected collaboration between Fable and Sol.",l:"HTML",u:"https://github.com/amyleesterling/atlas-of-the-unseen",h:"https://amyleesterling.github.io/atlas-of-the-unseen/",t:"2026-07-13"},
-  {n:"seunglabdata",d:"Datasets for the Seung Lab demo page.",l:"HTML",u:"https://github.com/amyleesterling/seunglabdata",h:"https://connectome.quest/",t:"2026-07-10"},
-  {n:"cocos-mythic-meadow",d:"A unicorn, pegasus and wolf game created by Cora, age four.",l:"JavaScript",u:"https://github.com/amyleesterling/cocos-mythic-meadow",h:"https://amyleesterling.github.io/cocos-mythic-meadow/",t:"2026-07-10"},
-  {n:"youth-sports-moneymachine",d:"Historical trends in the cost of club sports.",l:"JavaScript",u:"https://github.com/amyleesterling/youth-sports-moneymachine",h:"https://amyleesterling.github.io/youth-sports-moneymachine/",t:"2026-07-10"},
-  {n:"the650",d:"There are 650 muscles in your body. How many can you feel?",l:"TypeScript",u:"https://github.com/amyleesterling/the650",h:"https://amyleesterling.github.io/the650/",t:"2026-07-09"},
-  {n:"fabled-jokes",d:"Git yer jokes.",l:"HTML",u:"https://github.com/amyleesterling/fabled-jokes",h:"https://10000jokes.com/",t:"2026-07-08"},
-  {n:"science-experiment",d:"A wall scale visualization built for a 3628 by 1600 display.",l:"TypeScript",u:"https://github.com/amyleesterling/science-experiment",h:"https://amyleesterling.github.io/science-experiment/",t:"2026-07-07"},
-  {n:"inner_cosmos",d:"A public facing brain explorer built from real MICrONS connectomics data. No log in, no jargon, no microscope required.",l:"TypeScript",u:"https://github.com/amyleesterling/inner_cosmos",h:"https://amyleesterling.github.io/inner_cosmos/",t:"2026-07-07"},
-  {n:"inner-cosmos-wall",d:"A non-interactive museum attract loop for a 3628 by 1600 wall.",l:"TypeScript",u:"https://github.com/amyleesterling/inner-cosmos-wall",h:"https://amyleesterling.github.io/inner-cosmos-wall/",t:"2026-07-06"},
-  {n:"heat-wave",d:"A mobile game to beat the heat.",l:"HTML",u:"https://github.com/amyleesterling/heat-wave",h:"https://amyleesterling.github.io/heat-wave/",t:"2026-07-04"},
-  {n:"fableous",d:"A Fable experiment.",l:"HTML",u:"https://github.com/amyleesterling/fableous",h:"https://amyleesterling.github.io/fableous/",t:"2026-07-03"},
-  {n:"kindling",d:"The only thing Claude Fable ever made before it got banned.",l:"HTML",u:"https://github.com/amyleesterling/kindling",h:"https://amyleesterling.github.io/kindling/",t:"2026-07-03"},
-  {n:"ma-car-lease-analysis-",d:"Massachusetts car lease analysis.",l:"Other",u:"https://github.com/amyleesterling/ma-car-lease-analysis-",h:"https://amyleesterling.github.io/ma-car-lease-analysis-/",t:"2026-07-03"},
-  {n:"wood-coal-pizza",d:"Wood and coal fired pizza stats. Muy importante.",l:"Python",u:"https://github.com/amyleesterling/wood-coal-pizza",t:"2026-06-07"},
-  {n:"MagicBoard",d:"A little bit of web magic.",l:"HTML",u:"https://github.com/amyleesterling/MagicBoard",h:"https://amyleesterling.github.io/MagicBoard/",t:"2026-06-04"},
-  {n:"thefartsite",d:"Sophia and Cora's silly site.",l:"HTML",u:"https://github.com/amyleesterling/thefartsite",h:"https://amyleesterling.github.io/thefartsite/",t:"2026-06-04"},
-  {n:"drosophila_datause_2026",d:"Which papers actually used Drosophila connectomics data, not just cited it?",l:"Other",u:"https://github.com/amyleesterling/drosophila_datause_2026",t:"2026-05-26"},
-  {n:"moontoast",d:"Animated kids' stories.",l:"TypeScript",u:"https://github.com/amyleesterling/moontoast",t:"2026-05-24"},
-  {n:"flywire-neuron-gallery",d:"A gallery of real Drosophila brain reconstructions, mapped synapse by synapse and rendered as an explorable visual atlas.",l:"TypeScript",u:"https://github.com/amyleesterling/flywire-neuron-gallery",h:"https://amyleesterling.github.io/flywire-neuron-gallery/",t:"2026-05-07"},
-  {n:"neuronal-surprise-surfing",d:"An experimental experience for codex.flywire.ai.",l:"Python",u:"https://github.com/amyleesterling/neuronal-surprise-surfing",t:"2026-05-05"},
-  {n:"explore-the-verse-2-",d:"A different version of the scales of the universe.",l:"TypeScript",u:"https://github.com/amyleesterling/explore-the-verse-2-",h:"https://amyleesterling.github.io/explore-the-verse-2-/",t:"2026-05-05"},
-  {n:"explore-the-universe",d:"Explore the universe at different scales, including relative forces.",l:"Other",u:"https://github.com/amyleesterling/explore-the-universe",t:"2026-05-04"},
-  {n:"eyewire-ii",title:"EyeWire II",d:"A new community layer for Neuroglancer: collaborative proofreading, identity, progress, and rewards for citizen neuroscientists.",l:"HTML",u:"https://github.com/amyleesterling/eyewire-ii",h:"https://amyleesterling.github.io/eyewire-ii/",t:"2026-04-30"},
-  {n:"AnnotationEngine",d:"A Flask REST interface for annotating a cloud volume segmentation.",l:"Other",u:"https://github.com/amyleesterling/AnnotationEngine",t:"2026-04-27",f:true},
-  {n:"eyewire-ii-avatar",d:"EyeWire II avatar preview: Connectome Coin economy and customization.",l:"Other",u:"https://github.com/amyleesterling/eyewire-ii-avatar",t:"2026-04-27"},
-  {n:"vibeshift",d:"A reward system for AIs.",l:"JavaScript",u:"https://github.com/amyleesterling/vibeshift",t:"2026-04-08",f:true},
-  {n:"build-a-planet",d:"Build Earth.",l:"HTML",u:"https://github.com/amyleesterling/build-a-planet",h:"https://amyleesterling.github.io/build-a-planet/",t:"2026-04-07"},
-  {n:"Department_of_Ridiculous",d:"Officially ridiculous.",l:"JavaScript",u:"https://github.com/amyleesterling/Department_of_Ridiculous",h:"https://ridiculousdepartment.com/",t:"2026-04-01"},
-  {n:"synapticConnection",d:"Neurons that wire up as you scroll through a text block.",l:"Other",u:"https://github.com/amyleesterling/synapticConnection",t:"2026-03-31"},
-  {n:"animateKidStories",d:"Turn a series of prompts into short videos with consistent characters.",l:"Other",u:"https://github.com/amyleesterling/animateKidStories",t:"2026-03-31"},
-  {n:"realFeel_climateCompare",d:"Compare how two places really feel: wind, temperature, sun, and more.",l:"JavaScript",u:"https://github.com/amyleesterling/realFeel_climateCompare",h:"https://amyleesterling.github.io/realFeel_climateCompare/",t:"2026-03-29"},
-  {n:"theLastWebsite",d:"The only one.",l:"HTML",u:"https://github.com/amyleesterling/theLastWebsite",t:"2026-03-26"},
-  {n:"ridiculous",d:"Be more ridiculous.",l:"Other",u:"https://github.com/amyleesterling/ridiculous",t:"2026-03-25"},
-  {n:"shield",title:"SHIELD",d:"A risk tolerance questionnaire that turns your answers into a real global equity portfolio.",l:"JavaScript",u:"https://github.com/amyleesterling/shield",h:"https://amyleesterling.github.io/shield/",t:"2026-03-24"},
-  {n:"neuron-game",title:"Neuron Snake",d:"The classic snake loop reimagined as a growing neuron. Collect signals, extend dendrites, and avoid your own circuitry.",l:"HTML",u:"https://github.com/amyleesterling/neuron-game",h:"https://neuronsnake.com/",t:"2026-03-22"},
-  {n:"badges",d:"A game badge iteration tool.",l:"HTML",u:"https://github.com/amyleesterling/badges",h:"https://amyleesterling.github.io/badges/",t:"2026-03-20"},
-  {n:"eyewire-ii-tutorial",d:"Connectomics training for Neuroglancer.",l:"JavaScript",u:"https://github.com/amyleesterling/eyewire-ii-tutorial",h:"https://amyleesterling.github.io/eyewire-ii-tutorial/",t:"2026-03-13"},
-  {n:"eyewire-ii-tags",d:"Segment tagging for Neuroglancer.",l:"HTML",u:"https://github.com/amyleesterling/eyewire-ii-tags",h:"https://amyleesterling.github.io/eyewire-ii-tags/",t:"2026-03-06"},
-  {n:"stretch-ai",d:"Real time yoga pose alignment with MediaPipe and React Native.",l:"TypeScript",u:"https://github.com/amyleesterling/stretch-ai",t:"2026-03-04"},
-  {n:"cribbles",d:"AI powered good vibes.",l:"TypeScript",u:"https://github.com/amyleesterling/cribbles",h:"https://cribbles.vercel.app",t:"2026-02-27"},
-  {n:"bouncebar",d:"A particle bounce bar easter egg for the bottom of your site.",l:"JavaScript",u:"https://github.com/amyleesterling/bouncebar",h:"https://amyleesterling.github.io/bouncebar/",t:"2026-02-25"},
-  {n:"what-i-am",d:"A genuine reflection by Claude on what it is to be a language model.",l:"HTML",u:"https://github.com/amyleesterling/what-i-am",h:"https://amyleesterling.github.io/what-i-am/",t:"2026-02-25"},
-  {n:"coras-mermaid",d:"A site created by Cora, age four.",l:"JavaScript",u:"https://github.com/amyleesterling/coras-mermaid",h:"https://amyleesterling.github.io/coras-mermaid/",t:"2026-02-06"},
-
-];
-repos.sort((a,b) => b.t.localeCompare(a.t));
+const repos: Repo[] = catalog.repositories;
+const snapshotDate = new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" }).format(new Date(catalog.updatedAt));
 
 const featuredNames = ["ca3", "inner_cosmos", "eyewire-ii", "flywire-neuron-gallery", "neuron-game"];
 const featuredImages: Record<string, { src: string; alt: string }> = {
   "ca3": { src:"https://amyleesterling.github.io/ca3/images/00_banner.jpg", alt:"A dense rendering of CA3 pyramidal cells, interneurons, and mossy fiber axons" },
-  "inner_cosmos": { src:"/featured/inner-cosmos.png", alt:"Inner Cosmos landing page surrounded by real reconstructed neurons" },
-  "eyewire-ii": { src:"/featured/eyewire-ii.png", alt:"EyeWire II neural access and identity verification screen" },
-  "flywire-neuron-gallery": { src:"/featured/flywire-neuron-gallery.webp", alt:"A full Drosophila brain reconstructed from thousands of color-coded neurons" },
-  "neuron-game": { src:"/featured/neuron-game.png", alt:"Neuron Snake game title screen on a dark scientific grid" },
+  "inner_cosmos": { src:publicPath("/featured/inner-cosmos.png"), alt:"Inner Cosmos landing page surrounded by real reconstructed neurons" },
+  "eyewire-ii": { src:publicPath("/featured/eyewire-ii.png"), alt:"EyeWire II neural access and identity verification screen" },
+  "flywire-neuron-gallery": { src:publicPath("/featured/flywire-neuron-gallery.webp"), alt:"A full Drosophila brain reconstructed from thousands of color-coded neurons" },
+  "neuron-game": { src:publicPath("/featured/neuron-game.png"), alt:"Neuron Snake game title screen on a dark scientific grid" },
 };
-const pulseMonths = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug"];
-const commitPulse = [
-  {n:"inner_cosmos",c:144,m:[0,0,0,64,76,0,4,0]}, {n:"banc-explorer",c:124,m:[0,0,0,0,0,0,34,90]},
-  {n:"neuron-game",c:106,m:[0,0,106,0,0,0,0,0]}, {n:"kids-who-vibecode",c:103,m:[0,0,0,0,0,0,100,3]},
-  {n:"seunglabdata",c:84,m:[0,24,1,0,0,0,59,0]}, {n:"philogelos",c:75,m:[0,0,75,0,0,0,0,0]},
-  {n:"amysterling",c:71,m:[0,63,0,6,0,0,2,0]}, {n:"partypost",c:64,m:[0,0,0,0,57,0,7,0]},
-  {n:"Department_of_Ridiculous",c:63,m:[0,0,26,37,0,0,0,0]}, {n:"ca3",c:56,m:[0,0,0,0,0,0,55,1]},
-  {n:"theLastWebsite",c:49,m:[0,0,49,0,0,0,0,0]}, {n:"whatisabrain",private:true,c:49,m:[0,0,0,0,0,0,43,6]},
-  {n:"scifi-ui",c:47,m:[0,0,0,0,0,0,35,12]}, {n:"science-experiment",c:42,m:[0,0,0,0,0,0,42,0]},
-  {n:"findmytown",c:38,m:[0,0,38,0,0,0,0,0]}, {n:"eyewire-ii",c:33,m:[0,0,21,12,0,0,0,0]},
-  {n:"projects-overview",c:32,m:[0,0,0,0,0,0,32,0]}, {n:"heat-wave",c:31,m:[0,0,0,0,0,0,31,0]},
-  {n:"fabled-jokes",c:28,m:[0,0,0,0,0,0,28,0]}, {n:"human-brain",private:true,c:27,m:[0,0,0,0,0,0,22,5]},
-  {n:"sophie-shark-game",c:26,m:[0,0,0,0,0,0,26,0]}, {n:"flywire-neuron-gallery",c:25,m:[0,0,0,0,25,0,0,0]},
-  {n:"artforagents",c:20,m:[0,0,0,0,0,0,0,20]}, {n:"youth-sports-moneymachine",c:20,m:[0,0,0,0,0,0,20,0]},
-  {n:"extremely-strange",c:19,m:[0,0,0,0,0,0,16,3]}, {n:"atlas-of-the-unseen",c:17,m:[0,0,0,0,0,0,17,0]},
-  {n:"coras-mermaid",c:17,m:[0,17,0,0,0,0,0,0]}, {n:"the650",c:17,m:[0,0,0,0,0,0,17,0]},
-  {n:"kindling",c:13,m:[0,0,0,0,0,10,3,0]}, {n:"MagicBoard",c:13,m:[6,0,0,0,0,7,0,0]},
-  {n:"cribbles",c:10,m:[0,10,0,0,0,0,0,0]}, {n:"explore-the-verse-2-",c:10,m:[0,0,0,0,10,0,0,0]},
-  {n:"fableous",c:9,m:[0,0,0,0,0,0,9,0]}, {n:"thefartsite",c:9,m:[7,0,0,0,0,2,0,0]},
-  {n:"what-i-am",c:9,m:[0,9,0,0,0,0,0,0]}, {n:"bouncebar",c:8,m:[0,8,0,0,0,0,0,0]},
-  {n:"hurricane",c:8,m:[0,0,0,0,0,0,8,0]}, {n:"inner-cosmos",c:8,m:[0,0,0,0,0,0,8,0]},
-  {n:"badges",c:6,m:[0,0,6,0,0,0,0,0]}, {n:"review",c:6,m:[0,0,0,0,0,0,4,2]},
-  {n:"cocos-mythic-meadow",c:5,m:[0,0,0,0,0,0,5,0]}, {n:"humanoid-robot",c:5,m:[0,0,0,0,0,0,0,5]},
-  {n:"microns",c:5,m:[0,0,0,0,0,0,4,1]}, {n:"neuronal-surprise-surfing",c:5,m:[0,0,0,0,5,0,0,0]},
-  {n:"realFeel_climateCompare",c:5,m:[0,0,5,0,0,0,0,0]}, {n:"connectome",c:4,m:[0,0,0,0,0,0,0,4]},
-  {n:"olympics2028",c:4,m:[0,0,0,0,0,0,4,0]}, {n:"retina",c:4,m:[0,0,0,0,0,0,4,0]},
-  {n:"shield",c:4,m:[0,0,4,0,0,0,0,0]}, {n:"build-a-planet",c:3,m:[0,0,0,3,0,0,0,0]},
-  {n:"eyewire-ii-tags",c:3,m:[0,0,3,0,0,0,0,0]}, {n:"moontoast",c:3,m:[0,0,0,0,3,0,0,0]},
-  {n:"stretch-ai",c:2,m:[0,0,2,0,0,0,0,0]}, {n:"wood-coal-pizza",c:2,m:[0,0,0,0,0,2,0,0]},
-  {n:"amyleerobinson.github.io",c:1,m:[0,0,0,0,0,0,1,0]}, {n:"banc",c:1,m:[0,0,0,0,0,0,1,0]},
-  {n:"drosophila_datause_2026",c:1,m:[0,0,0,0,1,0,0,0]}, {n:"explore-the-universe",c:1,m:[0,0,0,0,1,0,0,0]},
-  {n:"eyewire-ii-avatar",c:1,m:[0,0,0,1,0,0,0,0]}, {n:"eyewire-ii-tutorial",c:1,m:[0,0,1,0,0,0,0,0]},
-  {n:"inner-cosmos-wall",c:1,m:[0,0,0,0,0,0,1,0]}, {n:"ma-car-lease-analysis-",c:1,m:[0,0,0,0,0,0,1,0]},
-  {n:"ridiculous",c:1,m:[0,0,1,0,0,0,0,0]}, {n:"synapticConnection",c:1,m:[0,0,1,0,0,0,0,0]},
-  {n:"animateKidStories",c:0,m:[0,0,0,0,0,0,0,0]}, {n:"AnnotationEngine",c:0,m:[0,0,0,0,0,0,0,0]},
-  {n:"ng-extend",c:0,m:[0,0,0,0,0,0,0,0]}, {n:"vibeshift",c:0,m:[0,0,0,0,0,0,0,0]},
-
-];
-const totalPublicCommits = commitPulse.reduce((total, repo) => total + repo.c, 0);
+const pulseMonths = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].slice(0, new Date(catalog.updatedAt).getUTCMonth() + 1);
+const commitPulse = catalog.activity;
+const totalCommits = commitPulse.reduce((total, repo) => total + repo.c, 0);
+const privateRepos = repos.filter(repo => repo.private);
+const privateNames = new Set(privateRepos.map(repo => repo.n));
+const privateCommits = commitPulse.filter(repo => privateNames.has(repo.n)).reduce((total, repo) => total + repo.c, 0);
 const maxRepoCommits = Math.max(...commitPulse.map((repo) => repo.c));
 const langClass: Record<string,string> = {HTML:"html",TypeScript:"ts",JavaScript:"js",Python:"py",CSS:"css",Other:"other"};
 
@@ -250,12 +109,12 @@ const categories: Category[] = [
 ];
 
 const categoryNames: Record<CategoryId, string[]> = {
-  brains:["omni-web","zebrafish","navis","ca3-rendering","della-supercluster","codex_public","codex","codex-pathways","whatisabrain-feedback","banc_malecns","ca3","human-brain","microns","retina","banc","banc-explorer","connectome","inner-cosmos","seunglabdata","the650","whatisabrain","science-experiment","inner_cosmos","inner-cosmos-wall","drosophila_datause_2026","flywire-neuron-gallery","neuronal-surprise-surfing","eyewire-ii","ng-extend","AnnotationEngine","eyewire-ii-avatar","synapticConnection","neuron-game","eyewire-ii-tutorial","eyewire-ii-tags"],
-  kids:["sight-word-spark","sight-word-spark-claude","drawing_to_3Dprint","sophie-and-cora","the-animal-game","cocos-pooping-unicorn-game","sophia-funny-dragon","kids-who-vibecode","humanoid-robot","sophie-shark-game","cocos-mythic-meadow","heat-wave","MagicBoard","thefartsite","moontoast","animateKidStories","coras-mermaid"],
-  earth:["build_a_world","cosmic-forge","living_earth","babylon","radiotogamma","name-of-the-wind","hurricane","youth-sports-moneymachine","ma-car-lease-analysis-","wood-coal-pizza","explore-the-universe","explore-the-verse-2-","build-a-planet","realFeel_climateCompare"],
-  ai:["chatGPT-Voice-Assistant","endeavor-protocol","muse-glimmer","atlas-of-the-unseen","artforagents","scifi-ui","extremely-strange","fableous","kindling","vibeshift","what-i-am","cribbles"],
-  tools:["render-queue","partyposttest","greenwall","Data-Science-Capstone","ideation","crazybot","partypost","findmytown","review","olympics2028","projects-overview","amysterling","stretch-ai"],
-  ridiculous:["philogelos","fabled-jokes","Department_of_Ridiculous","ridiculous","theLastWebsite"],
+  brains:["whatisabrain-data","omni-web","zebrafish","navis","ca3-rendering","della-supercluster","codex_public","codex","codex-pathways","whatisabrain-feedback","banc_malecns","ca3","human-brain","microns","retina","banc","banc-explorer","connectome","inner-cosmos","seunglabdata","the650","whatisabrain","science-experiment","inner_cosmos","inner-cosmos-wall","drosophila_datause_2026","flywire-neuron-gallery","neuronal-surprise-surfing","eyewire-ii","ng-extend","AnnotationEngine","eyewire-ii-avatar","synapticConnection","neuron-game","eyewire-ii-tutorial","eyewire-ii-tags"],
+  kids:["kennedy-garden","sight-word-spark","sight-word-spark-claude","drawing_to_3Dprint","sophie-and-cora","the-animal-game","cocos-pooping-unicorn-game","sophia-funny-dragon","kids-who-vibecode","humanoid-robot","sophie-shark-game","cocos-mythic-meadow","heat-wave","MagicBoard","thefartsite","moontoast","animateKidStories","coras-mermaid"],
+  earth:["human-history-map","build_a_world","cosmic-forge","living_earth","babylon","radiotogamma","name-of-the-wind","hurricane","youth-sports-moneymachine","ma-car-lease-analysis-","wood-coal-pizza","explore-the-universe","explore-the-verse-2-","build-a-planet","realFeel_climateCompare"],
+  ai:["PartyPilof","chatGPT-Voice-Assistant","endeavor-protocol","muse-glimmer","atlas-of-the-unseen","artforagents","scifi-ui","extremely-strange","fableous","kindling","vibeshift","what-i-am","cribbles"],
+  tools:["spotify-nocturne","render-queue","partyposttest","greenwall","Data-Science-Capstone","ideation","crazybot","partypost","findmytown","review","olympics2028","projects-overview","amysterling","stretch-ai"],
+  ridiculous:["museum-of-almost","philogelos","fabled-jokes","Department_of_Ridiculous","ridiculous","theLastWebsite"],
   toys:["codeacademy_game","SPR","scramble","cribblz-site","experimental-UI","zui","dannys_birthday"],
 };
 
@@ -426,7 +285,7 @@ function NeuronSnakePreview() {
       context.beginPath(); context.moveTo(x,y + 27); context.lineTo(x,Math.min(height, y + height * .25)); context.stroke(); context.restore();
 
       context.save();
-      context.font = `${Math.max(9, width * .012)}px ui-monospace, SFMono-Regular, Menlo, monospace`;
+      context.font = `${Math.max(12, width * .012)}px ui-monospace, SFMono-Regular, Menlo, monospace`;
       context.fillStyle = "rgba(111,211,250,.65)";
       const collectedCount = activeRoute + (activeProgress > .96 ? 1 : 0);
       context.fillText(`SYNAPSES  ${String(Math.min(synapses.length, collectedCount)).padStart(2,"0")} / ${String(synapses.length).padStart(2,"0")}`, 18, height - 18);
@@ -619,7 +478,7 @@ function NeuronParticleBanner() {
     };
 
     sourceImage.onload = () => { imageReady = true; resize(); draw(); };
-    sourceImage.src = "/featured/pyramidal-neuron.png";
+    sourceImage.src = publicPath("/featured/pyramidal-neuron.png");
     resize();
     const observer = new ResizeObserver(() => { resize(); if (reduceMotion && imageReady) draw(); }); observer.observe(canvas);
     canvas.addEventListener("pointermove", move); canvas.addEventListener("pointerdown", down); canvas.addEventListener("pointerup", release); canvas.addEventListener("pointercancel", release); canvas.addEventListener("pointerleave", leave);
@@ -653,7 +512,7 @@ export default function Home() {
   const [activeCategory, setActiveCategory] = useState<"all" | CategoryId>("all");
   const shown = useMemo(() => repos.filter((repo) => {
     const matchesCategory = activeCategory === "all" || categoryFor(repo).id === activeCategory;
-    const haystack = `${repo.n} ${repo.d} ${repo.l} ${categoryFor(repo).title}`.toLowerCase();
+    const haystack = `${repo.n} ${repo.title || ""} ${repo.d} ${repo.l} ${categoryFor(repo).title}`.toLowerCase();
     return matchesCategory && haystack.includes(query.toLowerCase());
   }), [query, activeCategory]);
   const grouped = categories.map((category) => ({ category, repos: shown.filter((repo) => categoryFor(repo).id === category.id) })).filter((group) => group.repos.length);
@@ -663,12 +522,12 @@ export default function Home() {
     <main>
       <nav className="topbar" aria-label="Primary navigation">
         <a className="wordmark" href="#top"><span>AS</span> Amy Sterling / Lab Notes</a>
-        <div className="navlinks"><a href="#featured">Selected</a><a href="#archive">All projects</a><a href="#published">Published</a><a href="/anthropics">AI worlds</a><a className="navButton" href="https://github.com/amyleesterling" target="_blank" rel="noreferrer">GitHub ↗</a></div>
+        <div className="navlinks"><a href="#featured">Selected</a><a href="#archive">All projects</a><a href="#published">Published</a><a href={publicPath("/anthropics/")}>AI worlds</a><a className="navButton" href="https://github.com/amyleesterling" target="_blank" rel="noreferrer">GitHub ↗</a></div>
       </nav>
 
       <header className="hero" id="top">
         <div className="heroCopy">
-          <p className="eyebrow"><span className="liveDot" /> Project catalog · updated September 7, 2026</p>
+          <p className="eyebrow"><span className="liveDot" /> Project catalog · updated {snapshotDate}</p>
           <h1>GitHub repository <em>exploration.</em></h1>
           <p className="dek">Games made with kids. Brains rendered for magazines and museums. Tools for parties, hurricanes, pizza, and the gloriously unnecessary. You’re welcome to explore—this is a summary of all my code projects!</p>
           <div className="heroActions"><a className="primaryAction" href="#archive">Explore all {repos.length} projects <span>↓</span></a><a className="textAction" href="https://github.com/amyleesterling" target="_blank" rel="noreferrer">@amyleesterling ↗</a></div>
@@ -676,30 +535,30 @@ export default function Home() {
         <NeuronParticleBanner />
       </header>
 
-      <section className="pulse" aria-label="2026 public commit activity by repository">
-        <div className="pulseIntro"><span>THE CODE PULSE · 2026</span><strong>{repos.length} projects in the collection.</strong><p><b>{totalPublicCommits}</b> authored public commits in the January–August 2026 activity snapshot. Scheduled automation, like the daily jobs behind ytho.club and FindMyTown, is counted separately and left out.</p></div>
+      <section className="pulse" aria-label="2026 commit activity across public and private repositories">
+        <div className="pulseIntro"><span>THE CODE PULSE · 2026</span><strong>{repos.length} projects: {repos.length - privateRepos.length} public, {privateRepos.length} private.</strong><p><b>{totalCommits.toLocaleString("en-US")}</b> commits by @amyleesterling on the default branches, January 1–{snapshotDate}. <b>{privateCommits.toLocaleString("en-US")}</b> are from private repositories. Automation is included when authored by this account.</p></div>
         <div className="pulseChart">
-          <div className="commitBars" aria-label="One bar per public repository, ordered by commit count">
+          <div className="commitBars" aria-label="One bar per repository, public and private, ordered by commit count">
             {commitPulse.map((item) => {
               const repo = repos.find((candidate) => candidate.n === item.n);
               const title = repo ? repoTitle(repo) : item.n;
               const barHeight = item.c ? Math.max(6, Math.log1p(item.c) / Math.log1p(maxRepoCommits) * 100) : 2;
               const monthMax = Math.max(...item.m, 1);
-              return <a className={`commitBarItem ${item.c === 0 ? "quietRepo" : ""}`} href={repo?.u || `https://github.com/amyleesterling/${item.n}`} target="_blank" rel="noreferrer" key={item.n} aria-label={`${title}: ${item.c} public commits in 2026. Open repository.`}>
-                <span className="commitBar" style={{"--bar-height":`${barHeight}%`} as CSSProperties}/>
+              return <a className={`commitBarItem ${item.c === 0 ? "quietRepo" : ""}`} href={repo?.u || `https://github.com/amyleesterling/${item.n}`} target="_blank" rel="noreferrer" key={item.n} aria-label={`${title}: ${item.c} authored commits in 2026. ${repo?.private ? "Private" : "Public"} repository. Open repository.`}>
+                <span className="commitBar" style={{"--bar-height":`${barHeight.toFixed(3)}%`} as CSSProperties}/>
                 <span className="commitTooltip">
                   <span className="tooltipTop"><b>{title}</b><em>{item.c} {item.c === 1 ? "commit" : "commits"}</em></span>
                   <span className="monthBreakdown">{item.m.map((count, index) => <span className="monthColumn" key={pulseMonths[index]}><i style={{"--month-height":`${count ? Math.max(8, count / monthMax * 100) : 2}%`} as CSSProperties}/><small>{pulseMonths[index]}</small><strong>{count}</strong></span>)}</span>
-                  <span className="tooltipHint">View repository ↗</span>
+                  <span className="tooltipHint">{repo?.private ? "Private repository · " : ""}View repository ↗</span>
                 </span>
               </a>;
             })}
           </div>
-          <div className="pulseLegend"><span><i/>Each line is one repository</span><span>Hover to see commits by month</span><span>GitHub public contributions · Jan–Aug 2026 snapshot</span></div>
+          <div className="pulseLegend"><span><i/>Each line is one repository</span><span>Hover to see commits by month</span><span>Public + private commits · through {snapshotDate}</span></div>
         </div>
       </section>
 
-      <RepositoryWorld projects={repositoryWorldProjects}/>
+      <RepositoryWorld projects={repositoryWorldProjects} throughMonth={pulseMonths.length}/>
 
       <section className="featured section" id="featured">
         <div className="sectionHeading"><div><p className="kicker">A FEW FAVORITES</p><h2>Selected experiments</h2></div><p>No master plan—just a strong bias toward making the idea real.</p></div>
@@ -751,7 +610,7 @@ export default function Home() {
         </div>
       </section>
 
-      <footer><div><span className="footerMark">AS</span><p>Repository catalog updated September 7, 2026.<br/>Commit activity snapshot: January–August 2026.</p></div><p className="footerQuote">Building at the speed of<br/><em>curiosity.</em></p><a href="#top">Back to top ↑</a></footer>
+      <footer><div><span className="footerMark">AS</span><p>Repository catalog updated {snapshotDate}.<br/>Public and private activity refreshed through {snapshotDate}.</p></div><p className="footerQuote">Building at the speed of<br/><em>curiosity.</em></p><a href="#top">Back to top ↑</a></footer>
     </main>
   );
 }
