@@ -10,7 +10,7 @@ The September 20, 2026 snapshot contains **113 projects**: 102 public repositori
 
 ## A world of connected projects
 
-Seven thematic neighborhoods connect projects through shared ideas, technologies, and purpose. Drag nodes, select a repository for its field guide, scrub through the year, or follow a guided constellation tour.
+Seven compact thematic neighborhoods connect projects through shared ideas, technologies, and purpose. Clear group outlines and faint bridges make the communities easier to distinguish; on phones, the largest group gets its own row. Drag nodes, select a repository for its field guide, scrub through the year, or follow a guided constellation tour.
 
 [![The September repository world with neighborhood filters, nine-month timeline, and guided tours](public/readme/repository-world.png)](https://amyleesterling.github.io/projects-overview/#world)
 
@@ -34,7 +34,7 @@ Both demos were refreshed on **September 20, 2026** from public GitHub metadata.
 
 Node sizes reflect stars at capture time. The organization timelines filter by each repository’s **latest push month**; they do not represent commit histories or repository creation dates. These are independent examples built from public metadata, not official company sites.
 
-All screenshots above were captured from the September 20 static export. Click an image to explore its live page.
+Screenshots show the September 20 data snapshot, with graph and activity images updated on September 21. Click an image to explore its live page.
 
 ## Run and build
 
