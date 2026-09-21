@@ -21,7 +21,7 @@ const featuredImages: Record<string, { src: string; alt: string }> = {
   "neuron-game": { src:publicPath("/featured/neuron-game.png"), alt:"Neuron Snake game title screen on a dark scientific grid" },
 };
 const pulseMonths = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].slice(0, new Date(catalog.updatedAt).getUTCMonth() + 1);
-const commitPulse = catalog.activity;
+const commitPulse = [...catalog.activity].sort((a, b) => a.c - b.c);
 const totalCommits = commitPulse.reduce((total, repo) => total + repo.c, 0);
 const privateRepos = repos.filter(repo => repo.private);
 const privateNames = new Set(privateRepos.map(repo => repo.n));
@@ -538,7 +538,7 @@ export default function Home() {
       <section className="pulse" aria-label="2026 commit activity across public and private repositories">
         <div className="pulseIntro"><span>THE CODE PULSE · 2026</span><strong>{repos.length} projects: {repos.length - privateRepos.length} public, {privateRepos.length} private.</strong><p><b>{totalCommits.toLocaleString("en-US")}</b> commits by @amyleesterling on the default branches, January 1–{snapshotDate}. <b>{privateCommits.toLocaleString("en-US")}</b> are from private repositories. Automation is included when authored by this account.</p></div>
         <div className="pulseChart">
-          <div className="commitBars" aria-label="One bar per repository, public and private, ordered by commit count">
+          <div className="commitBars" aria-label="One bar per repository, public and private, ordered from lowest to highest commit count">
             {commitPulse.map((item) => {
               const repo = repos.find((candidate) => candidate.n === item.n);
               const title = repo ? repoTitle(repo) : item.n;
