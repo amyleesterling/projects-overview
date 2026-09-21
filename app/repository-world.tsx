@@ -19,10 +19,10 @@ const neighborhoodColors:Record<string,string> = {
   developer:"#8ddcff", multimodal:"#729eff", learning:"#b7c9ff",
 };
 const centers:Record<string,[number,number]> = {
-  brains:[.2,.28], kids:[.8,.28], earth:[.87,.73], ai:[.63,.73],
-  tools:[.37,.73], toys:[.5,.28], ridiculous:[.13,.73],
-  models:[.2,.28], agents:[.5,.28], research:[.8,.28], safety:[.87,.73],
-  developer:[.63,.73], multimodal:[.13,.73], learning:[.37,.73],
+  brains:[.25,.28], kids:[.74,.25], earth:[.82,.55], ai:[.63,.76],
+  tools:[.36,.75], toys:[.48,.48], ridiculous:[.12,.59],
+  models:[.22,.26], agents:[.52,.22], research:[.78,.3], safety:[.82,.64],
+  developer:[.53,.76], multimodal:[.22,.68], learning:[.48,.49],
 };
 const monthNames=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const constellationTours = [
@@ -168,39 +168,30 @@ export default function RepositoryWorld({projects,heading="The repository world"
     const inTour=(node:GraphNode)=>!tourNames.length||tourNames.includes(node.name);
     const cumulative=(node:GraphNode)=>node.months.slice(0,month).reduce((sum,value)=>sum+value,0);
     const nodeRadius=(node:GraphNode)=>node.featured?9:5.5+Math.min(4,node.stars===undefined?Math.sqrt(cumulative(node))*.28:Math.log10(node.stars+1)*1.1);
-    const neighborhoodOrder=Object.keys(centers).filter(id=>categories.some(category=>category.id===id));
-    const largestNeighborhood=[...neighborhoodOrder].sort((a,b)=>nodes.filter(node=>node.category===b).length-nodes.filter(node=>node.category===a).length)[0];
-    const mobileOrder=[largestNeighborhood,...neighborhoodOrder.filter(id=>id!==largestNeighborhood)];
-    const mobileExtents=new Map<string,number>();
-    const mobileAnchor=(category:string)=>{
-      const index=mobileOrder.indexOf(category);
-      const row=index===0?0:Math.floor((index-1)/2)+1;
-      const rows=1+Math.ceil((mobileOrder.length-1)/2);
-      return {x:width*(index===0?.5:index%2===1?.25:.75),y:60+(row+.5)*(height-100)/rows};
-    };
-    const mobileScale=(category:string)=>Math.min(.85,(width/(category===largestNeighborhood?2:4)-30)/(mobileExtents.get(category)||100));
-    const projectPoint=(node:GraphNode)=>{
-      if(width>=700)return {x:node.x/1000*width,y:node.y/650*height};
-      const [cx,cy]=centers[node.category]||[.5,.5],anchor=mobileAnchor(node.category),scale=mobileScale(node.category);
-      return {x:anchor.x+(node.x-cx*1000)*scale,y:anchor.y+(node.y-cy*650)*scale};
-    };
+    const projectPoint=(node:GraphNode)=>({x:node.x/1000*width,y:node.y/650*height});
     const tick=()=>{
+        const localCenters=new Map<string,{x:number;y:number;count:number}>();
+        nodes.forEach(node=>{if(!visible(node))return;const group=localCenters.get(node.category)||{x:0,y:0,count:0};group.x+=node.x;group.y+=node.y;group.count++;localCenters.set(node.category,group);});
         nodes.forEach((node,index)=>{
           if(index===drag) return;
           const [cx,cy]=centers[node.category]||[.5,.5];
-          node.vx+=(cx*1000-node.x)*.004; node.vy+=(cy*650-node.y)*.004;
+          node.vx+=(cx*1000-node.x)*.0008; node.vy+=(cy*650-node.y)*.0008;
+          const group=localCenters.get(node.category);
+          if(group){node.vx+=(group.x/group.count-node.x)*.0012;node.vy+=(group.y/group.count-node.y)*.0012;}
           if(easterEgg){node.vx+=Math.sin(performance.now()*.006+index)*.12;node.vy+=Math.cos(performance.now()*.007+index*1.7)*.12;}
         });
         for(let a=0;a<nodes.length;a++) for(let b=a+1;b<nodes.length;b++) {
           if(!visible(nodes[a])||!visible(nodes[b])) continue;
           const dx=nodes[b].x-nodes[a].x,dy=nodes[b].y-nodes[a].y,distance=Math.max(18,Math.hypot(dx,dy));
-          if(distance<76){const force=(76-distance)*.004;nodes[a].vx-=dx/distance*force;nodes[a].vy-=dy/distance*force;nodes[b].vx+=dx/distance*force;nodes[b].vy+=dy/distance*force;}
+          if(distance<90){const force=(90-distance)*.0025;nodes[a].vx-=dx/distance*force;nodes[a].vy-=dy/distance*force;nodes[b].vx+=dx/distance*force;nodes[b].vy+=dy/distance*force;}
         }
         graph.edges.forEach(edge=>{
           const a=nodes[edge.source],b=nodes[edge.target]; if(!visible(a)||!visible(b)) return;
-          const dx=b.x-a.x,dy=b.y-a.y,distance=Math.max(1,Math.hypot(dx,dy)); const desired=44+Math.max(0,28-edge.weight*4);
-          // Bridges remain visible without dragging separate neighborhoods together.
-          const strength=a.category===b.category?.0006:.000015;
+          const dx=b.x-a.x,dy=b.y-a.y,distance=Math.max(1,Math.hypot(dx,dy));
+          const local=a.category===b.category;
+          const desired=(local?48:68)+Math.max(0,32-edge.weight*5);
+          // Tighten local relationships while retaining the pull across the ecosystem.
+          const strength=local?.00055:.00038;
           const force=(distance-desired)*strength*Math.min(edge.weight,5); a.vx+=dx/distance*force;a.vy+=dy/distance*force;b.vx-=dx/distance*force;b.vy-=dy/distance*force;
         });
         nodes.forEach((node,index)=>{if(index!==drag){node.vx*=.9;node.vy*=.9;node.x=Math.max(35,Math.min(965,node.x+node.vx));node.y=Math.max(35,Math.min(615,node.y+node.vy));}});
@@ -208,31 +199,30 @@ export default function RepositoryWorld({projects,heading="The repository world"
     const draw=()=>{
       context.clearRect(0,0,width,height);
       const labels:{left:number;right:number;top:number;bottom:number}[]=[];
+      const neighborhoodLabels:{lines:string[];cx:number;cy:number;rx:number;ry:number;labelWidth:number}[]=[];
       categories.forEach(category=>{
         if(active!=="all"&&active!==category.id) return;
         const group=nodes.filter(node=>node.category===category.id&&visible(node)); if(!group.length)return;
         const points=group.map(projectPoint); const cx=points.reduce((sum,p)=>sum+p.x,0)/points.length,cy=points.reduce((sum,p)=>sum+p.y,0)/points.length;
         const rx=Math.max(42,...points.map(p=>Math.abs(p.x-cx)+22)),ry=Math.max(38,...points.map(p=>Math.abs(p.y-cy)+22));
         const color=neighborhoodColors[category.id]||"#69d8ff";
-        const gradient=context.createRadialGradient(cx,cy,0,cx,cy,Math.max(rx,ry)); gradient.addColorStop(0,`${color}20`);gradient.addColorStop(1,`${color}05`);
-        context.fillStyle=gradient;context.strokeStyle=`${color}45`;context.lineWidth=1;context.beginPath();context.ellipse(cx,cy,rx,ry,0,0,Math.PI*2);context.fill();context.stroke();
+        const gradient=context.createRadialGradient(cx,cy,0,cx,cy,Math.max(rx,ry)); gradient.addColorStop(0,`${color}18`);gradient.addColorStop(1,`${color}00`);
+        context.fillStyle=gradient;context.beginPath();context.ellipse(cx,cy,rx+24,ry+24,-.08,0,Math.PI*2);context.fill();
+        if(width<700&&active==="all")return;
         context.fillStyle="#d4edf7";context.font="600 14px ui-monospace, monospace";context.letterSpacing="0px";context.textAlign="center";
-        const maxLabelWidth=width<700?width/(category.id===largestNeighborhood?1:2)-22:Math.min(260,width*.23);
+        const maxLabelWidth=Math.min(240,width*.3);
         const lines:string[]=[];
         category.title.split(" ").forEach(word=>{
           const last=lines.length-1;
           if(last>=0&&context.measureText(`${lines[last]} ${word}`).width<=maxLabelWidth)lines[last]+=` ${word}`;
           else lines.push(word);
         });
-        const labelX=Math.max(maxLabelWidth/2+8,Math.min(width-maxLabelWidth/2-8,cx));
-        const labelY=Math.max(22,cy-ry-12-(lines.length-1)*19);
-        lines.forEach((line,index)=>context.fillText(line,labelX,labelY+index*19));
-        labels.push({left:labelX-maxLabelWidth/2,right:labelX+maxLabelWidth/2,top:labelY-16,bottom:labelY+(lines.length-1)*19+4});
+        neighborhoodLabels.push({lines,cx,cy,rx,ry,labelWidth:Math.max(...lines.map(line=>context.measureText(line).width))});
       });
       graph.edges.forEach(edge=>{
         const a=nodes[edge.source],b=nodes[edge.target]; if(!visible(a)||!visible(b))return; const p1=projectPoint(a),p2=projectPoint(b);
         const incident=selectedIndex===edge.source||selectedIndex===edge.target;
-        context.strokeStyle=incident?"rgba(151,231,255,.72)":tourNames.length&&(!inTour(a)||!inTour(b))?"rgba(100,150,180,.025)":a.category!==b.category?"rgba(111,157,188,.045)":a.community===b.community?"rgba(104,211,255,.3)":"rgba(111,157,188,.18)";context.lineWidth=incident?1.8:Math.min(1.6,.35+edge.weight*.15);context.beginPath();context.moveTo(p1.x,p1.y);context.lineTo(p2.x,p2.y);context.stroke();
+        context.strokeStyle=incident?"rgba(151,231,255,.72)":tourNames.length&&(!inTour(a)||!inTour(b))?"rgba(100,150,180,.025)":a.category!==b.category?"rgba(111,185,216,.16)":a.community===b.community?"rgba(104,211,255,.28)":"rgba(111,185,216,.2)";context.lineWidth=incident?1.8:Math.min(1.6,.35+edge.weight*.15);context.beginPath();context.moveTo(p1.x,p1.y);context.lineTo(p2.x,p2.y);context.stroke();
       });
       if(tourNames.length){
         const route=tourNames.map(name=>nodes.find(node=>node.name===name)).filter(Boolean) as GraphNode[];
@@ -247,6 +237,21 @@ export default function RepositoryWorld({projects,heading="The repository world"
         if(node.featured){context.strokeStyle="rgba(255,255,255,.82)";context.lineWidth=1.2;context.beginPath();context.arc(point.x,point.y,radius+5,0,Math.PI*2);context.stroke();}
         if(easterEgg){const eye=radius*.48+2;context.shadowBlur=0;context.fillStyle="#f4fbff";[-1,1].forEach(side=>{context.beginPath();context.arc(point.x+side*eye*.72,point.y-eye*.35,eye,0,Math.PI*2);context.fill();context.fillStyle="#071421";context.beginPath();context.arc(point.x+side*eye*.72+Math.sin(performance.now()*.003+index)*eye*.25,point.y-eye*.25,eye*.38,0,Math.PI*2);context.fill();context.fillStyle="#f4fbff";});}
         context.restore();
+      });
+      neighborhoodLabels.forEach(({lines,cx,cy,rx,ry,labelWidth})=>{
+        const labelHeight=lines.length*19;
+        const positions=[{x:cx,y:cy-ry-labelHeight-8},{x:cx,y:cy+ry+12},{x:cx-rx-labelWidth/2-12,y:cy-labelHeight/2},{x:cx+rx+labelWidth/2+12,y:cy-labelHeight/2}];
+        const options=positions.map((position,index)=>{
+          const x=Math.max(labelWidth/2+10,Math.min(width-labelWidth/2-10,position.x)),y=Math.max(10,Math.min(height-42-labelHeight,position.y));
+          const box={left:x-labelWidth/2-5,right:x+labelWidth/2+5,top:y-3,bottom:y+labelHeight+3};
+          const overlappingLabels=labels.filter(label=>box.left<label.right&&box.right>label.left&&box.top<label.bottom&&box.bottom>label.top).length;
+          const overlappingNodes=nodes.filter(node=>{if(!visible(node))return false;const p=projectPoint(node),r=nodeRadius(node)+6;return p.x+r>box.left&&p.x-r<box.right&&p.y+r>box.top&&p.y-r<box.bottom;}).length;
+          return {x,y,box,score:overlappingLabels*100+overlappingNodes*10+index};
+        });
+        const best=options.sort((a,b)=>a.score-b.score)[0];
+        context.save();context.font="600 14px ui-monospace, monospace";context.textAlign="center";context.lineWidth=5;context.strokeStyle="#05121d";context.fillStyle="#d4edf7";
+        lines.forEach((line,index)=>{context.strokeText(line,best.x,best.y+14+index*19);context.fillText(line,best.x,best.y+14+index*19);});
+        context.restore();labels.push(best.box);
       });
       // Keep compact groups legible: show featured names only where they fit.
       const namedNodes=nodes.filter((node,index)=>visible(node)&&(index===hover||index===drag||index===selectedIndex||(node.featured&&width>=700)));
@@ -271,11 +276,10 @@ export default function RepositoryWorld({projects,heading="The repository world"
     };
     // Settle before the first paint, including when animation is disabled.
     for(let iteration=0;iteration<220;iteration++)tick();
-    nodes.forEach(node=>{const [cx]=centers[node.category]||[.5,.5];mobileExtents.set(node.category,Math.max(mobileExtents.get(node.category)||0,Math.abs(node.x-cx*1000)));});
     const animate=()=>{if(!reduceMotion)tick();draw();frame=inView&&!reduceMotion?requestAnimationFrame(animate):0;};
     const closest=(x:number,y:number)=>{let result=-1,best=26;nodes.forEach((node,index)=>{if(!visible(node))return;const p=projectPoint(node),distance=Math.hypot(p.x-x,p.y-y);if(distance<best&&distance<nodeRadius(node)+13){best=distance;result=index;}});return result;};
     const position=(event:PointerEvent)=>{const rect=canvas.getBoundingClientRect();pointer.x=event.clientX-rect.left;pointer.y=event.clientY-rect.top;};
-    const move=(event:PointerEvent)=>{position(event);if(drag>=0){moved=true;const node=nodes[drag];if(width<700){const [cx,cy]=centers[node.category]||[.5,.5],anchor=mobileAnchor(node.category),scale=mobileScale(node.category);node.x=cx*1000+(pointer.x-anchor.x)/scale;node.y=cy*650+(pointer.y-anchor.y)/scale;}else{node.x=pointer.x/width*1000;node.y=pointer.y/height*650;}node.vx=0;node.vy=0;}hover=closest(pointer.x,pointer.y);canvas.style.cursor=hover>=0?drag>=0?"grabbing":"grab":"crosshair";if(reduceMotion)draw();};
+    const move=(event:PointerEvent)=>{position(event);if(drag>=0){moved=true;const node=nodes[drag];node.x=pointer.x/width*1000;node.y=pointer.y/height*650;node.vx=0;node.vy=0;}hover=closest(pointer.x,pointer.y);canvas.style.cursor=hover>=0?drag>=0?"grabbing":"grab":"crosshair";if(reduceMotion)draw();};
     const down=(event:PointerEvent)=>{position(event);drag=closest(pointer.x,pointer.y);moved=false;if(drag>=0){canvas.setPointerCapture(event.pointerId);canvas.style.cursor="grabbing";}};
     const up=(event:PointerEvent)=>{if(drag>=0&&!moved)setSelected(nodes[drag]);drag=-1;if(canvas.hasPointerCapture(event.pointerId))canvas.releasePointerCapture(event.pointerId);};
     const cancel=()=>{drag=-1;hover=-1;};
@@ -304,7 +308,7 @@ export default function RepositoryWorld({projects,heading="The repository world"
         <ol>
           <li><b>Connect.</b><span>Names and descriptions become semantic signals. Shared ideas, technology, and project-family names create weighted links.</span></li>
           <li><b>Detect.</b><span>Repositories repeatedly adopt the strongest neighboring community through weighted label propagation. The seven editorial categories provide only a light prior.</span></li>
-          <li><b>Settle.</b><span>Each colored neighborhood gathers around its own center. Stronger links bring related projects closer within a group; faint bridges connect ideas across groups.</span></li>
+          <li><b>Settle.</b><span>Related projects gather more tightly, while links across neighborhoods keep the whole ecosystem connected. Soft color clouds show overlapping areas of shared purpose.</span></li>
         </ol>
         <div><span><i className="methodNode"/>Node size = {projects.some(project=>project.stars!==undefined)?"GitHub stars":`${year} commits`}</span><span><i className="methodRing"/>Ring = featured project</span><span><i className="methodLink"/>Line = inferred relationship</span></div>
       </aside>

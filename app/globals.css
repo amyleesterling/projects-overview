@@ -309,9 +309,6 @@ body { font-size:1rem; line-height:1.5; }
 .worldMethod li { grid-template-columns:24px 1fr; }
 .worldMethod li span { grid-column:2; }
 .worldStage canvas { touch-action:pan-y; }
-@media (max-width:780px) {
-  .worldStage { height:1120px; }
-}
 .drawerActivity>div:first-child { flex-wrap:wrap; gap:8px; }
 .commitTooltip { width:360px; max-width:90vw; }
 .commitBarItem .commitTooltip { display:none; }
